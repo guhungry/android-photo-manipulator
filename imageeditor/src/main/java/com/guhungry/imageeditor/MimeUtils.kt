@@ -7,7 +7,7 @@ object MimeUtils {
     const val WEBP: String = "image/webp"
     const val JPEG: String = "image/jpeg"
 
-    fun toExtension(type: String): String = when (type) {
+    fun toExtension(type: String?): String = when (type) {
         PNG -> ".png"
         WEBP -> ".webp"
         else -> ".jpg"
