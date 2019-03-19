@@ -24,7 +24,7 @@ object FileUtils {
         return File.createTempFile(prefix, MimeUtils.toExtension(mimeType), cachePath(context))
     }
 
-    private fun cachePath(context: Context): File? {
+    fun cachePath(context: Context): File? {
         val externalCacheDir = context.externalCacheDir
         val internalCacheDir = context.cacheDir
 
