@@ -15,7 +15,7 @@ object FileUtils {
     /**
      * Check if uri is local or web
      */
-    fun isLocalUri(uri: String): Boolean = LOCAL_URI_PREFIXES.any { uri.startsWith(it) }
+    private fun isLocalUri(uri: String): Boolean = LOCAL_URI_PREFIXES.any { uri.startsWith(it) }
 
     /**
      * Create a temporary file in the cache directory on either internal or external storage,
@@ -23,10 +23,12 @@ object FileUtils {
      *
      * @param mimeType the MIME type of the file to create (image/\*)
      */
+    @JvmStatic
     fun createTempFile(context: Context, prefix: String, mimeType: String?): File {
         return File.createTempFile(prefix, MimeUtils.toExtension(mimeType), cachePath(context))
     }
 
+    @JvmStatic
     fun cachePath(context: Context): File? {
         val externalCacheDir = context.externalCacheDir
         val internalCacheDir = context.cacheDir
@@ -47,18 +49,21 @@ object FileUtils {
     /**
      * Delete dll files in directory that starts with prefix
      */
+    @JvmStatic
     fun cleanDirectory(directory: File, prefix: String) {
         directory
             .listFiles { _, name -> name.startsWith(prefix) }
             .forEach { it.delete() }
     }
 
+    @JvmStatic
     fun saveImageFile(image: Bitmap, mime: String, quality: Int, target: File) {
         FileOutputStream(target).use {
             image.compress(MimeUtils.toCompresFormat(mime), quality, it)
         }
     }
 
+    @JvmStatic
     fun openBitmapInputStream(context: Context, uri: String): InputStream {
         return (if (isLocalUri(uri)) {
             context.contentResolver.openInputStream(Uri.parse(uri))

@@ -11,7 +11,7 @@ object BitmapUtils {
      * {@code width, height} larger or equal to {@code targetWidth, targetHeight}.
      * This can significantly reduce memory usage.
      */
-    fun decodeSampleSize(sourceSize: CGSize, targetSize: CGSize): Int {
+    private fun decodeSampleSize(sourceSize: CGSize, targetSize: CGSize): Int {
         var sampleSize = 1
 
         if (sourceSize.height > targetSize.height || sourceSize.width > targetSize.width) {
@@ -28,6 +28,7 @@ object BitmapUtils {
      * Reads and crops the bitmap.
      * @param outOptions Bitmap options, useful to determine `outMimeType`.
      */
+    @JvmStatic
     fun crop(input: InputStream, region: CGRect, outOptions: BitmapFactory.Options): Bitmap {
         input.use {
             // Efficiently crops image without loading full resolution into memory
@@ -46,6 +47,7 @@ object BitmapUtils {
      * and scale the result to {@code targetWidth, targetHeight}.
      * @param outOptions Bitmap options, useful to determine {@code outMimeType}.
      */
+    @JvmStatic
     fun cropAndResize(input: InputStream, cropSize: CGRect, targetSize: CGSize, outOptions: BitmapFactory.Options): Bitmap {
         // Loading large bitmaps efficiently:
         // http://developer.android.com/training/displaying-bitmaps/load-bitmap.html
