@@ -28,13 +28,13 @@ object BitmapUtils {
      * Reads and crops the bitmap.
      * @param outOptions Bitmap options, useful to determine `outMimeType`.
      */
-    private fun crop(input: InputStream, region: Rect, outOptions: BitmapFactory.Options): Bitmap {
+    fun crop(input: InputStream, region: CGRect, outOptions: BitmapFactory.Options): Bitmap {
         input.use {
             // Efficiently crops image without loading full resolution into memory
             // https://developer.android.com/reference/android/graphics/BitmapRegionDecoder.html
             val decoder = BitmapRegionDecoder.newInstance(input, false)
             try {
-                return decoder.decodeRegion(region, outOptions)
+                return decoder.decodeRegion(region.toRect(), outOptions)
             } finally {
                 decoder.recycle()
             }
@@ -46,7 +46,7 @@ object BitmapUtils {
      * and scale the result to {@code targetWidth, targetHeight}.
      * @param outOptions Bitmap options, useful to determine {@code outMimeType}.
      */
-    private fun cropAndResize(input: InputStream, cropSize: CGRect, targetSize: CGSize, outOptions: BitmapFactory.Options): Bitmap {
+    fun cropAndResize(input: InputStream, cropSize: CGRect, targetSize: CGSize, outOptions: BitmapFactory.Options): Bitmap {
         // Loading large bitmaps efficiently:
         // http://developer.android.com/training/displaying-bitmaps/load-bitmap.html
 
