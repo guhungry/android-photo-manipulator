@@ -12,7 +12,7 @@ object FileUtils {
     /**
      * Check if uri is local or web
      */
-    fun isLocalFile(uri: String): Boolean = LOCAL_URI_PREFIXES.any { uri.startsWith(it) }
+    fun isLocalUri(uri: String): Boolean = LOCAL_URI_PREFIXES.any { uri.startsWith(it) }
 
     /**
      * Create a temporary file in the cache directory on either internal or external storage,
