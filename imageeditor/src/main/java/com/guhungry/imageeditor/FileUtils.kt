@@ -2,9 +2,12 @@ package com.guhungry.imageeditor
 
 import android.content.Context
 import android.graphics.Bitmap
+import android.net.Uri
 import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
+import java.io.InputStream
+import java.net.URL
 
 object FileUtils {
     private val LOCAL_URI_PREFIXES = arrayOf("file://", "content://")
@@ -52,7 +55,16 @@ object FileUtils {
 
     fun saveImageFile(image: Bitmap, mime: String, quality: Int, target: File) {
         FileOutputStream(target).use {
-            image.compress(MimeUtils.toCompresFormat(mime), quality, it);
+            image.compress(MimeUtils.toCompresFormat(mime), quality, it)
         }
+    }
+
+    fun openBitmapInputStream(context: Context, uri: String): InputStream {
+        return (if (isLocalUri(uri)) {
+            context.contentResolver.openInputStream(Uri.parse(uri))
+        } else {
+            val connection = URL(uri).openConnection()
+            connection.getInputStream()
+        }) ?: throw IOException("Cannot open bitmap: $uri")
     }
 }
