@@ -16,7 +16,6 @@ android {
         versionName "0.0.1"
 
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
-        testInstrumentationRunnerArgument "runnerBuilder", "de.mannodermaus.junit5.AndroidJUnit5Builder"
     }
 
     compileOptions {
@@ -61,10 +60,6 @@ dependencies {
     testImplementation "org.junit.jupiter:junit-jupiter-api:$junitJupiterVersion"
     testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:$junitJupiterVersion"
     androidTestRuntimeOnly "org.junit.platform:junit-platform-runner:$junitPlatformVersion"
-
-    // The instrumentation test companion libraries
-    androidTestImplementation "de.mannodermaus.junit5:android-instrumentation-test:0.2.2"
-    androidTestRuntimeOnly "de.mannodermaus.junit5:android-instrumentation-test-runner:0.2.2"
 
     // (Optional) If you need "Parameterized Tests"
     testImplementation "org.junit.jupiter:junit-jupiter-params:$junitJupiterVersion"
