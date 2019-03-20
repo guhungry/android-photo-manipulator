@@ -21,6 +21,6 @@ public class ExampleInstrumentedTest {
         // Context of the app under test.
         Context appContext = InstrumentationRegistry.getTargetContext();
 
-        assertEquals("com.guhungry.imageeditor.test", appContext.getPackageName());
+        assertEquals("com.guhungry.photomanipulator.test", appContext.getPackageName());
     }
 }
