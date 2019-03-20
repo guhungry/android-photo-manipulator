@@ -107,4 +107,30 @@ object BitmapUtils {
         val cropScale = scale * sampleSize
         return Matrix().apply { setScale(cropScale, cropScale) }
     }
+
+    /**
+     * Print text in to image
+     *
+     * @param image Source image
+     * @param position Position of text in image
+     * @param color Color of text
+     * @param size Text size
+     * @param alignment Text alignment
+     */
+    @JvmStatic
+    fun printText(image: Bitmap, position: PointF, color: Int, size: Float, alignment: Paint.Align = Paint.Align.LEFT, thickness: Float = 0f) {
+        val canvas = Canvas(image)
+
+        val paint = Paint().apply {
+            setColor(color)
+            textSize = size
+            textAlign = alignment
+
+            if (thickness > 0) {
+                style = Paint.Style.STROKE
+                strokeWidth = thickness
+            }
+        }
+        canvas.drawText("Testing...", position.x, position.y + (size / 2), paint)
+    }
 }
