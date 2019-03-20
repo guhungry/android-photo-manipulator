@@ -1,4 +1,4 @@
-package com.guhungry.imageeditor
+package com.guhungry.photomanipulator
 
 import android.content.Context
 import android.graphics.Bitmap

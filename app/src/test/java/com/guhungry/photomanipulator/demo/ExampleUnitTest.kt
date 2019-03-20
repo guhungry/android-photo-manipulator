@@ -1,4 +1,4 @@
-package com.guhungry.example
+package com.guhungry.photomanipulator.demo
 
 import org.junit.Test
 

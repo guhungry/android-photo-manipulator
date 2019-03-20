@@ -1,4 +1,4 @@
-package com.guhungry.imageeditor
+package com.guhungry.photomanipulator
 
 import android.graphics.*
 import java.io.IOException

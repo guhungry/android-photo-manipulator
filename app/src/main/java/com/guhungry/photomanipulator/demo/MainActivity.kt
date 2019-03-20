@@ -1,4 +1,4 @@
-package com.guhungry.example
+package com.guhungry.photomanipulator.demo
 
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
