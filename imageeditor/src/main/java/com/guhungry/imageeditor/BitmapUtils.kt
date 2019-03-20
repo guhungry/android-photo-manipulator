@@ -133,4 +133,16 @@ object BitmapUtils {
         }
         canvas.drawText("Testing...", position.x, position.y + (size / 2), paint)
     }
+
+    /**
+     * Overlay image over background
+     */
+    fun overlay(background: Bitmap, overlay: Bitmap, position: PointF) {
+        val canvas = Canvas(background)
+
+        val paint = Paint().apply {
+            xfermode = PorterDuffXfermode(PorterDuff.Mode.SRC_OVER)
+        }
+        canvas.drawBitmap(overlay, position.x, position.y, paint)
+    }
 }
