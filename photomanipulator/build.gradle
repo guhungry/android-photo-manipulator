@@ -1,40 +1,112 @@
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-android'
+apply plugin: 'de.mannodermaus.android-junit5'
+apply plugin: 'jacoco-android'
+apply plugin: 'com.github.dcendents.android-maven'
+apply plugin: 'com.jfrog.bintray'
 
 android {
     compileSdkVersion 28
-
-
 
     defaultConfig {
         minSdkVersion 16
         targetSdkVersion 28
         versionCode 1
-        versionName "1.0"
+        versionName "0.0.1"
 
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
-
     }
 
     buildTypes {
+        debug {
+            testCoverageEnabled true
+        }
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
 
+    testOptions {
+        junitPlatform {
+            filters {
+                engines {
+                    include 'spek'
+                }
+            }
+        }
+    }
 }
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+
     implementation 'com.android.support:appcompat-v7:28.0.0'
+
     testImplementation 'junit:junit:4.12'
+    testImplementation "org.junit.platform:junit-platform-engine:$junitPlatformVersion"
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+
+    // Tests - Spek
+    testImplementation("org.jetbrains.spek:spek-api:$spekVersion") {
+        exclude group: "org.jetbrains.kotlin"
+    }
+    testImplementation("org.jetbrains.spek:spek-junit-platform-engine:$spekVersion") {
+        exclude group: "org.junit.platform"
+        exclude group: "org.jetbrains.kotlin"
+    }
+    testImplementation "org.jetbrains.kotlin:kotlin-reflect:$kotlin_version"
+    // Mockito
+    testImplementation "org.mockito:mockito-core:$mockito_version"
+    androidTestImplementation "org.mockito:mockito-android:$mockito_version"
 }
 repositories {
     mavenCentral()
 }
+
+
+ext {
+    bintrayRepo = 'maven'
+    bintrayName = 'com.guhungry.android:photo-manipulator'
+
+    publishedGroupId = 'com.guhungry.android'
+    libraryName = 'AndroidPhotoManipulator'
+    artifact = 'photo-manipulator'
+
+    libraryDescription = 'An image processing library for Android'
+
+    siteUrl = 'https://github.com/guhungry/android-photo-manipulator'
+    gitUrl = 'https://github.com/guhungry/android-photo-manipulator.git'
+
+    libraryVersion = android.defaultConfig.versionName
+
+    developerId = 'guhungry1'
+    developerName = 'Woraphot Chokratanasombat'
+    developerEmail = 'guhungry@gmail.com'
+
+    licenseName = 'MIT'
+    licenseUrl = 'https://opensource.org/licenses/MIT'
+    allLicenses = ["MIT"]
+}
+
+apply from: "$rootDir/gradle/jcenter.gradle"
+
+if (project.hasProperty('bintrayUser') && project.hasProperty('bintrayKey')) {
+    bintray.user = project.property('bintrayUser')
+    bintray.key = project.property('bintrayKey')
+
+    println project.property('bintrayUser')
+    println project.property('bintrayKey')
+} else if (project.rootProject.file('local.properties').exists()) {
+    Properties properties = new Properties()
+    properties.load(project.rootProject.file('local.properties').newDataInputStream())
+
+    bintray.user = properties.getProperty("bintrayUser")
+    bintray.key = properties.getProperty("bintrayKey")
+}
+
+apply plugin: 'org.sonarqube'
