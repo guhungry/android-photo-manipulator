@@ -8,7 +8,7 @@ class CGSize(val width: Int, val height: Int) {
 }
 
 class CGRect(val origin: Point, val size: CGSize) {
-    fun toRect(): Rect = Rect(origin.x, origin.y, origin.x + size.width, origin.y + size.height)
-
     constructor(x: Int, y: Int, width: Int, height: Int) : this(Point(x, y), CGSize(width, height))
+
+    fun toRect(): Rect = Rect(origin.x, origin.y, origin.x + size.width, origin.y + size.height)
 }
