@@ -127,7 +127,7 @@ object BitmapUtils {
      * @param alignment Text alignment
      */
     @JvmStatic
-    fun printText(image: Bitmap, position: PointF, color: Int, size: Float, alignment: Paint.Align = Paint.Align.LEFT, thickness: Float = 0f) {
+    fun printText(image: Bitmap, text: String, position: PointF, color: Int, size: Float, alignment: Paint.Align = Paint.Align.LEFT, thickness: Float = 0f) {
         val canvas = Canvas(image)
 
         val paint = Paint().apply {
@@ -140,7 +140,7 @@ object BitmapUtils {
                 strokeWidth = thickness
             }
         }
-        canvas.drawText("Testing...", position.x, position.y + (size / 2), paint)
+        canvas.drawText(text, position.x, position.y + (size / 2), paint)
     }
 
     /**
