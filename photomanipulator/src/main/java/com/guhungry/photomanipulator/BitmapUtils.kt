@@ -146,6 +146,7 @@ object BitmapUtils {
     /**
      * Overlay image over background
      */
+    @JvmStatic
     fun overlay(background: Bitmap, overlay: Bitmap, position: PointF) {
         val canvas = Canvas(background)
 
