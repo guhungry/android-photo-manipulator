@@ -5,6 +5,15 @@ import java.io.IOException
 import java.io.InputStream
 
 object BitmapUtils {
+    @JvmStatic
+    fun readImageDimensions(input: InputStream): CGSize {
+        val options = BitmapFactory.Options().apply { inJustDecodeBounds = true }
+
+        BitmapFactory.decodeStream(input, null, options)
+
+        return CGSize(options.outWidth, options.outHeight)
+    }
+
     /**
      * When scaling down the bitmap, decode only every n-th pixel in each dimension.
      * Calculate the largest {@code inSampleSize} value that is a power of 2 and keeps both
