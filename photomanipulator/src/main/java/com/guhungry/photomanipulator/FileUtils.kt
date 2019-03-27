@@ -10,7 +10,7 @@ import java.io.InputStream
 import java.net.URL
 
 object FileUtils {
-    private val LOCAL_URI_PREFIXES = arrayOf("file://", "content://")
+    private val LOCAL_URI_PREFIXES = arrayOf("file://", "content://", "android.resource://")
 
     /**
      * Check if uri is local or web
