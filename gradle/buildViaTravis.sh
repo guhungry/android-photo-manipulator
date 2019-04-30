@@ -18,7 +18,7 @@ fi
 
 ./gradlew sonarqube \
   -Dsonar.projectKey=guhungry_android-photo-manipulator \
-  -Dsonar.projectName=photo-manipulator \
+  -Dsonar.projectName=android-photo-manipulator \
   -Dsonar.organization=guhungry-github \
   -Dsonar.host.url=https://sonarcloud.io \
   -Dsonar.login=$sonarqubeKey
