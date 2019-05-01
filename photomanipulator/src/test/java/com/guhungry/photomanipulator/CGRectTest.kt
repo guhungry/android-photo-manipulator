@@ -1,28 +1,64 @@
 package com.guhungry.photomanipulator
 
 import android.graphics.Point
-import org.hamcrest.CoreMatchers.equalTo
+import android.graphics.Rect
+import com.guhungry.photomanipulator.factory.AndroidFactory
+import com.guhungry.photomanipulator.factory.MockAndroidFactory
+import org.hamcrest.CoreMatchers.*
 import org.hamcrest.MatcherAssert.assertThat
 import org.junit.jupiter.api.AfterEach
+import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
-import org.mockito.Mockito
 
 internal class CGRectTest {
     var sut: CGRect? = null
     var origin: Point? = null
+    var rect: Rect? = null
+    var factory: AndroidFactory? = null
+
+    @BeforeEach
+    fun setup() {
+        factory = MockAndroidFactory()
+    }
 
     @AfterEach
     fun tearDown() {
         sut = null
         origin = null
+        rect = null
+        factory = null
     }
 
     @Test
-    fun `get origin size should have correct value`() {
-        origin = Mockito.mock(Point::class.java)
-        sut = CGRect(origin!!, CGSize(1255, 188))
+    fun `convenience constructor`() {
+        sut = CGRect(11, 24, 88, 181, factory!!)
 
-        assertThat(sut!!.origin, equalTo(origin!!))
+        assertThat(sut!!, instanceOf(CGRect::class.java))
+        assertThat(sut!!.origin, instanceOf<Point>(Point::class.java))
+        assertThat(sut!!.origin.x, equalTo(11))
+        assertThat(sut!!.origin.y, equalTo(24))
+        assertThat(sut!!.size, equalTo(CGSize(88, 181)))
+    }
+
+    @Test
+    fun `get origin and size should have correct value`() {
+        origin = factory!!.makePoint(22,15)
+        sut = CGRect(origin!!, CGSize(1255, 188), factory!!)
+
+        assertThat(sut!!.origin.x, equalTo(22))
+        assertThat(sut!!.origin.y, equalTo(15))
         assertThat(sut!!.size, equalTo(CGSize(1255, 188)))
+    }
+
+    @Test
+    fun `toRect should return correct rect value`() {
+        sut = CGRect(35, 123, 4455, 3333, factory!!)
+
+        rect = sut!!.toRect()
+        assertThat(rect, notNullValue())
+        assertThat(rect!!.left, equalTo(35))
+        assertThat(rect!!.top, equalTo(123))
+        assertThat(rect!!.right, equalTo(4490))
+        assertThat(rect!!.bottom, equalTo(3456))
     }
 }
