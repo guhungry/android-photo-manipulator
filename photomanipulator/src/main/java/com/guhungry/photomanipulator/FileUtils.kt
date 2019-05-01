@@ -59,7 +59,7 @@ object FileUtils {
     @JvmStatic
     fun saveImageFile(image: Bitmap, mime: String, quality: Int, target: File) {
         FileOutputStream(target).use {
-            image.compress(MimeUtils.toCompresFormat(mime), quality, it)
+            image.compress(MimeUtils.toCompressFormat(mime), quality, it)
         }
     }
 

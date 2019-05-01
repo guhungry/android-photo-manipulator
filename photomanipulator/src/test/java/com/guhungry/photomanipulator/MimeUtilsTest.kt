@@ -24,9 +24,9 @@ internal class MimeUtilsTest {
     }
 
     @Test
-    fun `toCompresFormat should return correct CompressFormat`() {
-        assertThat(MimeUtils.toCompresFormat(MimeUtils.JPEG), equalTo(Bitmap.CompressFormat.JPEG))
-        assertThat(MimeUtils.toCompresFormat(MimeUtils.PNG), equalTo(Bitmap.CompressFormat.PNG))
-        assertThat(MimeUtils.toCompresFormat(MimeUtils.WEBP), equalTo(Bitmap.CompressFormat.WEBP))
+    fun `toCompressFormat should return correct CompressFormat`() {
+        assertThat(MimeUtils.toCompressFormat(MimeUtils.JPEG), equalTo(Bitmap.CompressFormat.JPEG))
+        assertThat(MimeUtils.toCompressFormat(MimeUtils.PNG), equalTo(Bitmap.CompressFormat.PNG))
+        assertThat(MimeUtils.toCompressFormat(MimeUtils.WEBP), equalTo(Bitmap.CompressFormat.WEBP))
     }
 }

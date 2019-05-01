@@ -15,7 +15,7 @@ object MimeUtils {
     }
 
     @JvmStatic
-    fun toCompresFormat(type: String): Bitmap.CompressFormat = when (type) {
+    fun toCompressFormat(type: String): Bitmap.CompressFormat = when (type) {
         PNG -> Bitmap.CompressFormat.PNG
         WEBP -> Bitmap.CompressFormat.WEBP
         else -> Bitmap.CompressFormat.JPEG
