@@ -18,6 +18,7 @@ internal class MimeUtilsTest {
 
     @Test
     fun `toExtension should return correct file extension`() {
+        assertThat(MimeUtils.toExtension(null), equalTo(".jpg"))
         assertThat(MimeUtils.toExtension(MimeUtils.JPEG), equalTo(".jpg"))
         assertThat(MimeUtils.toExtension(MimeUtils.PNG), equalTo(".png"))
         assertThat(MimeUtils.toExtension(MimeUtils.WEBP), equalTo(".webp"))
