@@ -14,14 +14,21 @@ internal class CGSizeTest {
     }
 
     @Test
-    fun ratio() {
+    fun `ratio when height not zero`() {
         sut = CGSize(800, 600)
 
         assertThat(sut!!.ratio(), equalTo((4 / 3.0).toFloat()))
     }
 
     @Test
-    fun getValues() {
+    fun `ratio when height is zero`() {
+        sut = CGSize(800, 0)
+
+        assertThat(sut!!.ratio(), equalTo(0.toFloat()))
+    }
+
+    @Test
+    fun `get height and with should correct`() {
         sut = CGSize(959, 600)
 
         assertThat(sut!!.width, equalTo(959))
