@@ -3,7 +3,7 @@ package com.guhungry.photomanipulator
 import android.graphics.Point
 import android.graphics.Rect
 
-class CGSize(val width: Int, val height: Int) {
+data class CGSize(val width: Int, val height: Int) {
     fun ratio() = if (height != 0) width / height.toFloat() else 0f
 }
 

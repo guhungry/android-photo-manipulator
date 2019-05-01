@@ -7,16 +7,27 @@ import org.junit.jupiter.api.Test
 
 internal class CGSizeTest {
     var sut: CGSize? = null
+    var other: CGSize? = null
 
     @AfterEach
     fun tearDown() {
         sut = null
+        other = null
+    }
+
+    @Test
+    fun `same height and with should equal`() {
+        sut = CGSize(800, 600)
+        other = CGSize(800, 600)
+
+        assertThat(sut, equalTo(other))
     }
 
     @Test
     fun `ratio when height not zero`() {
         sut = CGSize(800, 600)
 
+        CGSize(222,22).equals(CGSize(800, 600))
         assertThat(sut!!.ratio(), equalTo((4 / 3.0).toFloat()))
     }
 
