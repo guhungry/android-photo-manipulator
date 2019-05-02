@@ -1,7 +1,9 @@
 package com.guhungry.photomanipulator
 
+import android.content.ContentResolver
 import android.content.Context
 import android.graphics.Bitmap
+import com.guhungry.photomanipulator.factory.MockAndroidFactory
 import com.guhungry.photomanipulator.helper.AndroidFile
 import org.hamcrest.MatcherAssert.assertThat
 import org.hamcrest.Matchers.*
@@ -9,11 +11,9 @@ import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
+import org.mockito.Mock
 import org.mockito.Mockito.*
-import java.io.File
-import java.io.FileOutputStream
-import java.io.FilenameFilter
-import java.io.IOException
+import java.io.*
 
 internal class FileUtilsTest {
     private var context: Context? = null
@@ -119,5 +119,20 @@ internal class FileUtilsTest {
         FileUtils.saveImageFile(image, MimeUtils.JPEG, 32, uri, helper)
 
         verify(image, times(1)).compress(Bitmap.CompressFormat.JPEG, 32, output)
+    }
+
+    @Test
+    fun `openBitmapInputStream when local file should open local stream`() {
+        val contentResolver = mock(ContentResolver::class.java)
+        `when`(contentResolver.openInputStream(any())).thenReturn(mock(InputStream::class.java))
+        context = mock(Context::class.java)
+        `when`(context!!.contentResolver).thenReturn(contentResolver)
+        val factory = MockAndroidFactory()
+
+        FileUtils.openBitmapInputStream(context!!, "file://local/path/for/sure", factory)
+        FileUtils.openBitmapInputStream(context!!, "content://local/content/path/for/sure", factory)
+        FileUtils.openBitmapInputStream(context!!, "android.resource://local/resource/path/for/sure", factory)
+
+        verify(contentResolver, times(3)).openInputStream(any())
     }
 }
