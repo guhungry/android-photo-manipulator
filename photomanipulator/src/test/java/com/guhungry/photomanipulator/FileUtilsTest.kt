@@ -7,6 +7,7 @@ import com.guhungry.photomanipulator.factory.MockAndroidFactory
 import com.guhungry.photomanipulator.helper.AndroidFile
 import org.hamcrest.MatcherAssert.assertThat
 import org.hamcrest.Matchers.*
+import org.junit.Ignore
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -144,8 +145,7 @@ internal class FileUtilsTest {
         `when`(context!!.contentResolver).thenReturn(contentResolver)
         val factory = MockAndroidFactory()
 
-        FileUtils.openBitmapInputStream(context!!, "https://google.com", factory)
-        FileUtils.openBitmapInputStream(context!!, "ftp://ftp.cs.brown.edu/pub/README", factory)
+        FileUtils.openBitmapInputStream(context!!, "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a7/React-icon.svg/1000px-React-icon.svg.png", factory)
 
         verify(contentResolver, times(0)).openInputStream(any())
     }
