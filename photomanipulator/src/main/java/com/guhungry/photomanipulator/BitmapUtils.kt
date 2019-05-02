@@ -1,6 +1,8 @@
 package com.guhungry.photomanipulator
 
 import android.graphics.*
+import com.guhungry.photomanipulator.factory.AndroidFactory
+import com.guhungry.photomanipulator.factory.AndroidFactoryHelper
 import java.io.IOException
 import java.io.InputStream
 
@@ -147,10 +149,10 @@ object BitmapUtils {
      * Overlay image over background
      */
     @JvmStatic
-    fun overlay(background: Bitmap, overlay: Bitmap, position: PointF) {
-        val canvas = Canvas(background)
+    fun overlay(background: Bitmap, overlay: Bitmap, position: PointF, factory: AndroidFactory = AndroidFactoryHelper()) {
+        val canvas = factory.makeCanvas(background)
 
-        val paint = Paint().apply {
+        val paint = factory.makePaint().apply {
             xfermode = PorterDuffXfermode(PorterDuff.Mode.SRC_OVER)
         }
         canvas.drawBitmap(overlay, position.x, position.y, paint)

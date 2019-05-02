@@ -2,7 +2,6 @@ package com.guhungry.photomanipulator
 
 import android.content.Context
 import android.graphics.Bitmap
-import android.net.Uri
 import com.guhungry.photomanipulator.factory.AndroidFactory
 import com.guhungry.photomanipulator.factory.AndroidFactoryHelper
 import com.guhungry.photomanipulator.helper.AndroidFile
