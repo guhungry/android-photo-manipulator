@@ -135,4 +135,18 @@ internal class FileUtilsTest {
 
         verify(contentResolver, times(3)).openInputStream(any())
     }
+
+    @Test
+    fun `openBitmapInputStream when remote file should open connection stream`() {
+        val contentResolver = mock(ContentResolver::class.java)
+        `when`(contentResolver.openInputStream(any())).thenReturn(mock(InputStream::class.java))
+        context = mock(Context::class.java)
+        `when`(context!!.contentResolver).thenReturn(contentResolver)
+        val factory = MockAndroidFactory()
+
+        FileUtils.openBitmapInputStream(context!!, "https://google.com", factory)
+        FileUtils.openBitmapInputStream(context!!, "ftp://ftp.cs.brown.edu/pub/README", factory)
+
+        verify(contentResolver, times(0)).openInputStream(any())
+    }
 }
