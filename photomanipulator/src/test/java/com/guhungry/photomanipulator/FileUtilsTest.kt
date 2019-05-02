@@ -7,12 +7,10 @@ import com.guhungry.photomanipulator.factory.MockAndroidFactory
 import com.guhungry.photomanipulator.helper.AndroidFile
 import org.hamcrest.MatcherAssert.assertThat
 import org.hamcrest.Matchers.*
-import org.junit.Ignore
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
-import org.mockito.Mock
 import org.mockito.Mockito.*
 import java.io.*
 
@@ -148,5 +146,19 @@ internal class FileUtilsTest {
         FileUtils.openBitmapInputStream(context!!, "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a7/React-icon.svg/1000px-React-icon.svg.png", factory)
 
         verify(contentResolver, times(0)).openInputStream(any())
+    }
+
+    @Test
+    fun `openBitmapInputStream when no stream should throw error`() {
+        val contentResolver = mock(ContentResolver::class.java)
+        `when`(contentResolver.openInputStream(any())).thenReturn(null)
+        context = mock(Context::class.java)
+        `when`(context!!.contentResolver).thenReturn(contentResolver)
+        val factory = MockAndroidFactory()
+
+        val exception = assertThrows<IOException> { FileUtils.openBitmapInputStream(context!!, "file://local/path/for/sure", factory) }
+
+        assertThat(exception, instanceOf(IOException::class.java))
+        assertThat(exception.message, equalTo("Cannot open bitmap: file://local/path/for/sure"))
     }
 }
