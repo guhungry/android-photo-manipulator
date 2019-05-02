@@ -5,8 +5,6 @@ import org.hamcrest.MatcherAssert.assertThat
 import org.hamcrest.Matchers.equalTo
 import org.junit.jupiter.api.Test
 
-import org.junit.jupiter.api.Assertions.*
-
 internal class MimeUtilsTest {
     @Test
     fun `image mime type should have correct value`() {
