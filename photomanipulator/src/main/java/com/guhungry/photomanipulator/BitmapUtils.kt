@@ -129,11 +129,11 @@ object BitmapUtils {
      * @param alignment Text alignment
      */
     @JvmStatic
-    fun printText(image: Bitmap, text: String, position: PointF, color: Int, size: Float, alignment: Paint.Align = Paint.Align.LEFT, thickness: Float = 0f) {
-        val canvas = Canvas(image)
+    fun printText(image: Bitmap, text: String, position: PointF, color: Int, size: Float, alignment: Paint.Align = Paint.Align.LEFT, thickness: Float = 0f, factory: AndroidFactory = AndroidFactoryHelper()) {
+        val canvas = factory.makeCanvas(image)
 
-        val paint = Paint().apply {
-            setColor(color)
+        val paint = factory.makePaint().apply {
+            this.color = color
             textSize = size
             textAlign = alignment
 
