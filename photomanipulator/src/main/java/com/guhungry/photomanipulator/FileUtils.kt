@@ -6,7 +6,6 @@ import android.net.Uri
 import com.guhungry.photomanipulator.helper.AndroidFile
 import com.guhungry.photomanipulator.helper.AndroidFileHelper
 import java.io.File
-import java.io.FileOutputStream
 import java.io.IOException
 import java.io.InputStream
 import java.net.URL
@@ -59,8 +58,8 @@ object FileUtils {
     }
 
     @JvmStatic
-    fun saveImageFile(image: Bitmap, mime: String, quality: Int, target: File) {
-        FileOutputStream(target).use {
+    fun saveImageFile(image: Bitmap, mime: String, quality: Int, target: File, helper: AndroidFile = AndroidFileHelper()) {
+        helper.makeFileOutputStream(target).use {
             image.compress(MimeUtils.toCompressFormat(mime), quality, it)
         }
     }

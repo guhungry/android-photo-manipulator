@@ -1,6 +1,7 @@
 package com.guhungry.photomanipulator
 
 import android.content.Context
+import android.graphics.Bitmap
 import com.guhungry.photomanipulator.helper.AndroidFile
 import org.hamcrest.MatcherAssert.assertThat
 import org.hamcrest.Matchers.*
@@ -10,6 +11,7 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 import org.mockito.Mockito.*
 import java.io.File
+import java.io.FileOutputStream
 import java.io.FilenameFilter
 import java.io.IOException
 
@@ -104,5 +106,18 @@ internal class FileUtilsTest {
         FileUtils.createTempFile(context!!, "PREFIX", MimeUtils.JPEG, helper)
 
         verify(helper, times(1)).createTempFile("PREFIX", ".jpg", internal)
+    }
+
+    @Test
+    fun `saveImageFile should save correct data`() {
+        val image = mock(Bitmap::class.java)
+        val uri = mock(File::class.java)
+        val output = mock(FileOutputStream::class.java)
+        val helper = mock(AndroidFile::class.java)
+        `when`(helper.makeFileOutputStream(uri)).thenReturn(output)
+
+        FileUtils.saveImageFile(image, MimeUtils.JPEG, 32, uri, helper)
+
+        verify(image, times(1)).compress(Bitmap.CompressFormat.JPEG, 32, output)
     }
 }
