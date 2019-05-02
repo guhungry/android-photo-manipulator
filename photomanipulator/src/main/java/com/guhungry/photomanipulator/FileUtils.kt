@@ -3,6 +3,8 @@ package com.guhungry.photomanipulator
 import android.content.Context
 import android.graphics.Bitmap
 import android.net.Uri
+import com.guhungry.photomanipulator.helper.AndroidFile
+import com.guhungry.photomanipulator.helper.AndroidFileHelper
 import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
@@ -24,8 +26,8 @@ object FileUtils {
      * @param mimeType the MIME type of the file to create (image/\*)
      */
     @JvmStatic
-    fun createTempFile(context: Context, prefix: String, mimeType: String?): File {
-        return File.createTempFile(prefix, MimeUtils.toExtension(mimeType), cachePath(context))
+    fun createTempFile(context: Context, prefix: String, mimeType: String?, helper: AndroidFile = AndroidFileHelper()): File {
+        return helper.createTempFile(prefix, MimeUtils.toExtension(mimeType), cachePath(context))
     }
 
     @JvmStatic

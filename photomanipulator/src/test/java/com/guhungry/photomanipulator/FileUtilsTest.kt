@@ -1,6 +1,7 @@
 package com.guhungry.photomanipulator
 
 import android.content.Context
+import com.guhungry.photomanipulator.helper.AndroidFile
 import org.hamcrest.MatcherAssert.assertThat
 import org.hamcrest.Matchers.*
 import org.junit.jupiter.api.AfterEach
@@ -89,5 +90,19 @@ internal class FileUtilsTest {
         FileUtils.cleanDirectory(directory, "DELETE ME")
 
         verify(files[0], times(1)).delete()
+    }
+
+    @Test
+    fun `createTempFile should return temp file correctly`() {
+        val helper = mock(AndroidFile::class.java)
+        val internal = mock(File::class.java)
+        `when`(internal.freeSpace).thenReturn(30000)
+
+        context = mock(Context::class.java)
+        `when`(context!!.cacheDir).thenReturn(internal)
+
+        FileUtils.createTempFile(context!!, "PREFIX", MimeUtils.JPEG, helper)
+
+        verify(helper, times(1)).createTempFile("PREFIX", ".jpg", internal)
     }
 }
