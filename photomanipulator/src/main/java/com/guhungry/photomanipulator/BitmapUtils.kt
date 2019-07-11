@@ -129,6 +129,7 @@ object BitmapUtils {
      * @param alignment Text alignment
      */
     @JvmStatic
+    @JvmOverloads
     fun printText(image: Bitmap, text: String, position: PointF, color: Int, size: Float, alignment: Paint.Align = Paint.Align.LEFT, thickness: Float = 0f, factory: AndroidFactory = AndroidFactoryHelper()) {
         val canvas = factory.makeCanvas(image)
 
@@ -149,6 +150,7 @@ object BitmapUtils {
      * Overlay image over background
      */
     @JvmStatic
+    @JvmOverloads
     fun overlay(background: Bitmap, overlay: Bitmap, position: PointF, factory: AndroidFactory = AndroidFactoryHelper()) {
         val canvas = factory.makeCanvas(background)
 
