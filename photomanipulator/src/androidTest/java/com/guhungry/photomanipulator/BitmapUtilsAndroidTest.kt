@@ -4,9 +4,9 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.ColorSpace
 import android.graphics.PointF
-import androidx.test.InstrumentationRegistry
-import androidx.test.runner.AndroidJUnit4
 import android.util.DisplayMetrics
+import androidx.test.ext.junit.runners.AndroidJUnit4
+import androidx.test.platform.app.InstrumentationRegistry
 import com.guhungry.photomanipulator.test.R
 import org.hamcrest.MatcherAssert.assertThat
 import org.hamcrest.Matchers.equalTo
@@ -29,7 +29,7 @@ internal class BitmapUtilsAndroidTest {
 
     @Test
     fun overlay_should_overlay_image_at_correct_location() {
-        val context = InstrumentationRegistry.getTargetContext()
+        val context = InstrumentationRegistry.getInstrumentation().targetContext
         val options = BitmapFactory.Options().apply {
             inMutable = true
             inTargetDensity = DisplayMetrics.DENSITY_DEFAULT
