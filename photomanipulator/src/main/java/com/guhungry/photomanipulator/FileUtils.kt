@@ -3,7 +3,7 @@ package com.guhungry.photomanipulator
 import android.content.Context
 import android.graphics.Bitmap
 import com.guhungry.photomanipulator.factory.AndroidFactory
-import com.guhungry.photomanipulator.factory.AndroidFactoryHelper
+import com.guhungry.photomanipulator.factory.AndroidConcreteFactory
 import com.guhungry.photomanipulator.helper.AndroidFile
 import com.guhungry.photomanipulator.helper.AndroidFileHelper
 import java.io.File
@@ -66,7 +66,7 @@ object FileUtils {
     }
 
     @JvmStatic
-    fun openBitmapInputStream(context: Context, uri: String, factory: AndroidFactory = AndroidFactoryHelper()): InputStream {
+    fun openBitmapInputStream(context: Context, uri: String, factory: AndroidFactory = AndroidConcreteFactory()): InputStream {
         return (if (isLocalUri(uri)) {
             context.contentResolver.openInputStream(factory.makeUri(uri))
         } else {

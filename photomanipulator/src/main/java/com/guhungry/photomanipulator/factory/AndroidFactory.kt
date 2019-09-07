@@ -11,7 +11,7 @@ interface AndroidFactory {
     fun makePaint(): Paint
 }
 
-class AndroidFactoryHelper: AndroidFactory {
+class AndroidConcreteFactory: AndroidFactory {
     override fun makePoint(x: Int, y: Int): Point = Point(x, y)
     override fun makeRect(left: Int, top: Int, right: Int, bottom: Int): Rect = Rect(left, top, right, bottom)
     override fun makeUri(uri: String): Uri = Uri.parse(uri)

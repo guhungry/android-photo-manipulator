@@ -2,7 +2,7 @@ package com.guhungry.photomanipulator
 
 import android.graphics.*
 import com.guhungry.photomanipulator.factory.AndroidFactory
-import com.guhungry.photomanipulator.factory.AndroidFactoryHelper
+import com.guhungry.photomanipulator.factory.AndroidConcreteFactory
 import java.io.IOException
 import java.io.InputStream
 
@@ -130,7 +130,7 @@ object BitmapUtils {
      */
     @JvmStatic
     @JvmOverloads
-    fun printText(image: Bitmap, text: String, position: PointF, color: Int, size: Float, alignment: Paint.Align = Paint.Align.LEFT, thickness: Float = 0f, factory: AndroidFactory = AndroidFactoryHelper()) {
+    fun printText(image: Bitmap, text: String, position: PointF, color: Int, size: Float, alignment: Paint.Align = Paint.Align.LEFT, thickness: Float = 0f, factory: AndroidFactory = AndroidConcreteFactory()) {
         val canvas = factory.makeCanvas(image)
 
         val paint = factory.makePaint().apply {
@@ -151,7 +151,7 @@ object BitmapUtils {
      */
     @JvmStatic
     @JvmOverloads
-    fun overlay(background: Bitmap, overlay: Bitmap, position: PointF, factory: AndroidFactory = AndroidFactoryHelper()) {
+    fun overlay(background: Bitmap, overlay: Bitmap, position: PointF, factory: AndroidFactory = AndroidConcreteFactory()) {
         val canvas = factory.makeCanvas(background)
 
         val paint = factory.makePaint().apply {
