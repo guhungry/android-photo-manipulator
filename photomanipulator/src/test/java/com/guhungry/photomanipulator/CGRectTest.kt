@@ -6,9 +6,9 @@ import com.guhungry.photomanipulator.factory.AndroidFactory
 import com.guhungry.photomanipulator.factory.MockAndroidFactory
 import org.hamcrest.CoreMatchers.*
 import org.hamcrest.MatcherAssert.assertThat
-import org.junit.jupiter.api.AfterEach
-import org.junit.jupiter.api.BeforeEach
-import org.junit.jupiter.api.Test
+import org.junit.After
+import org.junit.Before
+import org.junit.Test
 
 internal class CGRectTest {
     var sut: CGRect? = null
@@ -16,12 +16,12 @@ internal class CGRectTest {
     var rect: Rect? = null
     var factory: AndroidFactory? = null
 
-    @BeforeEach
+    @Before
     fun setup() {
         factory = MockAndroidFactory()
     }
 
-    @AfterEach
+    @After
     fun tearDown() {
         sut = null
         origin = null

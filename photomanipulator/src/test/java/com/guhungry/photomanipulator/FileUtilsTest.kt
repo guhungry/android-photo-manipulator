@@ -5,41 +5,46 @@ import android.content.Context
 import android.graphics.Bitmap
 import com.guhungry.photomanipulator.factory.MockAndroidFactory
 import com.guhungry.photomanipulator.helper.AndroidFile
+import org.hamcrest.CoreMatchers.sameInstance
 import org.hamcrest.MatcherAssert.assertThat
-import org.hamcrest.Matchers.*
-import org.junit.jupiter.api.AfterEach
-import org.junit.jupiter.api.BeforeEach
-import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.assertThrows
+import org.junit.After
+import org.junit.Before
+import org.junit.Test
 import org.mockito.Mockito.*
 import java.io.*
+import org.junit.rules.ExpectedException
+import org.junit.Rule
+import org.mockito.Mockito.`when`
+
 
 internal class FileUtilsTest {
     private var context: Context? = null
 
-    @BeforeEach
+    @Rule
+    @JvmField
+    var exception = ExpectedException.none()
+
+    @Before
     fun setUp() {
+        context = mock(Context::class.java)
     }
 
-    @AfterEach
+    @After
     fun tearDown() {
         context = null
     }
 
     @Test
     fun `cachePath should throw error when all cache dir is null`() {
-        context = mock(Context::class.java)
+        exception.expect(IOException::class.java)
+        exception.expectMessage("No cache directory available")
 
-        val exception = assertThrows<IOException> { FileUtils.cachePath(context!!) }
-
-        assertThat(exception, instanceOf(IOException::class.java))
-        assertThat(exception.message, equalTo("No cache directory available"))
+        FileUtils.cachePath(context!!)
     }
 
     @Test
     fun `cachePath should externalCacheDir when internalCacheDir is null`() {
         val dir = mock(File::class.java)
-        context = mock(Context::class.java)
         `when`(context!!.externalCacheDir).thenReturn(dir)
 
         assertThat(FileUtils.cachePath(context!!)!!, sameInstance(dir))
@@ -48,7 +53,6 @@ internal class FileUtilsTest {
     @Test
     fun `cachePath should internalCacheDir when externalCacheDir is null`() {
         val dir = mock(File::class.java)
-        context = mock(Context::class.java)
         `when`(context!!.cacheDir).thenReturn(dir)
 
         assertThat(FileUtils.cachePath(context!!)!!, sameInstance(dir))
@@ -61,7 +65,6 @@ internal class FileUtilsTest {
         val internal = mock(File::class.java)
         `when`(internal.freeSpace).thenReturn(30000)
 
-        context = mock(Context::class.java)
         `when`(context!!.cacheDir).thenReturn(internal)
         `when`(context!!.externalCacheDir).thenReturn(external)
 
@@ -75,7 +78,6 @@ internal class FileUtilsTest {
         val internal = mock(File::class.java)
         `when`(internal.freeSpace).thenReturn(30000)
 
-        context = mock(Context::class.java)
         `when`(context!!.cacheDir).thenReturn(internal)
         `when`(context!!.externalCacheDir).thenReturn(external)
 
@@ -99,7 +101,6 @@ internal class FileUtilsTest {
         val internal = mock(File::class.java)
         `when`(internal.freeSpace).thenReturn(30000)
 
-        context = mock(Context::class.java)
         `when`(context!!.cacheDir).thenReturn(internal)
 
         FileUtils.createTempFile(context!!, "PREFIX", MimeUtils.JPEG, helper)
@@ -124,7 +125,6 @@ internal class FileUtilsTest {
     fun `openBitmapInputStream when local file should open local stream`() {
         val contentResolver = mock(ContentResolver::class.java)
         `when`(contentResolver.openInputStream(any())).thenReturn(mock(InputStream::class.java))
-        context = mock(Context::class.java)
         `when`(context!!.contentResolver).thenReturn(contentResolver)
         val factory = MockAndroidFactory()
 
@@ -139,7 +139,6 @@ internal class FileUtilsTest {
     fun `openBitmapInputStream when remote file should open connection stream`() {
         val contentResolver = mock(ContentResolver::class.java)
         `when`(contentResolver.openInputStream(any())).thenReturn(mock(InputStream::class.java))
-        context = mock(Context::class.java)
         `when`(context!!.contentResolver).thenReturn(contentResolver)
         val factory = MockAndroidFactory()
 
@@ -152,13 +151,12 @@ internal class FileUtilsTest {
     fun `openBitmapInputStream when no stream should throw error`() {
         val contentResolver = mock(ContentResolver::class.java)
         `when`(contentResolver.openInputStream(any())).thenReturn(null)
-        context = mock(Context::class.java)
         `when`(context!!.contentResolver).thenReturn(contentResolver)
         val factory = MockAndroidFactory()
 
-        val exception = assertThrows<IOException> { FileUtils.openBitmapInputStream(context!!, "file://local/path/for/sure", factory) }
+        exception.expect(IOException::class.java)
+        exception.expectMessage("Cannot open bitmap: file://local/path/for/sure")
 
-        assertThat(exception, instanceOf(IOException::class.java))
-        assertThat(exception.message, equalTo("Cannot open bitmap: file://local/path/for/sure"))
+        FileUtils.openBitmapInputStream(context!!, "file://local/path/for/sure", factory)
     }
 }

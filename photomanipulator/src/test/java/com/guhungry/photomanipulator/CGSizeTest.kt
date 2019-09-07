@@ -2,14 +2,14 @@ package com.guhungry.photomanipulator
 
 import org.hamcrest.CoreMatchers.equalTo
 import org.hamcrest.MatcherAssert.assertThat
-import org.junit.jupiter.api.AfterEach
-import org.junit.jupiter.api.Test
+import org.junit.After
+import org.junit.Test
 
 internal class CGSizeTest {
     var sut: CGSize? = null
     var other: CGSize? = null
 
-    @AfterEach
+    @After
     fun tearDown() {
         sut = null
         other = null

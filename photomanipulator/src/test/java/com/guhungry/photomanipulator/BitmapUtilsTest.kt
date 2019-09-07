@@ -2,7 +2,7 @@ package com.guhungry.photomanipulator
 
 import android.graphics.*
 import com.guhungry.photomanipulator.factory.AndroidFactory
-import org.junit.jupiter.api.Test
+import org.junit.Test
 import org.mockito.Mockito.*
 
 internal class BitmapUtilsTest {

@@ -3,7 +3,7 @@ package com.guhungry.photomanipulator
 import android.graphics.Bitmap
 import org.hamcrest.MatcherAssert.assertThat
 import org.hamcrest.Matchers.equalTo
-import org.junit.jupiter.api.Test
+import org.junit.Test
 
 internal class MimeUtilsTest {
     @Test
