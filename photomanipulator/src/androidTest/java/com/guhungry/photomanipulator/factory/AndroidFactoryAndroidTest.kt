@@ -6,10 +6,9 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import org.hamcrest.CoreMatchers.equalTo
 import org.hamcrest.CoreMatchers.instanceOf
 import org.junit.After
-import org.junit.Test
-
-import org.junit.Assert.*
+import org.junit.Assert.assertThat
 import org.junit.Before
+import org.junit.Test
 import org.junit.runner.RunWith
 
 @RunWith(AndroidJUnit4::class)
