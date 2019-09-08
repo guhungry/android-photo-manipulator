@@ -5,6 +5,7 @@ import android.graphics.BitmapFactory
 import android.graphics.ColorSpace
 import android.graphics.PointF
 import android.util.DisplayMetrics
+import androidx.annotation.DrawableRes
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.guhungry.photomanipulator.test.R
 import org.hamcrest.MatcherAssert.assertThat
@@ -40,5 +41,19 @@ internal class BitmapUtilsAndroidTest {
 
         assertThat(background!!.colorSpace, equalTo(overlay!!.colorSpace))
         assertThat(background!!.getPixel(75 + 96, 145 + 70), equalTo(overlay!!.getPixel(96, 70)))
+    }
+
+    @Test
+    fun readImageDimensions_should_return_correct_dimension() {
+        assertReadImageDimensions(R.drawable.background, 800, 530)
+        assertReadImageDimensions(R.drawable.overlay, 200, 141)
+    }
+
+    private fun assertReadImageDimensions(@DrawableRes res: Int, width: Int, height: Int) {
+        val file = TestHelper.drawableUri(res)
+        FileUtils.openBitmapInputStream(TestHelper.context(), file).use {
+            val size = BitmapUtils.readImageDimensions(it)
+            assertThat(size, equalTo(CGSize(width, height)))
+        }
     }
 }
