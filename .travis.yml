@@ -47,8 +47,7 @@ cache:
   - $HOME/.m2
   - $HOME/.gradle
   # Android SDK
-  - $HOME/android-sdk-dl
-  - $HOME/android-sdk
+  - /usr/local/android-sdk
 
 env:
   global:
