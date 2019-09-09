@@ -18,6 +18,7 @@ import org.junit.runner.RunWith
 internal class BitmapUtilsAndroidTest {
     private var background: Bitmap? = null
     private var overlay: Bitmap? = null
+    private var output: Bitmap? = null
 
     @After
     fun tearDown() {
@@ -25,6 +26,38 @@ internal class BitmapUtilsAndroidTest {
         background = null
         overlay?.recycle()
         overlay = null
+        output?.recycle()
+        output = null
+    }
+
+    @Test
+    fun crop_should_have_correct_size() {
+        FileUtils.openBitmapInputStream(TestHelper.context(), TestHelper.drawableUri(R.drawable.background)).use {
+            output = BitmapUtils.crop(it, CGRect(79, 45, 32, 96), BitmapFactory.Options())
+
+            assertThat(output!!.width, equalTo(32))
+            assertThat(output!!.height, equalTo(96))
+        }
+    }
+
+    @Test
+    fun cropAndResize_when_portrait_should_have_correct_size() {
+        FileUtils.openBitmapInputStream(TestHelper.context(), TestHelper.drawableUri(R.drawable.background)).use {
+            output = BitmapUtils.cropAndResize(it, CGRect(79, 45, 32, 96), CGSize(16, 48), BitmapFactory.Options())
+
+            assertThat(output!!.width, equalTo(16))
+            assertThat(output!!.height, equalTo(48))
+        }
+    }
+
+    @Test
+    fun cropAndResize_when_landscaape_should_have_correct_size() {
+        FileUtils.openBitmapInputStream(TestHelper.context(), TestHelper.drawableUri(R.drawable.background)).use {
+            output = BitmapUtils.cropAndResize(it, CGRect(79, 45, 32, 96), CGSize(48, 17), BitmapFactory.Options())
+
+            assertThat(output!!.width, equalTo(48))
+            assertThat(output!!.height, equalTo(17))
+        }
     }
 
     @Test
