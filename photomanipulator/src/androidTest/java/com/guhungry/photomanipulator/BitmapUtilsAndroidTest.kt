@@ -43,9 +43,9 @@ internal class BitmapUtilsAndroidTest {
     @Test
     fun cropAndResize_when_portrait_should_have_correct_size() {
         FileUtils.openBitmapInputStream(TestHelper.context(), TestHelper.drawableUri(R.drawable.background)).use {
-            output = BitmapUtils.cropAndResize(it, CGRect(79, 45, 32, 96), CGSize(16, 48), BitmapFactory.Options())
+            output = BitmapUtils.cropAndResize(it, CGRect(79, 45, 32, 96), CGSize(19, 48), BitmapFactory.Options())
 
-            assertThat(output!!.width, equalTo(16))
+            assertThat(output!!.width, equalTo(19))
             assertThat(output!!.height, equalTo(48))
         }
     }
@@ -53,10 +53,10 @@ internal class BitmapUtilsAndroidTest {
     @Test
     fun cropAndResize_when_landscaape_should_have_correct_size() {
         FileUtils.openBitmapInputStream(TestHelper.context(), TestHelper.drawableUri(R.drawable.background)).use {
-            output = BitmapUtils.cropAndResize(it, CGRect(79, 45, 32, 96), CGSize(48, 17), BitmapFactory.Options())
+            output = BitmapUtils.cropAndResize(it, CGRect(79, 45, 32, 96), CGSize(15, 48), BitmapFactory.Options())
 
-            assertThat(output!!.width, equalTo(48))
-            assertThat(output!!.height, equalTo(17))
+            assertThat(output!!.width, equalTo(15))
+            assertThat(output!!.height, equalTo(48))
         }
     }
 
