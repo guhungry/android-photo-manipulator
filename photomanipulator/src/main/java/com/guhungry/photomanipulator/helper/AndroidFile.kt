@@ -8,7 +8,7 @@ interface AndroidFile {
     fun makeFileOutputStream(target: File): FileOutputStream
 }
 
-class AndroidFileHelper: AndroidFile {
+class AndroidConcreteFile: AndroidFile {
     override fun createTempFile(prefix: String, suffix: String?, directory: File?): File = File.createTempFile(prefix, suffix, directory)
     override fun makeFileOutputStream(target: File): FileOutputStream = FileOutputStream(target)
 }

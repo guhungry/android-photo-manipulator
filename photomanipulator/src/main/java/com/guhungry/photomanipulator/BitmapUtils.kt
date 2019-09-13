@@ -5,6 +5,7 @@ import com.guhungry.photomanipulator.factory.AndroidFactory
 import com.guhungry.photomanipulator.factory.AndroidConcreteFactory
 import java.io.IOException
 import java.io.InputStream
+import kotlin.math.floor
 
 object BitmapUtils {
     @JvmStatic
@@ -104,7 +105,7 @@ object BitmapUtils {
 
         return CGRect(applyScale(newX, sampleSize), applyScale(newY, sampleSize), applyScale(newWidth, sampleSize), applyScale(newHeight, sampleSize))
     }
-    private fun applyScale(value: Float, sampleSize: Int) = Math.floor((value / sampleSize).toDouble()).toInt()
+    private fun applyScale(value: Float, sampleSize: Int) = floor(value / sampleSize).toInt()
 
     private fun findCropScale(rect: CGRect, targetSize: CGSize, sampleSize: Int): Matrix {
         val cropRectRatio = rect.size.ratio()

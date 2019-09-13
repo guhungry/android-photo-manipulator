@@ -12,12 +12,25 @@ jdk:
 # as per http://blog.travis-ci.com/2014-12-17-faster-builds-with-container-based-infrastructure/
 sudo: false
 
-before_install:
-  # Install SDK license so Android Gradle plugin can install deps.
-  - mkdir "$ANDROID_HOME/licenses" || true
-  - echo "8933bad161af4178b1185d1a37fbf41ea5269c55" > "$ANDROID_HOME/licenses/android-sdk-license"
-  - echo "d56f5187479451eabf01fb78af6dfcb131a6481e" >> "$ANDROID_HOME/licenses/android-sdk-license"
-  - yes | sdkmanager "platforms;android-18"
+licenses:
+    - 'android-sdk-preview-license-.+'
+    - 'android-sdk-license-.+'
+    - 'google-gdk-license-.+'
+
+install:
+  - echo 'count=0' > /home/travis/.android/repositories.cfg # Avoid harmless sdkmanager warning
+  - echo y | sdkmanager "platform-tools" >/dev/null
+  - echo y | sdkmanager "tools" >/dev/null # A second time per Travis docs, gets latest versions
+  - echo y | sdkmanager "build-tools;28.0.3" >/dev/null # Implicit gradle dependency - gradle drives changes
+  - echo y | sdkmanager "platforms;android-26" >/dev/null # We need the API of the emulator we will run
+  - echo y | sdkmanager "platforms;android-28" >/dev/null # We need the API of the current compileSdkVersion from gradle.properties
+  - echo y | sdkmanager --channel=4 "emulator" >/dev/null # Use canary channel to get emulator 29.x for x86_64 image support
+  - echo y | sdkmanager "extras;android;m2repository" >/dev/null
+  - echo y | sdkmanager "system-images;android-26;default;x86_64" >/dev/null # install our emulator
+  - echo no | avdmanager create avd --force -n test -k "system-images;android-26;default;x86_64" -c 10M
+  - emulator -verbose -avd test -no-accel -no-snapshot -no-window $AUDIO -camera-back none -camera-front none -selinux permissive -qemu -m 2048 &
+  - android-wait-for-emulator
+  - adb shell input keyevent 82 &
 
 # script for build and release via Travis to Bintray
 script: gradle/buildViaTravis.sh
@@ -33,9 +46,16 @@ cache:
   directories:
   - $HOME/.m2
   - $HOME/.gradle
+  # Android SDK
+  - /usr/local/android-sdk
 
 env:
   global:
+  - ANDROID_HOME=/usr/local/android-sdk
+  - ANDROID_SDK_ROOT=/usr/local/android-sdk
+  - TOOLS=${ANDROID_HOME}/tools
+  - PATH=${ANDROID_HOME}:${ANDROID_HOME}/emulator:${TOOLS}:${TOOLS}/bin:${ANDROID_HOME}/platform-tools:${PATH}
+  - QEMU_AUDIO_DRV=none
   - secure: oUlPXht69hzfb3N9eMdw39P6KYNrMM2YIXcZlsvBRowQNxtE3TTkGEP3DIbBCxpJyokWc7zazmMAy19Z2TngPpDDeaR8f1hBG6R/J/O4ZOCpfWoR5U4wB8qTnc0HBy8atqMWq5dzLhP4N1vsOXtyJ/JBJwMkDMytm6j2QYrDxyLZKA7A/6jEFI5BtFVqenwHQC1T0bpYLC9aaOgannnAKffKpYY2WVhqj4X72iuuf8eRQQBCTzKmhhqluJOWwRPJL7IuUIzkcIIHyGUUz+KsN05vYL9DOR1NokWP+oEFMHw5XavW7h0DM5iKVW4JMqVJm1bSpxkC3Dngxo9IbnWVk4xn5G80gDlviaMy8ukUMwxF846yd4dskbjV2t/wdec9G4NNUlX7a9HlSfBJ9sAW8WOd1sn9z2HbOKgwt5wkkTWzKGMU0dKhmN6WElrzuLUNsof/NW8d3NhM9MSB3vkn4avFOERbjMpx5kayW/HQA19iwq/vh2f5olIidME//iCzfu6qRu4OmMH50kO797Gn6qKMZmf68wxUxOqeLTj+LnF7Y3ERaGMFbZ0qu4F5PsO6Yt6mx8m52n+e1qrdX7BqtpGgexQEvuc6nQJGmAPIezCYepK18/six6F/QstykEJpAKee/F2RIkd7wfGBHIFFXxbvXluYW537GFuFuEZRYlw=
   - secure: ehd0VTpDn0ehomVYewJn1TiMa1aMhfZ2oRnNnxMNS1GjCBRkKTne++wbe91iPp4TeD/e7WcdFJRKZlW8oFk/bPoJZeyru1uIj1lBa7hmhA706wcrnFyLAeJt2Uzko3ZTzQm2ERaSek4UbXhDqaYIWxDoAuOntIXyF4ojU++PSkubV+T9X/HPBgCd6BE8nC4XXhIdLbwdTvatRrPezgcAQy9yAQnAlAbSaoyjYln2bRsf8fup97hBaUM0TtQuQ8uOWq/4fxQBzreqHsxxkiOA1EbogCAY4ZruauBorjkdU5qokI4SYKry7L1paaxQlM6DHsZuQI3kMuqN8kmZsYbQM/ryMpICXa6OswCiCnVrd7pQ1qouRolpXJmNiOHBe10j1LqnzkfFoz85dTou5/boHa5GVYCQM+sNhsbEpa3yMCQ2rSpPr86xCj14bgZAs+MZ6YArB1ZK/1wKjyUVOyEddStgamiXLEe3rdq3+00o9aiGDVaa6uq9cdm6doh0AP460b4zx1+ocZH5A3PSiOO+DTSn1sZasqOrUvJgzJcCLL7o5Y7BVP4d6Vk2YtbukOBNgB6mh2rCeh1mro7rhy9iwBX6BUN9CwxPyxNPwu0+KwWFQ+UsbJD4FatWnScXlWkTeXrK3M/PUAno+jrD5fydMtv1V0dbTdW70PXZNtEnVdE=
   - secure: OZqwl85WUApFhGe9LxeSH+Fkb0rimfK6dMxHtF5flhGZvBkupQjXTaAbs/KGaFeKk/QxQIfmAkuufx3qLITpzzJKWmXUTiWKBJoGcW8qX482qVOKrAK7FG7QlDER6ie3PahOvg1Pyn4H2DedoGHaky02tnUuAIw4hG9HfjeMr+KJ9fcaSz+LPD/IJFFJz9WhqOausdp//xVnUM4Y6ZVS41I19ifhL57QKY0MVoI4a/Wrjh9FAL44bFnPPlUE0WBIv7SMWDYC8Pg+FuyNRA8nuclWv/U0jU6qAf9IePlrhdwJj0LeM//TKGgGJs/XhyWDMns6ejOZC1XDRTtKpLoevAzOOFEe4NbjSXtSp1vbx4Z7bkYAcn6S9uFEeu36qCoU7r1ezCtkUpNx1n3K6efCXChbv7GdlG/bDi6QlaFA4VjERG1Lnqknr/80wBhHlu/ICarg/Cw5P0drWjxh9R2aQ/dGHbnP42Iw7lgMkaVo3pwmfm1b2pnZcMseRHHE4rkbcgzGiQpG0Vf1OapkL4DXC+5UqbpQEpLJZhxe9rKOSOtXKUSXVZXYdc697HQHe2zG1bOL28ZAP7xtEnMb/MgQeDZmM5SFUT6zz3gSwiSKE2pr60PAQH+IDykBUBQIoNjLMiDUd89IqLgB7WsRLplBG3chVuhqatS6NnVp3Fa4txI=

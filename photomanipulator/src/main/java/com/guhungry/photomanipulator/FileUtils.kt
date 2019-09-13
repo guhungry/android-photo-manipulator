@@ -5,7 +5,7 @@ import android.graphics.Bitmap
 import com.guhungry.photomanipulator.factory.AndroidFactory
 import com.guhungry.photomanipulator.factory.AndroidConcreteFactory
 import com.guhungry.photomanipulator.helper.AndroidFile
-import com.guhungry.photomanipulator.helper.AndroidFileHelper
+import com.guhungry.photomanipulator.helper.AndroidConcreteFile
 import java.io.File
 import java.io.IOException
 import java.io.InputStream
@@ -26,8 +26,8 @@ object FileUtils {
      * @param mimeType the MIME type of the file to create (image/\*)
      */
     @JvmStatic
-    fun createTempFile(context: Context, prefix: String, mimeType: String?, helper: AndroidFile = AndroidFileHelper()): File {
-        return helper.createTempFile(prefix, MimeUtils.toExtension(mimeType), cachePath(context))
+    fun createTempFile(context: Context, prefix: String, mimeType: String?, file: AndroidFile = AndroidConcreteFile()): File {
+        return file.createTempFile(prefix, MimeUtils.toExtension(mimeType), cachePath(context))
     }
 
     @JvmStatic
@@ -59,8 +59,8 @@ object FileUtils {
     }
 
     @JvmStatic
-    fun saveImageFile(image: Bitmap, mime: String, quality: Int, target: File, helper: AndroidFile = AndroidFileHelper()) {
-        helper.makeFileOutputStream(target).use {
+    fun saveImageFile(image: Bitmap, mime: String, quality: Int, target: File, file: AndroidFile = AndroidConcreteFile()) {
+        file.makeFileOutputStream(target).use {
             image.compress(MimeUtils.toCompressFormat(mime), quality, it)
         }
     }
