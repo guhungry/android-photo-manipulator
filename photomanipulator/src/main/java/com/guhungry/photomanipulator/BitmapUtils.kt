@@ -5,7 +5,6 @@ import com.guhungry.photomanipulator.factory.AndroidFactory
 import com.guhungry.photomanipulator.factory.AndroidConcreteFactory
 import java.io.IOException
 import java.io.InputStream
-import kotlin.math.floor
 
 object BitmapUtils {
     @JvmStatic
@@ -75,7 +74,7 @@ object BitmapUtils {
         // This uses scaling mode COVER
         // Where would the crop rect end up within the scaled bitmap?
         val crop = findCropPosition(cropSize, targetSize, outOptions.inSampleSize)
-        val scaleMatrix = findCropScale(cropSize, targetSize, outOptions.inSampleSize)
+        val scaleMatrix = findCropScale(crop, targetSize)
 
         return Bitmap.createBitmap(bitmap, crop.origin.x, crop.origin.y, crop.size.width, crop.size.height, scaleMatrix, true)
     }
@@ -105,18 +104,17 @@ object BitmapUtils {
 
         return CGRect(applyScale(newX, sampleSize), applyScale(newY, sampleSize), applyScale(newWidth, sampleSize), applyScale(newHeight, sampleSize))
     }
-    private fun applyScale(value: Float, sampleSize: Int) = floor(value / sampleSize).toInt()
+    private fun applyScale(value: Float, sampleSize: Int) = kotlin.math.floor(value / sampleSize).toInt()
 
-    private fun findCropScale(rect: CGRect, targetSize: CGSize, sampleSize: Int): Matrix {
+    private fun findCropScale(rect: CGRect, targetSize: CGSize): Matrix {
         val cropRectRatio = rect.size.ratio()
         val targetRatio = targetSize.ratio()
 
-        val scale = if (cropRectRatio > targetRatio) { // e.g. source is landscape, target is portrait
+        val cropScale = if (cropRectRatio > targetRatio) { // e.g. source is landscape, target is portrait
             targetSize.height / rect.size.height.toFloat()
         } else { // e.g. source is landscape, target is portrait
             targetSize.width / rect.size.width.toFloat()
         }
-        val cropScale = scale * sampleSize
         return Matrix().apply { setScale(cropScale, cropScale) }
     }
 

@@ -76,6 +76,20 @@ internal class BitmapUtilsAndroidTest {
         assertThat(background!!.getPixel(75 + 96, 145 + 70), equalTo(overlay!!.getPixel(96, 70)))
     }
 
+    /**
+     * Fix Issue For
+     * https://github.com/react-native-community/react-native-image-editor/issues/27
+     */
+    @Test
+    fun cropAndResize_when_bug_scaledown_should_have_correct_size() {
+        FileUtils.openBitmapInputStream(TestHelper.context(), TestHelper.drawableUri(R.drawable.issue27)).use {
+            output = BitmapUtils.cropAndResize(it, CGRect(0, 0, 2160, 3840), CGSize(16, 16), BitmapFactory.Options())
+
+            assertThat(output!!.width, equalTo(16))
+            assertThat(output!!.height, equalTo(16))
+        }
+    }
+
     @Test
     fun readImageDimensions_should_return_correct_dimension() {
         assertReadImageDimensions(R.drawable.background, 800, 530)
