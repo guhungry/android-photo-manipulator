@@ -1,7 +1,5 @@
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
-apply plugin: 'com.github.dcendents.android-maven'
-apply plugin: 'com.jfrog.bintray'
 
 android {
     compileSdkVersion 29
@@ -74,8 +72,7 @@ repositories {
 }
 
 ext {
-    bintrayRepo = 'maven'
-    bintrayName = 'com.guhungry.android:photo-manipulator'
+    publishedName = 'com.guhungry.android:photo-manipulator'
 
     publishedGroupId = 'com.guhungry.android'
     libraryName = 'AndroidPhotoManipulator'
@@ -88,7 +85,7 @@ ext {
 
     libraryVersion = android.defaultConfig.versionName
 
-    developerId = 'guhungry1'
+    developerId = 'guhungry'
     developerName = 'Woraphot Chokratanasombat'
     developerEmail = 'guhungry@gmail.com'
 
@@ -98,21 +95,7 @@ ext {
 }
 
 apply from: "${project.projectDir}/jacoco.gradle"
-apply from: "${rootDir}/gradle/jcenter.gradle"
-
-if (project.hasProperty('bintrayUser') && project.hasProperty('bintrayKey')) {
-    bintray.user = project.property('bintrayUser')
-    bintray.key = project.property('bintrayKey')
-
-    println project.property('bintrayUser')
-    println project.property('bintrayKey')
-} else if (project.rootProject.file('local.properties').exists()) {
-    Properties properties = new Properties()
-    properties.load(project.rootProject.file('local.properties').newDataInputStream())
-
-    bintray.user = properties.getProperty("bintrayUser")
-    bintray.key = properties.getProperty("bintrayKey")
-}
+apply from: "${rootDir}/gradle/publish-module.gradle"
 
 tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).all {
     kotlinOptions {

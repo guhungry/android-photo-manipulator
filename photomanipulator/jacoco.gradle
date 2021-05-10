@@ -1,5 +1,9 @@
 apply plugin: 'jacoco'
 
+jacoco {
+    toolVersion = "0.8.7"
+}
+
 task jacocoTestReport(type: JacocoReport, dependsOn: ['testDebugUnitTest', 'createDebugCoverageReport']) {
     reports {
         xml.enabled true
