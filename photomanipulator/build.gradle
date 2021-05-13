@@ -1,8 +1,5 @@
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
-apply plugin: 'kotlin-android-extensions'
-apply plugin: 'com.github.dcendents.android-maven'
-apply plugin: 'com.jfrog.bintray'
 
 android {
     compileSdkVersion 29
@@ -14,6 +11,10 @@ android {
         versionName "1.0.2"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    buildFeatures {
+        viewBinding true
     }
 
     compileOptions {
@@ -50,16 +51,16 @@ dependencies {
 
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 
-    implementation 'androidx.appcompat:appcompat:1.1.0'
+    implementation 'androidx.appcompat:appcompat:1.2.0'
 
     testImplementation 'org.hamcrest:hamcrest:2.2'
     testImplementation 'org.hamcrest:hamcrest-library:2.1'
 
     testImplementation 'junit:junit:4.13'
-    androidTestImplementation 'androidx.test:runner:1.2.0'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
-    androidTestImplementation 'androidx.test:core:1.2.0'
-    androidTestImplementation 'androidx.test.ext:junit:1.1.1'
+    androidTestImplementation 'androidx.test:runner:1.3.0'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
+    androidTestImplementation 'androidx.test:core:1.3.0'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.2'
 
     testImplementation "org.jetbrains.kotlin:kotlin-reflect:$kotlin_version"
     // Mockito
@@ -71,8 +72,7 @@ repositories {
 }
 
 ext {
-    bintrayRepo = 'maven'
-    bintrayName = 'com.guhungry.android:photo-manipulator'
+    publishedName = 'com.guhungry.android:photo-manipulator'
 
     publishedGroupId = 'com.guhungry.android'
     libraryName = 'AndroidPhotoManipulator'
@@ -85,7 +85,7 @@ ext {
 
     libraryVersion = android.defaultConfig.versionName
 
-    developerId = 'guhungry1'
+    developerId = 'guhungry'
     developerName = 'Woraphot Chokratanasombat'
     developerEmail = 'guhungry@gmail.com'
 
@@ -95,21 +95,7 @@ ext {
 }
 
 apply from: "${project.projectDir}/jacoco.gradle"
-apply from: "$rootDir/gradle/jcenter.gradle"
-
-if (project.hasProperty('bintrayUser') && project.hasProperty('bintrayKey')) {
-    bintray.user = project.property('bintrayUser')
-    bintray.key = project.property('bintrayKey')
-
-    println project.property('bintrayUser')
-    println project.property('bintrayKey')
-} else if (project.rootProject.file('local.properties').exists()) {
-    Properties properties = new Properties()
-    properties.load(project.rootProject.file('local.properties').newDataInputStream())
-
-    bintray.user = properties.getProperty("bintrayUser")
-    bintray.key = properties.getProperty("bintrayKey")
-}
+apply from: "${rootDir}/gradle/publish-module.gradle"
 
 tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).all {
     kotlinOptions {

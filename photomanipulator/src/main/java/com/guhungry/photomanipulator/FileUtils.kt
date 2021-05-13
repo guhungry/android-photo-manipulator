@@ -55,7 +55,7 @@ object FileUtils {
     fun cleanDirectory(directory: File, prefix: String) {
         directory
             .listFiles { _, name -> name.startsWith(prefix) }
-            .forEach { it.delete() }
+            ?.forEach { it.delete() }
     }
 
     @JvmStatic
