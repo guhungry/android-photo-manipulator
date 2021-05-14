@@ -29,3 +29,19 @@ jobs:
         with:
           api-level: 29
           script: ./gradlew :photomanipulator:jacocoTestReport
+
+      - name: Setup sonarqube
+        uses: warchant/setup-sonar-scanner@v3
+
+      - name: Analyze with SonarCloud
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: sonar-scanner
+          -Dsonar.projectKey=guhungry_android-photo-manipulator
+          -Dsonar.projectName=android-photo-manipulator
+          -Dsonar.organization=guhungry-github
+          -Dsonar.host.url=https://sonarcloud.io
+          -Dsonar.login=${{ secrets.SONARQUBE_TOKEN }}
+          -Dsonar.sources=photomanipulator/src/main
+          -Dsonar.tests=photomanipulator/src/androidTest,photomanipulator/src/test
+          -Dsonar.coverage.jacoco.xmlReportPaths=photomanipulator/build/reports/jacoco/jacocoTestReport/jacocoTestReport.xml
