@@ -20,7 +20,7 @@ jobs:
 
       - name: Publish
         run: |
-          ./gradlew -PossrhUsername="${OSSRH_USERNAME}" -PossrhPassword="${OSSRH_PASSWORD}" -Psigning.keyId="${SIGN_KEY_ID}" -Psigning.password="${SIGN_PASSWORD}" -Psigning.secretKeyRingFile="`pwd`/secring.gpg" -PsonatypeStagingProfileId="${SONATYPE_STAGING_PROFILE_ID}" :photomanipulator:uploadArchives
+          ./gradlew -PossrhUsername="${OSSRH_USERNAME}" -PossrhPassword="${OSSRH_PASSWORD}" -Psigning.keyId="${SIGN_KEY_ID}" -Psigning.password="${SIGN_PASSWORD}" -Psigning.secretKeyRingFile="`pwd`/secring.gpg" -PsonatypeStagingProfileId="${SONATYPE_STAGING_PROFILE_ID}" publishReleasePublicationToSonatypeRepository --max-workers 1 closeAndReleaseSonatypeStagingRepository
         env:
           OSSRH_USERNAME: "${{ secrets.OSSRH_USERNAME }}"
           OSSRH_PASSWORD: "${{ secrets.OSSRH_PASSWORD }}"
