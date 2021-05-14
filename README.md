@@ -2,7 +2,8 @@
 [![Build Status](https://travis-ci.com/guhungry/android-photo-manipulator.svg?branch=master)](https://travis-ci.com/guhungry/android-photo-manipulator)
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=guhungry_android-photo-manipulator&metric=alert_status)](https://sonarcloud.io/dashboard?id=guhungry_android-photo-manipulator)
 [![codecov](https://codecov.io/gh/guhungry/android-photo-manipulator/branch/master/graph/badge.svg)](https://codecov.io/gh/guhungry/android-photo-manipulator)
-[ ![Download](https://api.bintray.com/packages/guhungry1/maven/com.guhungry.android%3Aphoto-manipulator/images/download.svg) ](https://bintray.com/guhungry1/maven/com.guhungry.android%3Aphoto-manipulator/_latestVersion)
+[![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.guhungry.android/photo-manipulator/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.guhungry.android/photo-manipulator)
+
 
 Image processing library to edit image programmatically.
 
@@ -11,11 +12,11 @@ Add dependency in module `build.gradle`
 
 ```gradle
 repositories {
-    jcenter()
+    mavenCentral()
 }
 
 dependencies {
-    implementation 'com.guhungry.android:photo-manipulator:0.0.6'
+    implementation 'com.guhungry.android:photo-manipulator:1.0.2'
 }
 ```
 
