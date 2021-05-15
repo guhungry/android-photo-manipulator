@@ -25,6 +25,9 @@ internal class BitmapUtilsTest {
         verify(paint, times(1)).setTextSize(45f)
         verify(paint, times(1)).setTextAlign(Paint.Align.LEFT)
         verify(canvas, times(1)).drawText("Text no Thickness", 99f, 96.5f, paint)
+        verify(paint, never()).setStrokeWidth(anyFloat())
+        verify(paint, never()).setTypeface(any())
+        verify(paint, never()).setStyle(any())
     }
 
     @Test
@@ -37,15 +40,17 @@ internal class BitmapUtilsTest {
         val canvas = mock(Canvas::class.java)
         val paint = mock(Paint::class.java)
         val factory = mock(AndroidFactory::class.java)
+        val font = mock(Typeface::class.java)
         `when`(factory.makeCanvas(background)).thenReturn(canvas)
         `when`(factory.makePaint()).thenReturn(paint)
 
-        BitmapUtils.printText(background, "Text all Values", location, 432, 74f, Paint.Align.CENTER, 4f, factory)
+        BitmapUtils.printText(background, "Text all Values", location, 432, 74f, font, Paint.Align.CENTER, 4f, factory)
 
         verify(paint, times(1)).setColor(432)
         verify(paint, times(1)).setTextSize(74f)
         verify(paint, times(1)).setTextAlign(Paint.Align.CENTER)
         verify(paint, times(1)).setStyle(Paint.Style.STROKE)
+        verify(paint, times(1)).setTypeface(font)
         verify(paint, times(1)).setStrokeWidth(4f)
         verify(canvas, times(1)).drawText("Text all Values", 23f, 51f, paint)
     }

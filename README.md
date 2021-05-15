@@ -61,6 +61,7 @@ Print text into image
 | position   | PointF                | Yes      | Position to in in `x`, `y`                                             |
 | color      | Int                   | Yes      | Text color                                                             |
 | textSize   | Float                 | Yes      | Text size                                                              |
+| font       | Typeface              | No       | Font use to print. Default = App's Default Font                        |
 | alignment  | Paint.Align           | No       | Text alignment (`left`, `right` and `center`). Default = `left`        |
 | thickness  | Float                 | No       | Outline of text. Default = 0                                           |
 
