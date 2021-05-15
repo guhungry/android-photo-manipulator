@@ -1,9 +1,6 @@
 package com.guhungry.photomanipulator
 
-import android.graphics.Bitmap
-import android.graphics.BitmapFactory
-import android.graphics.ColorSpace
-import android.graphics.PointF
+import android.graphics.*
 import android.util.DisplayMetrics
 import androidx.annotation.DrawableRes
 import androidx.test.ext.junit.runners.AndroidJUnit4
@@ -74,6 +71,32 @@ internal class BitmapUtilsAndroidTest {
 
         assertThat(background!!.colorSpace, equalTo(overlay!!.colorSpace))
         assertThat(background!!.getPixel(75 + 96, 145 + 70), equalTo(overlay!!.getPixel(96, 70)))
+    }
+
+    @Test
+    fun printText_when_some_values_should_text_correctly() {
+        val options = BitmapFactory.Options().apply {
+            inMutable = true
+            inTargetDensity = DisplayMetrics.DENSITY_DEFAULT
+            inPreferredColorSpace = ColorSpace.get(ColorSpace.Named.SRGB)
+        }
+        background = TestHelper.drawableBitmap(R.drawable.background, options)
+        BitmapUtils.printText(background!!, "My Text Print", PointF(12f, 5f), Color.GREEN, 23f)
+
+        assertThat(background!!.getPixel(14, 5), equalTo(Color.GREEN))
+    }
+
+    @Test
+    fun printText_when_all_values_should_text_correctly() {
+        val options = BitmapFactory.Options().apply {
+            inMutable = true
+            inTargetDensity = DisplayMetrics.DENSITY_DEFAULT
+            inPreferredColorSpace = ColorSpace.get(ColorSpace.Named.SRGB)
+        }
+        background = TestHelper.drawableBitmap(R.drawable.background, options)
+        BitmapUtils.printText(background!!, "My Text Print", PointF(12f, 5f), Color.GREEN, 23f, Typeface.DEFAULT_BOLD, thickness = 1f)
+
+        assertThat(background!!.getPixel(14, 0), equalTo(Color.GREEN))
     }
 
     /**

@@ -125,11 +125,12 @@ object BitmapUtils {
      * @param position Position of text in image
      * @param color Color of text
      * @param size Text size
+     * @param font Typeface (Font) to use
      * @param alignment Text alignment
      */
     @JvmStatic
     @JvmOverloads
-    fun printText(image: Bitmap, text: String, position: PointF, color: Int, size: Float, alignment: Paint.Align = Paint.Align.LEFT, thickness: Float = 0f, factory: AndroidFactory = AndroidConcreteFactory()) {
+    fun printText(image: Bitmap, text: String, position: PointF, color: Int, size: Float, font: Typeface? = null, alignment: Paint.Align = Paint.Align.LEFT, thickness: Float = 0f, factory: AndroidFactory = AndroidConcreteFactory()) {
         val canvas = factory.makeCanvas(image)
 
         val paint = factory.makePaint().apply {
@@ -137,12 +138,31 @@ object BitmapUtils {
             textSize = size
             textAlign = alignment
 
+            if (font != null) {
+                typeface = font
+            }
+
             if (thickness > 0) {
                 style = Paint.Style.STROKE
                 strokeWidth = thickness
             }
         }
         canvas.drawText(text, position.x, position.y + (size / 2), paint)
+    }
+
+    /**
+     * Print text in to image
+     *
+     * @param image Source image
+     * @param position Position of text in image
+     * @param color Color of text
+     * @param size Text size
+     * @param alignment Text alignment
+     */
+    @Deprecated("Will be remove in next version 2.1.x", replaceWith = ReplaceWith("printText(Bitmap, String, PointF, Int, Float, Typeface?, Paint.Align, Float, AndroidFactory)"))
+    @JvmStatic
+    fun printText(image: Bitmap, text: String, position: PointF, color: Int, size: Float, alignment: Paint.Align, thickness: Float, factory: AndroidFactory = AndroidConcreteFactory()) {
+        printText(image, text, position, color, size, null, alignment, thickness, factory)
     }
 
     /**
