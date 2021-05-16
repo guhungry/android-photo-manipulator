@@ -94,7 +94,7 @@ ext {
     allLicenses = ["MIT"]
 }
 
-apply from: "${project.projectDir}/jacoco.gradle"
+apply from: "${rootDir}/gradle/jacoco.gradle"
 apply from: "${rootDir}/gradle/publish-module.gradle"
 
 tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).all {
