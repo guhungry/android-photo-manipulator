@@ -1,4 +1,5 @@
 # Android Photo Manipulator
+[![Build and Test](https://github.com/guhungry/android-photo-manipulator/actions/workflows/build-and-test.yml/badge.svg)](https://github.com/guhungry/android-photo-manipulator/actions/workflows/build-and-test.yml)
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=guhungry_android-photo-manipulator&metric=alert_status)](https://sonarcloud.io/dashboard?id=guhungry_android-photo-manipulator)
 [![codecov](https://codecov.io/gh/guhungry/android-photo-manipulator/branch/master/graph/badge.svg)](https://codecov.io/gh/guhungry/android-photo-manipulator)
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.guhungry.android/photo-manipulator/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.guhungry.android/photo-manipulator)
