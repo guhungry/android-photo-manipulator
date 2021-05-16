@@ -5,24 +5,18 @@ import android.content.Context
 import android.graphics.Bitmap
 import com.guhungry.photomanipulator.factory.MockAndroidFactory
 import com.guhungry.photomanipulator.helper.AndroidFile
+import org.hamcrest.CoreMatchers.equalTo
 import org.hamcrest.CoreMatchers.sameInstance
 import org.hamcrest.MatcherAssert.assertThat
 import org.junit.After
+import org.junit.Assert.assertThrows
 import org.junit.Before
 import org.junit.Test
 import org.mockito.Mockito.*
 import java.io.*
-import org.junit.rules.ExpectedException
-import org.junit.Rule
-import org.mockito.Mockito.`when`
-
 
 internal class FileUtilsTest {
     private var context: Context? = null
-
-    @Rule
-    @JvmField
-    var exception = ExpectedException.none()
 
     @Before
     fun setUp() {
@@ -36,10 +30,9 @@ internal class FileUtilsTest {
 
     @Test
     fun `cachePath should throw error when all cache dir is null`() {
-        exception.expect(IOException::class.java)
-        exception.expectMessage("No cache directory available")
+        val actual = assertThrows(IOException::class.java) { FileUtils.cachePath(context!!) }
 
-        FileUtils.cachePath(context!!)
+        assertThat(actual.message, equalTo("No cache directory available"))
     }
 
     @Test
@@ -154,9 +147,10 @@ internal class FileUtilsTest {
         `when`(context!!.contentResolver).thenReturn(contentResolver)
         val factory = MockAndroidFactory()
 
-        exception.expect(IOException::class.java)
-        exception.expectMessage("Cannot open bitmap: file://local/path/for/sure")
+        val actual = assertThrows(IOException::class.java) {
+            FileUtils.openBitmapInputStream(context!!, "file://local/path/for/sure", factory)
+        }
 
-        FileUtils.openBitmapInputStream(context!!, "file://local/path/for/sure", factory)
+        assertThat(actual.message, equalTo("Cannot open bitmap: file://local/path/for/sure"))
     }
 }
