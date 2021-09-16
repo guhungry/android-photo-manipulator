@@ -17,6 +17,11 @@ jobs:
     runs-on: macos-latest
 
     steps:
+      - uses: actions/setup-java@v2
+        with:
+          distribution: 'adopt'
+          java-version: '11'
+
       - name: Checkout
         uses: actions/checkout@v2
         with:
