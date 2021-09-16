@@ -1,6 +1,7 @@
 package com.guhungry.photomanipulator
 
 import android.graphics.*
+import androidx.exifinterface.media.ExifInterface
 import com.guhungry.photomanipulator.factory.AndroidFactory
 import com.guhungry.photomanipulator.factory.AndroidConcreteFactory
 import java.io.IOException
@@ -57,9 +58,11 @@ object BitmapUtils {
      * Crop the rectangle given by {@code mX, mY, mWidth, mHeight} within the source bitmap
      * and scale the result to {@code targetWidth, targetHeight}.
      * @param outOptions Bitmap options, useful to determine {@code outMimeType}.
+     * @param matrix Transformation for correct orientation from {@code #}
      */
     @JvmStatic
-    fun cropAndResize(input: InputStream, cropSize: CGRect, targetSize: CGSize, outOptions: BitmapFactory.Options): Bitmap {
+    @JvmOverloads
+    fun cropAndResize(input: InputStream, cropSize: CGRect, targetSize: CGSize, outOptions: BitmapFactory.Options, matrix: Matrix? = null): Bitmap {
         // Loading large bitmaps efficiently:
         // http://developer.android.com/training/displaying-bitmaps/load-bitmap.html
 
@@ -71,12 +74,15 @@ object BitmapUtils {
         val bitmap: Bitmap = BitmapFactory.decodeStream(input, null, outOptions) ?: throw IOException("Cannot decode bitmap: uri")
         // This can use significantly less memory than decoding the full-resolution bitmap
 
+        val rotated = if (matrix != null) Bitmap.createBitmap(bitmap, 0, 0, bitmap.width,
+            bitmap.height, matrix, true).also { bitmap.recycle()  } else bitmap
+
         // This uses scaling mode COVER
         // Where would the crop rect end up within the scaled bitmap?
         val crop = findCropPosition(cropSize, targetSize, outOptions.inSampleSize)
         val scaleMatrix = findCropScale(crop, targetSize)
 
-        return Bitmap.createBitmap(bitmap, crop.origin.x, crop.origin.y, crop.size.width, crop.size.height, scaleMatrix, true)
+        return Bitmap.createBitmap(rotated, crop.origin.x, crop.origin.y, crop.size.width, crop.size.height, scaleMatrix, true)
     }
 
     /**
@@ -177,5 +183,17 @@ object BitmapUtils {
             xfermode = PorterDuffXfermode(PorterDuff.Mode.SRC_OVER)
         }
         canvas.drawBitmap(overlay, position.x, position.y, paint)
+    }
+
+    fun getCorrectOrientationMatrix(input: InputStream): Matrix? {
+        val exif = ExifInterface(input)
+        val isFlippedHorizontal = exif.isFlipped
+        val rotationDegrees = exif.rotationDegrees
+
+        if (!isFlippedHorizontal && rotationDegrees == 0) return null
+        return Matrix().apply {
+            postRotate(rotationDegrees.toFloat())
+            if (isFlippedHorizontal) preScale(-1.0f, 1.0f)
+        }
     }
 }

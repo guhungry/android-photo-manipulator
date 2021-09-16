@@ -6,7 +6,7 @@ import androidx.annotation.DrawableRes
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.guhungry.photomanipulator.test.R
 import org.hamcrest.MatcherAssert.assertThat
-import org.hamcrest.Matchers.equalTo
+import org.hamcrest.Matchers.*
 import org.junit.After
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -48,13 +48,34 @@ internal class BitmapUtilsAndroidTest {
     }
 
     @Test
-    fun cropAndResize_when_landscaape_should_have_correct_size() {
+    fun cropAndResize_when_landscape_should_have_correct_size() {
         FileUtils.openBitmapInputStream(TestHelper.context(), TestHelper.drawableUri(R.drawable.background)).use {
             output = BitmapUtils.cropAndResize(it, CGRect(79, 45, 32, 96), CGSize(15, 48), BitmapFactory.Options())
 
             assertThat(output!!.width, equalTo(15))
             assertThat(output!!.height, equalTo(48))
         }
+    }
+
+    @Test
+    fun getCorrectOrientationMatrix_should_return_correctly() {
+        val matrix = FileUtils.openBitmapInputStream(TestHelper.context(), TestHelper.drawableUri(R.drawable.issue_exif)).use {
+            BitmapUtils.getCorrectOrientationMatrix(it)
+        }
+        val actual = FileUtils.openBitmapInputStream(TestHelper.context(), TestHelper.drawableUri(R.drawable.issue_exif)).use {
+            BitmapUtils.cropAndResize(it, CGRect(400, 45, 32, 96), CGSize(19, 48), BitmapFactory.Options(), matrix)
+                .getPixel(1, 1)
+        }
+        val original = FileUtils.openBitmapInputStream(TestHelper.context(), TestHelper.drawableUri(R.drawable.background)).use {
+            BitmapUtils.cropAndResize(it, CGRect(400, 45, 32, 96), CGSize(19, 48), BitmapFactory.Options())
+                .getPixel(1, 1)
+        }
+        val bad = FileUtils.openBitmapInputStream(TestHelper.context(), TestHelper.drawableUri(R.drawable.issue_exif)).use {
+            BitmapUtils.cropAndResize(it, CGRect(400, 45, 32, 96), CGSize(19, 48), BitmapFactory.Options())
+                .getPixel(1, 1)
+        }
+        assertThat(actual, equalTo(original))
+        assertThat(actual, not(equalTo(bad)))
     }
 
     @Test
@@ -110,6 +131,27 @@ internal class BitmapUtilsAndroidTest {
 
             assertThat(output!!.width, equalTo(16))
             assertThat(output!!.height, equalTo(16))
+        }
+    }
+
+    /**
+     * Must handle orientation in EXIF data correctly
+     */
+    @Test
+    fun openBitmapInputStream_must_when_no_orientation_should_do_nothing() {
+        FileUtils.openBitmapInputStream(TestHelper.context(), TestHelper.drawableUri(R.drawable.background)).use {
+            val actual = BitmapUtils.getCorrectOrientationMatrix(it)
+
+            assertThat(actual, nullValue())
+        }
+    }
+
+    @Test
+    fun openBitmapInputStream_must_when_orientation_should_return_correctly() {
+        FileUtils.openBitmapInputStream(TestHelper.context(), TestHelper.drawableUri(R.drawable.issue_exif)).use {
+            val actual = BitmapUtils.getCorrectOrientationMatrix(it)
+
+            assertThat(actual, not(equalTo(Matrix())))
         }
     }
 
