@@ -49,7 +49,7 @@ Crop and resize image from specified `cropRegion` into `targetSize` using resize
 | cropRegion | CGRect                | Yes      | Region to be crop in CGRect(`x`, `y`, `size`, `width`)    |
 | targetSize | CGSize                | Yes      | Size of result image                                      |
 | outOptions | BitmapFactory.Options | Yes      | Configuration for decode and encode result bitmap         |
-| matirx     | Matrix                | No       | Orientation transform matrix from [getCorrectOrientationMatrix()](#bitmaputilsgetcorrectorientationmatix)         |
+| matirx     | Matrix                | No       | Orientation transform matrix from [getCorrectOrientationMatrix()](#bitmaputilsgetcorrectorientationmatrix)         |
 
 ### BitmapUtils.printText()
 Print text into image
