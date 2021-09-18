@@ -49,6 +49,7 @@ Crop and resize image from specified `cropRegion` into `targetSize` using resize
 | cropRegion | CGRect                | Yes      | Region to be crop in CGRect(`x`, `y`, `size`, `width`)    |
 | targetSize | CGSize                | Yes      | Size of result image                                      |
 | outOptions | BitmapFactory.Options | Yes      | Configuration for decode and encode result bitmap         |
+| matirx     | Matrix                | No       | Orientation transform matrix from [getCorrectOrientationMatrix()](#bitmaputilsgetcorrectorientationmatix)         |
 
 ### BitmapUtils.printText()
 Print text into image
@@ -72,6 +73,13 @@ Overlay image on top of background image
 | background | Bitmap                | Yes      | Background image                                                       |
 | overlay    | Bitmap                | Yes      | Overlay image                                                          |
 | position   | PointF                | Yes      | Position of overlay image in background image                          |
+
+### BitmapUtils.getCorrectOrientationMatrix()
+Get correct transform matrix for orientation data in EXIF
+
+| NAME       | TYPE                  | REQUIRED | DESCRIPTION                                                            |
+|------------|-----------------------|----------|------------------------------------------------------------------------|
+| image      | InputStream           | Yes      | Image input stream                                                     |
 
 ## Usage FileUtils
 
