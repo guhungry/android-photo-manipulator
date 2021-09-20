@@ -120,6 +120,20 @@ internal class BitmapUtilsAndroidTest {
         assertThat(background!!.getPixel(14, 0), equalTo(Color.GREEN))
     }
 
+    @Test
+    fun printText_when_multiline_should_text_correctly() {
+        val options = BitmapFactory.Options().apply {
+            inMutable = true
+            inTargetDensity = DisplayMetrics.DENSITY_DEFAULT
+            inPreferredColorSpace = ColorSpace.get(ColorSpace.Named.SRGB)
+        }
+        background = TestHelper.drawableBitmap(R.drawable.background, options)
+        BitmapUtils.printText(background!!, "My Text\nPrint", PointF(12f, 5f), Color.GREEN, 23f, Typeface.DEFAULT_BOLD, thickness = 5f)
+        BitmapUtils.printText(background!!, "My\nText\nPrint", PointF(200f, 5f), Color.YELLOW, 23f, Typeface.DEFAULT_BOLD, thickness = 1f, alignment = Paint.Align.CENTER)
+
+        assertThat(background!!.getPixel(14, 0), equalTo(Color.GREEN))
+    }
+
     /**
      * Fix Issue For
      * https://github.com/react-native-community/react-native-image-editor/issues/27

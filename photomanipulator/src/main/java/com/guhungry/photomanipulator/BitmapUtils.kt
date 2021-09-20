@@ -153,7 +153,12 @@ object BitmapUtils {
                 strokeWidth = thickness
             }
         }
-        canvas.drawText(text, position.x, position.y + (size / 2), paint)
+
+        var offset = position.y + (size / 2);
+        text.split("\n").forEach {
+            canvas.drawText(it, position.x, offset, paint)
+            offset += paint.descent() - paint.ascent()
+        }
     }
 
     /**
