@@ -47,9 +47,9 @@ object BitmapUtils {
             // https://developer.android.com/reference/android/graphics/BitmapRegionDecoder.html
             val decoder = BitmapRegionDecoder.newInstance(input, false)
             try {
-                return decoder.decodeRegion(region.toRect(), outOptions)
+                return decoder!!.decodeRegion(region.toRect(), outOptions)
             } finally {
-                decoder.recycle()
+                decoder?.recycle()
             }
         }
     }
