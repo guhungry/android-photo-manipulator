@@ -39,7 +39,7 @@ jobs:
           script: ./gradlew :photomanipulator:jacocoTestReport
 
       - name: Setup sonarqube
-        uses: warchant/setup-sonar-scanner@v3
+        uses: warchant/setup-sonar-scanner@v8
 
       - name: Analyze with SonarCloud
         env:
