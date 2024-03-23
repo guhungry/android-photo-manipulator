@@ -2,7 +2,7 @@
 apply plugin: 'io.github.gradle-nexus.publish-plugin'
 
 buildscript {
-    ext.kotlin_version = '1.9.0'
+    ext.kotlin_version = '1.9.21'
     ext.mockito_version = '3.2.4'
     ext.androidJunit5Version = '1.4.2.1'
     ext.junitJupiterVersion = "5.4.2"
@@ -18,7 +18,7 @@ buildscript {
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
         classpath 'io.github.gradle-nexus:publish-plugin:1.1.0'
         classpath 'org.sonarsource.scanner.gradle:sonarqube-gradle-plugin:2.6.2'
-        classpath 'org.jetbrains.dokka:dokka-gradle-plugin:1.4.32'
+        classpath 'org.jetbrains.dokka:dokka-gradle-plugin:1.9.20'
 
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
