@@ -1,6 +1,7 @@
 package com.guhungry.photomanipulator
 
 import android.graphics.*
+import android.os.Build
 import androidx.exifinterface.media.ExifInterface
 import com.guhungry.photomanipulator.factory.AndroidFactory
 import com.guhungry.photomanipulator.factory.AndroidConcreteFactory
@@ -45,7 +46,7 @@ object BitmapUtils {
         input.use {
             // Efficiently crops image without loading full resolution into memory
             // https://developer.android.com/reference/android/graphics/BitmapRegionDecoder.html
-            val decoder = BitmapRegionDecoder.newInstance(input, false)
+            val decoder = getBitmapRegionDecoder(input)
             try {
                 return decoder!!.decodeRegion(region.toRect(), outOptions)
             } finally {
@@ -53,6 +54,14 @@ object BitmapUtils {
             }
         }
     }
+
+    private fun getBitmapRegionDecoder(input: InputStream) =
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            BitmapRegionDecoder.newInstance(input)
+        } else {
+            // Should be removed if min sdk >= 31
+            BitmapRegionDecoder.newInstance(input, false)
+        }
 
     /**
      * Crop the rectangle given by {@code mX, mY, mWidth, mHeight} within the source bitmap
@@ -133,10 +142,12 @@ object BitmapUtils {
      * @param size Text size
      * @param font Typeface (Font) to use
      * @param alignment Text alignment
+     * @param thickness border thickness
+     * @param rotation The amount of rotation, in degrees
      */
     @JvmStatic
     @JvmOverloads
-    fun printText(image: Bitmap, text: String, position: PointF, color: Int, size: Float, font: Typeface? = null, alignment: Paint.Align = Paint.Align.LEFT, thickness: Float = 0f, factory: AndroidFactory = AndroidConcreteFactory()) {
+    fun printText(image: Bitmap, text: String, position: PointF, color: Int, size: Float, font: Typeface? = null, alignment: Paint.Align = Paint.Align.LEFT, thickness: Float = 0f, rotation: Float? = null, factory: AndroidFactory = AndroidConcreteFactory()) {
         val canvas = factory.makeCanvas(image)
 
         val paint = factory.makePaint().apply {
@@ -154,26 +165,16 @@ object BitmapUtils {
             }
         }
 
-        var offset = position.y + (size / 2);
+        var offset = position.y + (size / 2)
+        // Rotate
+        canvas.save()
+        canvas.rotate(-(rotation ?: 0f), position.x, offset)
+        // Draw Text
         text.split("\n").forEach {
             canvas.drawText(it, position.x, offset, paint)
             offset += paint.descent() - paint.ascent()
         }
-    }
-
-    /**
-     * Print text in to image
-     *
-     * @param image Source image
-     * @param position Position of text in image
-     * @param color Color of text
-     * @param size Text size
-     * @param alignment Text alignment
-     */
-    @Deprecated("Will be remove in next version 2.1.x", replaceWith = ReplaceWith("printText(Bitmap, String, PointF, Int, Float, Typeface?, Paint.Align, Float, AndroidFactory)"))
-    @JvmStatic
-    fun printText(image: Bitmap, text: String, position: PointF, color: Int, size: Float, alignment: Paint.Align, thickness: Float, factory: AndroidFactory = AndroidConcreteFactory()) {
-        printText(image, text, position, color, size, null, alignment, thickness, factory)
+        canvas.restore()
     }
 
     /**

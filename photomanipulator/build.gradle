@@ -4,13 +4,13 @@ apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
 
 android {
-    compileSdkVersion 34
+    compileSdk 34
 
     defaultConfig {
-        minSdkVersion 16
+        minSdk 16
         versionCode 1
         versionName "1.0.6"
-        targetSdkVersion 34
+        targetSdk 34
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -44,7 +44,8 @@ android {
         animationsDisabled true
 
         unitTests {
-            includeAndroidResources true
+            includeAndroidResources = true
+            unitTests.returnDefaultValues = true
         }
     }
     namespace 'com.guhungry.photomanipulator'
