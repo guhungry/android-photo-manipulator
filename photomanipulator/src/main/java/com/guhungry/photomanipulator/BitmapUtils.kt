@@ -48,19 +48,19 @@ object BitmapUtils {
             // https://developer.android.com/reference/android/graphics/BitmapRegionDecoder.html
             val decoder = getBitmapRegionDecoder(input)
             try {
-                return decoder!!.decodeRegion(region.toRect(), outOptions)
+                return decoder.decodeRegion(region.toRect(), outOptions)
             } finally {
-                decoder?.recycle()
+                decoder.recycle()
             }
         }
     }
 
     private fun getBitmapRegionDecoder(input: InputStream) =
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-            BitmapRegionDecoder.newInstance(input)
+            BitmapRegionDecoder.newInstance(input)!!
         } else {
             // Should be removed if min sdk >= 31
-            BitmapRegionDecoder.newInstance(input, false)
+            BitmapRegionDecoder.newInstance(input, false)!!
         }
 
     /**
