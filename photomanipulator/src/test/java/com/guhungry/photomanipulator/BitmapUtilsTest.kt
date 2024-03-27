@@ -44,7 +44,7 @@ internal class BitmapUtilsTest {
         `when`(factory.makeCanvas(background)).thenReturn(canvas)
         `when`(factory.makePaint()).thenReturn(paint)
 
-        BitmapUtils.printText(background, "Text all Values", location, 432, 74f, font, Paint.Align.CENTER, 4f, factory)
+        BitmapUtils.printText(background, "Text all Values", location, 432, 74f, font, Paint.Align.CENTER, 4f, 45f, factory)
 
         verify(paint, times(1)).setColor(432)
         verify(paint, times(1)).setTextSize(74f)
@@ -53,6 +53,31 @@ internal class BitmapUtilsTest {
         verify(paint, times(1)).setTypeface(font)
         verify(paint, times(1)).setStrokeWidth(4f)
         verify(canvas, times(1)).drawText("Text all Values", 23f, 51f, paint)
+        verify(canvas, times(1)).rotate(-45f, 23f, 51f)
+    }
+
+    @Test
+    fun `printText when rotation null should rotate with 0`() {
+        val background = mock(Bitmap::class.java)
+        val location = PointF().apply {
+            x = 69f
+            y = 55f
+        }
+        val canvas = mock(Canvas::class.java)
+        val paint = mock(Paint::class.java)
+        val factory = mock(AndroidFactory::class.java)
+        val font = mock(Typeface::class.java)
+        `when`(factory.makeCanvas(background)).thenReturn(canvas)
+        `when`(factory.makePaint()).thenReturn(paint)
+
+        BitmapUtils.printText(background, "rotation null", location, 772, 84f, font, Paint.Align.RIGHT, 0f, null, factory)
+
+        verify(paint, times(1)).setColor(772)
+        verify(paint, times(1)).setTextSize(84f)
+        verify(paint, times(1)).setTextAlign(Paint.Align.RIGHT)
+        verify(paint, times(1)).setTypeface(font)
+        verify(canvas, times(1)).drawText("rotation null", 69f, 97f, paint)
+        verify(canvas, times(1)).rotate(-0f, 69f, 97f)
     }
 
     @Test

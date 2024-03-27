@@ -5,10 +5,10 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.guhungry.photomanipulator.test.R
 import org.hamcrest.CoreMatchers.equalTo
 import org.hamcrest.CoreMatchers.instanceOf
+import org.hamcrest.MatcherAssert.assertThat
 import org.hamcrest.Matchers.greaterThan
 import org.hamcrest.core.StringEndsWith
 import org.hamcrest.core.StringStartsWith
-import org.junit.Assert.assertThat
 import org.junit.Test
 import org.junit.runner.RunWith
 import java.io.InputStream
