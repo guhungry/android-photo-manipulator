@@ -134,6 +134,48 @@ internal class BitmapUtilsAndroidTest {
         assertThat(background!!.getPixel(14, 0), equalTo(Color.GREEN))
     }
 
+    @Test
+    fun flip_when_horizontal_should_flip_correctly() {
+        val options = BitmapFactory.Options().apply {
+            inMutable = true
+            inTargetDensity = DisplayMetrics.DENSITY_DEFAULT
+            inPreferredColorSpace = ColorSpace.get(ColorSpace.Named.SRGB)
+        }
+        background = TestHelper.drawableBitmap(R.drawable.background, options)
+        val actual = BitmapUtils.flip(background!!, FlipMode.Horizontal)
+
+        assertThat(actual.getPixel(55, 67), equalTo(0xFF0B5BA2.toInt()))
+    }
+
+    @Test
+    fun flip_when_vertical_should_flip_correctly() {
+        val options = BitmapFactory.Options().apply {
+            inMutable = true
+            inTargetDensity = DisplayMetrics.DENSITY_DEFAULT
+            inPreferredColorSpace = ColorSpace.get(ColorSpace.Named.SRGB)
+        }
+        background = TestHelper.drawableBitmap(R.drawable.background, options)
+        val actual = BitmapUtils.flip(background!!, FlipMode.Vertical)
+
+        assertThat(actual.getPixel(55, 67), equalTo(0xFF072957.toInt()))
+    }
+
+    @Test
+    fun flip_when_both_should_flip_correctly() {
+        val options = BitmapFactory.Options().apply {
+            inMutable = true
+            inTargetDensity = DisplayMetrics.DENSITY_DEFAULT
+            inPreferredColorSpace = ColorSpace.get(ColorSpace.Named.SRGB)
+        }
+        background = TestHelper.drawableBitmap(R.drawable.background, options)
+        val actual1 = BitmapUtils.flip(background!!, FlipMode.Vertical)
+        val actual2 = BitmapUtils.flip(actual1, FlipMode.Horizontal)
+        val actual3 = BitmapUtils.flip(actual2, FlipMode.Vertical)
+        val actual4 = BitmapUtils.flip(actual3, FlipMode.Horizontal)
+
+        assertThat(actual4.getPixel(55, 67), equalTo(0xFF118BCE.toInt()))
+    }
+
     /**
      * Fix Issue For
      * https://github.com/react-native-community/react-native-image-editor/issues/27
