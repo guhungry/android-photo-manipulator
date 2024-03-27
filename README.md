@@ -64,6 +64,7 @@ Print text into image
 | font       | Typeface              | No       | Font use to print. Default = App's Default Font                        |
 | alignment  | Paint.Align           | No       | Text alignment (`left`, `right` and `center`). Default = `left`        |
 | thickness  | Float                 | No       | Outline of text. Default = 0                                           |
+| rotation   | Float                 | No       | Rotation angle in degrees. Default = 0                                 |
 
 ### BitmapUtils.overlayImage()
 Overlay image on top of background image
@@ -73,6 +74,14 @@ Overlay image on top of background image
 | background | Bitmap                | Yes      | Background image                                                       |
 | overlay    | Bitmap                | Yes      | Overlay image                                                          |
 | position   | PointF                | Yes      | Position of overlay image in background image                          |
+
+### BitmapUtils.flip()
+Overlay image on top of background image
+
+| NAME       | TYPE                  | REQUIRED | DESCRIPTION                                                            |
+|------------|-----------------------|----------|------------------------------------------------------------------------|
+| image      | Bitmap                | Yes      | The image to be flipped                                                |
+| mode       | FlipMode              | Yes      | Flip mode .Vertical or .Horizontal                                     |
 
 ### BitmapUtils.getCorrectOrientationMatrix()
 Get correct transform matrix for orientation data in EXIF
