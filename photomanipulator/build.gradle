@@ -14,6 +14,10 @@ android {
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles "consumer-rules.pro"
+
+        aarMetadata {
+            minCompileSdk = 16
+        }
     }
 
     buildTypes {
@@ -38,6 +42,12 @@ android {
             excludes += ['META-INF/LICENSE.md', 'META-INF/LICENSE-notice.md']
         }
     }
+    publishing {
+        singleVariant("release") {
+            withSourcesJar()
+            withJavadocJar()
+        }
+    }
     testOptions {
         animationsDisabled true
 
@@ -45,6 +55,9 @@ android {
             includeAndroidResources = true
             unitTests.returnDefaultValues = true
         }
+    }
+    testFixtures {
+        enable = true
     }
 }
 

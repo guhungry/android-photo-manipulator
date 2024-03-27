@@ -36,6 +36,7 @@ afterEvaluate {
     publishing {
         publications {
             release(MavenPublication) {
+                tasks.named("generateMetadataFileForReleasePublication").configure { dependsOn("androidSourcesJar") }
                 groupId publishedGroupId
                 artifactId artifact
                 version libraryVersion
@@ -45,8 +46,8 @@ afterEvaluate {
                     artifact("$buildDir/libs/${project.getName()}-${version}.jar")
                 }
 
-                artifact androidSourcesJar
-                artifact javadocJar
+                // artifact androidSourcesJar
+                // artifact javadocJar
 
                 pom {
                     packaging = 'aar'
