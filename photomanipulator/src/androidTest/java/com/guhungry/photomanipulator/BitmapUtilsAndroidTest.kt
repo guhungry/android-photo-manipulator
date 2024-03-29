@@ -168,6 +168,19 @@ internal class BitmapUtilsAndroidTest {
             inPreferredColorSpace = ColorSpace.get(ColorSpace.Named.SRGB)
         }
         background = TestHelper.drawableBitmap(R.drawable.background, options)
+        val actual = BitmapUtils.flip(background!!, FlipMode.Both)
+
+        assertThat(actual.getPixel(55, 67), equalTo(0xFF010F29.toInt()))
+    }
+
+    @Test
+    fun flip_when_multiple_should_flip_correctly() {
+        val options = BitmapFactory.Options().apply {
+            inMutable = true
+            inTargetDensity = DisplayMetrics.DENSITY_DEFAULT
+            inPreferredColorSpace = ColorSpace.get(ColorSpace.Named.SRGB)
+        }
+        background = TestHelper.drawableBitmap(R.drawable.background, options)
         val actual1 = BitmapUtils.flip(background!!, FlipMode.Vertical)
         val actual2 = BitmapUtils.flip(actual1, FlipMode.Horizontal)
         val actual3 = BitmapUtils.flip(actual2, FlipMode.Vertical)
