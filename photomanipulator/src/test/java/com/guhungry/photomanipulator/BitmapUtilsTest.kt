@@ -2,6 +2,8 @@ package com.guhungry.photomanipulator
 
 import android.graphics.*
 import com.guhungry.photomanipulator.factory.AndroidFactory
+import org.hamcrest.CoreMatchers.sameInstance
+import org.hamcrest.MatcherAssert.assertThat
 import org.junit.Test
 import org.mockito.Mockito.*
 
@@ -98,5 +100,14 @@ internal class BitmapUtilsTest {
 
         verify(paint, times(1)).setXfermode(any<PorterDuffXfermode>())
         verify(canvas, times(1)).drawBitmap(overlay, 75f, 95f, paint)
+    }
+
+    @Test
+    fun `flip when FlipMode None do nothing`() {
+        val background = mock(Bitmap::class.java)
+
+        val actual = BitmapUtils.flip(background, FlipMode.None)
+
+        assertThat(actual, sameInstance(background));
     }
 }
