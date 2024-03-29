@@ -198,6 +198,7 @@ object BitmapUtils {
      */
     @JvmStatic
     fun flip(image: Bitmap, mode: FlipMode): Bitmap {
+        if (mode == FlipMode.None) return image
         val matrix = Matrix()
         matrix.preScale(mode.scaleX, mode.scaleY);
         return Bitmap.createBitmap(image, 0, 0, image.getWidth(), image.getHeight(), matrix, true);
