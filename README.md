@@ -4,7 +4,8 @@
 [![codecov](https://codecov.io/gh/guhungry/android-photo-manipulator/branch/master/graph/badge.svg)](https://codecov.io/gh/guhungry/android-photo-manipulator)
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.guhungry.android/photo-manipulator/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.guhungry.android/photo-manipulator)
 
-Image processing library to edit image programmatically.
+Android Image Processing API to edit photo programmatically.
+This library is used by [react-native-photo-manipulator](https://github.com/guhungry/react-native-photo-manipulator/).
 
 ## Installation
 Add dependency in module `build.gradle`
