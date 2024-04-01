@@ -82,10 +82,10 @@ Overlay image on top of background image
 | NAME       | TYPE                  | REQUIRED | DESCRIPTION                                                            |
 |------------|-----------------------|----------|------------------------------------------------------------------------|
 | image      | Bitmap                | Yes      | The image to be flipped                                                |
-| mode       | FlipMode              | Yes      | Flip mode .Vertical or .Horizontal                                     |
+| mode       | FlipMode              | Yes      | Flip mode .Horizontal, .Vertical or .Both                              |
 
 ### BitmapUtils.getCorrectOrientationMatrix()
-Get correct transform matrix for orientation data in EXIF
+Get corrected transform matrix for orientation data in EXIF
 
 | NAME       | TYPE                  | REQUIRED | DESCRIPTION                                                            |
 |------------|-----------------------|----------|------------------------------------------------------------------------|
@@ -97,7 +97,7 @@ Import using
 `import com.guhungry.photomanipulator.FileUtils`
 
 ### FileUtils.createTempFile()
-Create temp file into cache directory with prefix
+Create temp file into cache directory with a prefix
 
 | NAME       | TYPE                  | REQUIRED | DESCRIPTION                                     |
 |------------|-----------------------|----------|-------------------------------------------------|
