@@ -77,12 +77,20 @@ Overlay image on top of background image
 | position   | PointF                | Yes      | Position of overlay image in background image                          |
 
 ### BitmapUtils.flip()
-Overlay image on top of background image
+Flip the image horizontally, vertically or both
 
 | NAME       | TYPE                  | REQUIRED | DESCRIPTION                                                            |
 |------------|-----------------------|----------|------------------------------------------------------------------------|
 | image      | Bitmap                | Yes      | The image to be flipped                                                |
 | mode       | FlipMode              | Yes      | Flip mode .Horizontal, .Vertical or .Both                              |
+
+### BitmapUtils.rotate()
+Rotate the image 90°, 180° or 270°
+
+| NAME       | TYPE                  | REQUIRED | DESCRIPTION                                                            |
+|------------|-----------------------|----------|------------------------------------------------------------------------|
+| image      | Bitmap                | Yes      | The image to be rotated                                                |
+| mode       | RotationMode          | Yes      | Rotation mode .R90 (90° Clockwise), .R180 (180° Half Rotation) or .R270 (270° Clockwise, aka 90° Counterclockwise)                              |
 
 ### BitmapUtils.getCorrectOrientationMatrix()
 Get corrected transform matrix for orientation data in EXIF

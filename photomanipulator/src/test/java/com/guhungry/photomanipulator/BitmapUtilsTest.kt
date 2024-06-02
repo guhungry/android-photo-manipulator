@@ -108,6 +108,15 @@ internal class BitmapUtilsTest {
 
         val actual = BitmapUtils.flip(background, FlipMode.None)
 
-        assertThat(actual, sameInstance(background));
+        assertThat(actual, sameInstance(background))
+    }
+
+    @Test
+    fun `rotate when RotationMode None do nothing`() {
+        val background = mock(Bitmap::class.java)
+
+        val actual = BitmapUtils.rotate(background, RotationMode.None)
+
+        assertThat(actual, sameInstance(background))
     }
 }
