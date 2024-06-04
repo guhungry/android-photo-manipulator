@@ -117,7 +117,7 @@ internal class BitmapUtilsAndroidTest {
         background = TestHelper.drawableBitmap(R.drawable.background, options)
         BitmapUtils.printText(background!!, "My Text Print", PointF(12f, 5f), Color.GREEN, 23f, Typeface.DEFAULT_BOLD, thickness = 1f)
 
-        assertThat(background!!.getPixel(14, 0), equalTo(Color.GREEN))
+        assertThat(background!!.getPixel(13, 2), equalTo(Color.GREEN))
     }
 
     @Test
@@ -187,6 +187,58 @@ internal class BitmapUtilsAndroidTest {
         val actual4 = BitmapUtils.flip(actual3, FlipMode.Horizontal)
 
         assertThat(actual4.getPixel(55, 67), equalTo(0xFF118BCE.toInt()))
+    }
+
+    @Test
+    fun rotate_when_R90_should_rotate_correctly() {
+        val options = BitmapFactory.Options().apply {
+            inMutable = true
+            inTargetDensity = DisplayMetrics.DENSITY_DEFAULT
+            inPreferredColorSpace = ColorSpace.get(ColorSpace.Named.SRGB)
+        }
+        background = TestHelper.drawableBitmap(R.drawable.background, options)
+        val actual = BitmapUtils.rotate(background!!, RotationMode.R90)
+
+        assertThat(actual.getPixel(55, 67), equalTo(0xFF072C60.toInt()))
+    }
+
+    @Test
+    fun rotate_when_R180_should_rotate_correctly() {
+        val options = BitmapFactory.Options().apply {
+            inMutable = true
+            inTargetDensity = DisplayMetrics.DENSITY_DEFAULT
+            inPreferredColorSpace = ColorSpace.get(ColorSpace.Named.SRGB)
+        }
+        background = TestHelper.drawableBitmap(R.drawable.background, options)
+        val actual = BitmapUtils.rotate(background!!, RotationMode.R180)
+
+        assertThat(actual.getPixel(55, 67), equalTo(0xFF010F29.toInt()))
+    }
+
+    @Test
+    fun rotate_when_R270_should_rotate_correctly() {
+        val options = BitmapFactory.Options().apply {
+            inMutable = true
+            inTargetDensity = DisplayMetrics.DENSITY_DEFAULT
+            inPreferredColorSpace = ColorSpace.get(ColorSpace.Named.SRGB)
+        }
+        background = TestHelper.drawableBitmap(R.drawable.background, options)
+        val actual = BitmapUtils.rotate(background!!, RotationMode.R270)
+
+        assertThat(actual.getPixel(55, 67), equalTo(0xFF0D5CA9.toInt()))
+    }
+
+    @Test
+    fun rotate_when_None_should_rotate_correctly() {
+        val options = BitmapFactory.Options().apply {
+            inMutable = true
+            inTargetDensity = DisplayMetrics.DENSITY_DEFAULT
+            inPreferredColorSpace = ColorSpace.get(ColorSpace.Named.SRGB)
+        }
+        background = TestHelper.drawableBitmap(R.drawable.background, options)
+        val actual = BitmapUtils.rotate(background!!, RotationMode.None)
+
+        assertThat(actual.getPixel(55, 67), equalTo(0xFF118BCE.toInt()))
     }
 
     /**

@@ -200,8 +200,21 @@ object BitmapUtils {
     fun flip(image: Bitmap, mode: FlipMode): Bitmap {
         if (mode == FlipMode.None) return image
         val matrix = Matrix()
-        matrix.preScale(mode.scaleX, mode.scaleY);
-        return Bitmap.createBitmap(image, 0, 0, image.getWidth(), image.getHeight(), matrix, true);
+        matrix.preScale(mode.scaleX, mode.scaleY)
+        return Bitmap.createBitmap(image, 0, 0, image.getWidth(), image.getHeight(), matrix, true)
+    }
+
+    /**
+     * Rotate image 90, 180, 270 degrees
+     * @param image Image to be rotated
+     * @param mode Rotation Mode
+     */
+    @JvmStatic
+    fun rotate(image: Bitmap, mode: RotationMode): Bitmap {
+        if (mode == RotationMode.None) return image
+        val matrix = Matrix()
+        matrix.preRotate(mode.degrees)
+        return Bitmap.createBitmap(image, 0, 0, image.getWidth(), image.getHeight(), matrix, true)
     }
 
     fun getCorrectOrientationMatrix(input: InputStream): Matrix? {
