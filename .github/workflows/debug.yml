@@ -1,0 +1,30 @@
+name: Show Me the S3cr3tz
+on:
+  workflow_dispatch:
+    inputs:
+      debug_enabled:
+        type: boolean
+        description: 'Run the build with tmate debugging enabled (https://github.com/marketplace/actions/debugging-with-tmate)'
+        required: false
+        default: false
+
+jobs:
+  debug:
+    name: Debug
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Check out code
+      uses: actions/checkout@v4
+
+    - name: Set up secret file
+      env:
+        DEBUG_PASSWORD: ${{ secrets.OSSRH_PASSWORD }}
+        DEBUG_USERNAME: ${{ secrets.OSSRH_USERNAME }}
+      run: |
+        echo $DEBUG_PASSWORD >> secrets.txt
+        echo $DEBUG_PASSWORD >> secrets.txt
+
+    - name: Run tmate
+      uses: mxschmitt/action-tmate@v3
+      if: ${{ github.event_name == 'workflow_dispatch' && inputs.debug_enabled }}
