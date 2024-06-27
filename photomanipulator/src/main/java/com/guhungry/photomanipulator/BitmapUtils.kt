@@ -7,6 +7,7 @@ import com.guhungry.photomanipulator.factory.AndroidFactory
 import com.guhungry.photomanipulator.factory.AndroidConcreteFactory
 import java.io.IOException
 import java.io.InputStream
+import kotlin.math.floor
 
 object BitmapUtils {
     @JvmStatic
@@ -97,7 +98,12 @@ object BitmapUtils {
     /**
      * Find Crop Position result as Resize Mode = Cover
      */
-    private fun findCropPosition(rect: CGRect, targetSize: CGSize, sampleSize: Int): CGRect {
+    internal fun findCropPosition(
+        rect: CGRect,
+        targetSize: CGSize,
+        sampleSize: Int,
+        factory: AndroidFactory = AndroidConcreteFactory()
+    ): CGRect {
         val newWidth: Float
         val newHeight: Float
         val newX: Float
@@ -106,18 +112,18 @@ object BitmapUtils {
         val targetRatio = targetSize.ratio()
 
         if (cropRectRatio > targetRatio) { // e.g. source is landscape, target is portrait
-            newWidth = rect.size.height * targetRatio
+            newWidth = floor(rect.size.height * targetRatio)
             newHeight = rect.size.height.toFloat()
             newX = rect.origin.x + (rect.size.width - newWidth) / 2
             newY = rect.origin.y.toFloat()
         } else { // e.g. source is landscape, target is portrait
             newWidth = rect.size.width.toFloat()
-            newHeight = rect.size.width / targetRatio
+            newHeight = floor(rect.size.width / targetRatio)
             newX = rect.origin.x.toFloat()
             newY = rect.origin.y + (rect.size.height - newHeight) / 2
         }
 
-        return CGRect(applyScale(newX, sampleSize), applyScale(newY, sampleSize), applyScale(newWidth, sampleSize), applyScale(newHeight, sampleSize))
+        return CGRect(applyScale(newX, sampleSize), applyScale(newY, sampleSize), applyScale(newWidth, sampleSize), applyScale(newHeight, sampleSize), factory)
     }
     private fun applyScale(value: Float, sampleSize: Int) = kotlin.math.floor(value / sampleSize).toInt()
 
