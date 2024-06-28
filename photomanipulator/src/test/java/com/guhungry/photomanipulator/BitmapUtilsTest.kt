@@ -24,13 +24,13 @@ internal class BitmapUtilsTest {
 
         BitmapUtils.printText(background, "Text no Thickness", location, 555, 45f, factory = factory)
 
-        verify(paint, times(1)).setColor(555)
-        verify(paint, times(1)).setTextSize(45f)
-        verify(paint, times(1)).setTextAlign(Paint.Align.LEFT)
+        verify(paint, times(1)).color = 555
+        verify(paint, times(1)).textSize = 45f
+        verify(paint, times(1)).textAlign = Paint.Align.LEFT
         verify(canvas, times(1)).drawText("Text no Thickness", 99f, 96.5f, paint)
-        verify(paint, never()).setStrokeWidth(anyFloat())
+        verify(paint, never()).strokeWidth = anyFloat()
         verify(paint, never()).setTypeface(any())
-        verify(paint, never()).setStyle(any())
+        verify(paint, never()).style = any()
     }
 
     @Test
@@ -49,12 +49,12 @@ internal class BitmapUtilsTest {
 
         BitmapUtils.printText(background, "Text all Values", location, 432, 74f, font, Paint.Align.CENTER, 4f, 45f, factory)
 
-        verify(paint, times(1)).setColor(432)
-        verify(paint, times(1)).setTextSize(74f)
-        verify(paint, times(1)).setTextAlign(Paint.Align.CENTER)
-        verify(paint, times(1)).setStyle(Paint.Style.STROKE)
+        verify(paint, times(1)).color = 432
+        verify(paint, times(1)).textSize = 74f
+        verify(paint, times(1)).textAlign = Paint.Align.CENTER
+        verify(paint, times(1)).style = Paint.Style.STROKE
         verify(paint, times(1)).setTypeface(font)
-        verify(paint, times(1)).setStrokeWidth(4f)
+        verify(paint, times(1)).strokeWidth = 4f
         verify(canvas, times(1)).drawText("Text all Values", 23f, 51f, paint)
         verify(canvas, times(1)).rotate(-45f, 23f, 51f)
     }
@@ -76,8 +76,8 @@ internal class BitmapUtilsTest {
         BitmapUtils.printText(background, "rotation null", location, 772, 84f, font, Paint.Align.RIGHT, 0f, null, factory)
 
         verify(paint, times(1)).setColor(772)
-        verify(paint, times(1)).setTextSize(84f)
-        verify(paint, times(1)).setTextAlign(Paint.Align.RIGHT)
+        verify(paint, times(1)).textSize = 84f
+        verify(paint, times(1)).textAlign = Paint.Align.RIGHT
         verify(paint, times(1)).setTypeface(font)
         verify(canvas, times(1)).drawText("rotation null", 69f, 97f, paint)
         verify(canvas, times(1)).rotate(-0f, 69f, 97f)
