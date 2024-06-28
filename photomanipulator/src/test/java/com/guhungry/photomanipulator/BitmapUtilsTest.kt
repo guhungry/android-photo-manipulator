@@ -137,7 +137,7 @@ internal class BitmapUtilsTest {
                 y = it.arguments[1] as Int
             }
         }
-        var expected = CGRect(0, 0, 3060, 4025, factory)
+        val expected = CGRect(0, 0, 3060, 4025, factory)
         val cropRegion = CGRect(0, 0, 3060, 4025, factory)
         val targetSize = CGSize(3060, 4025)
         val sampleSize = 1

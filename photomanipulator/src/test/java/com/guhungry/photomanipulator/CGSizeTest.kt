@@ -6,8 +6,8 @@ import org.junit.After
 import org.junit.Test
 
 internal class CGSizeTest {
-    var sut: CGSize? = null
-    var other: CGSize? = null
+    private var sut: CGSize? = null
+    private var other: CGSize? = null
 
     @After
     fun tearDown() {
@@ -27,7 +27,6 @@ internal class CGSizeTest {
     fun `ratio when height not zero`() {
         sut = CGSize(800, 600)
 
-        CGSize(222,22).equals(CGSize(800, 600))
         assertThat(sut!!.ratio(), equalTo((4 / 3.0).toFloat()))
     }
 

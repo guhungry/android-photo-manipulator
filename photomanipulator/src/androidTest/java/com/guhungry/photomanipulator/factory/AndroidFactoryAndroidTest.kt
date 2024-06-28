@@ -13,8 +13,8 @@ import org.junit.runner.RunWith
 
 @RunWith(AndroidJUnit4::class)
 class AndroidFactoryAndroidTest {
-    var sut: AndroidFactory? = null
-    var bitmap: Bitmap? = null
+    private var sut: AndroidFactory? = null
+    private var bitmap: Bitmap? = null
 
     @Before
     fun setUp() {

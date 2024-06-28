@@ -39,7 +39,7 @@ class MainActivity : ComponentActivity() {
 
         StrictMode.setThreadPolicy(policy)
         println("BEE")
-        var bee = ImageUtils.bitmapFromUri(
+        val bee = ImageUtils.bitmapFromUri(
             this.applicationContext, "https://github.com/guhungry/react-native-photo-manipulator/blob/34c982bbba3837b32de230d2aad30aae18cf65fd/docs/demo-background.jpg?raw=true", ImageUtils.mutableOptions()
         )
         BitmapUtils.printText(bee, "BEE\nhaha", PointF(50f, 50f), Color.BLACK, 40f, rotation = -45f)

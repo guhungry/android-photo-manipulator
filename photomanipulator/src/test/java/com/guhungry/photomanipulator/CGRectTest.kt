@@ -11,10 +11,10 @@ import org.junit.Before
 import org.junit.Test
 
 internal class CGRectTest {
-    var sut: CGRect? = null
-    var origin: Point? = null
-    var rect: Rect? = null
-    var factory: AndroidFactory? = null
+    private var sut: CGRect? = null
+    private var origin: Point? = null
+    private var rect: Rect? = null
+    private var factory: AndroidFactory? = null
 
     @Before
     fun setup() {
@@ -34,7 +34,7 @@ internal class CGRectTest {
         sut = CGRect(11, 24, 88, 181, factory!!)
 
         assertThat(sut!!, instanceOf(CGRect::class.java))
-        assertThat(sut!!.origin, instanceOf<Point>(Point::class.java))
+        assertThat(sut!!.origin, instanceOf(Point::class.java))
         assertThat(sut!!.origin.x, equalTo(11))
         assertThat(sut!!.origin.y, equalTo(24))
         assertThat(sut!!.size, equalTo(CGSize(88, 181)))

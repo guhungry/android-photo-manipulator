@@ -2,7 +2,6 @@ package com.guhungry.photomanipulator.factory
 
 import android.graphics.*
 import android.net.Uri
-import org.mockito.Mockito
 import org.mockito.Mockito.mock
 
 class MockAndroidFactory: AndroidFactory {

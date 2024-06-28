@@ -125,7 +125,7 @@ object BitmapUtils {
 
         return CGRect(applyScale(newX, sampleSize), applyScale(newY, sampleSize), applyScale(newWidth, sampleSize), applyScale(newHeight, sampleSize), factory)
     }
-    private fun applyScale(value: Float, sampleSize: Int) = kotlin.math.floor(value / sampleSize).toInt()
+    private fun applyScale(value: Float, sampleSize: Int) = floor(value / sampleSize).toInt()
 
     private fun findCropScale(rect: CGRect, targetSize: CGSize): Matrix {
         val cropRectRatio = rect.size.ratio()
