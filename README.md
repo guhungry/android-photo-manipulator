@@ -44,13 +44,13 @@ Crop image from specified `cropRegion`
 ### BitmapUtils.cropAndResize()
 Crop and resize image from specified `cropRegion` into `targetSize` using resize mode `cover`
 
-| NAME       | TYPE                  | REQUIRED | DESCRIPTION                                               |
-|------------|-----------------------|----------|-----------------------------------------------------------|
-| image      | Bitmap                | Yes      | Source image to be crop and resize                        |
-| cropRegion | CGRect                | Yes      | Region to be crop in CGRect(`x`, `y`, `size`, `width`)    |
-| targetSize | CGSize                | Yes      | Size of result image                                      |
-| outOptions | BitmapFactory.Options | Yes      | Configuration for decode and encode result bitmap         |
-| matirx     | Matrix                | No       | Orientation transform matrix from [getCorrectOrientationMatrix()](#bitmaputilsgetcorrectorientationmatrix)         |
+| NAME       | TYPE                  | REQUIRED | DESCRIPTION                                                                                                |
+|------------|-----------------------|----------|------------------------------------------------------------------------------------------------------------|
+| image      | Bitmap                | Yes      | Source image to be crop and resize                                                                         |
+| cropRegion | CGRect                | Yes      | Region to be crop in CGRect(`x`, `y`, `size`, `width`)                                                     |
+| targetSize | CGSize                | Yes      | Size of result image                                                                                       |
+| outOptions | BitmapFactory.Options | Yes      | Configuration for decode and encode result bitmap                                                          |
+| matrix     | Matrix                | No       | Orientation transform matrix from [getCorrectOrientationMatrix()](#bitmaputilsgetcorrectorientationmatrix) |
 
 ### BitmapUtils.printText()
 Print text into image
@@ -87,10 +87,10 @@ Flip the image horizontally, vertically or both
 ### BitmapUtils.rotate()
 Rotate the image 90°, 180° or 270°
 
-| NAME       | TYPE                  | REQUIRED | DESCRIPTION                                                            |
-|------------|-----------------------|----------|------------------------------------------------------------------------|
-| image      | Bitmap                | Yes      | The image to be rotated                                                |
-| mode       | RotationMode          | Yes      | Rotation mode .R90 (90° Clockwise), .R180 (180° Half Rotation) or .R270 (270° Clockwise, aka 90° Counterclockwise)                              |
+| NAME  | TYPE         | REQUIRED | DESCRIPTION                                                                                                        |
+|-------|--------------|----------|--------------------------------------------------------------------------------------------------------------------|
+| image | Bitmap       | Yes      | The image to be rotated                                                                                            |
+| mode  | RotationMode | Yes      | Rotation mode .R90 (90° Clockwise), .R180 (180° Half Rotation) or .R270 (270° Clockwise, aka 90° Counterclockwise) |
 
 ### BitmapUtils.getCorrectOrientationMatrix()
 Get corrected transform matrix for orientation data in EXIF
@@ -148,7 +148,7 @@ Get image file extension from mimeType (Support .jpg, .png and .webp)
 |------------|-----------------------|----------|-------------------------------------------------|
 | mimeType   | String                | Yes      | Image mime type                                 |
 
-### MimeUtils.toCompresFormat()
+### MimeUtils.toCompressFormat()
 Get image `Bitmap.CompressFormat` from mimeType (Support .jpg, .png and .webp)
 
 | NAME       | TYPE                  | REQUIRED | DESCRIPTION                                     |
