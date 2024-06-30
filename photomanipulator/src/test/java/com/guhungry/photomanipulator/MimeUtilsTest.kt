@@ -13,7 +13,6 @@ internal class MimeUtilsTest {
         assertThat(MimeUtils.WEBP, equalTo("image/webp"))
     }
 
-
     @Test
     fun `toExtension should return correct file extension`() {
         assertThat(MimeUtils.toExtension(null), equalTo(".jpg"))

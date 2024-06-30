@@ -2,6 +2,7 @@ package com.guhungry.photomanipulator
 
 import android.graphics.*
 import com.guhungry.photomanipulator.factory.AndroidFactory
+import com.guhungry.photomanipulator.factory.MockAndroidFactory
 import org.hamcrest.CoreMatchers.equalTo
 import org.hamcrest.CoreMatchers.sameInstance
 import org.hamcrest.MatcherAssert.assertThat
@@ -130,13 +131,7 @@ internal class BitmapUtilsTest {
      */
     @Test
     fun `findCropPosition when issue 837 should return correctly`() {
-        val factory = mock(AndroidFactory::class.java)
-        `when`(factory.makePoint(anyInt(), anyInt())).thenAnswer {
-            mock(Point::class.java).apply {
-                x = it.arguments[0] as Int
-                y = it.arguments[1] as Int
-            }
-        }
+        val factory = MockAndroidFactory()
         val expected = CGRect(0, 0, 3060, 4025, factory)
         val cropRegion = CGRect(0, 0, 3060, 4025, factory)
         val targetSize = CGSize(3060, 4025)
