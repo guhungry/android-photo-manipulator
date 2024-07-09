@@ -190,6 +190,7 @@ object BitmapUtils {
             }
 
             setTextBorder(textStyle)
+            setTextShadow(textStyle)
         }
 
         var offset = position.y + (textStyle.size / 2)
@@ -208,6 +209,16 @@ object BitmapUtils {
         if (textStyle.thickness <= 0) return
         style = Paint.Style.STROKE
         strokeWidth = textStyle.thickness
+    }
+
+    private fun Paint.setTextShadow(textStyle: TextStyle) {
+        if (textStyle.shadowColor == null) return
+        setShadowLayer(
+            textStyle.shadowRadius,
+            textStyle.shadowOffsetX,
+            textStyle.shadowOffsetY,
+            textStyle.shadowColor
+        )
     }
 
     /**

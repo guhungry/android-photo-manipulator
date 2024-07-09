@@ -17,6 +17,58 @@ import org.mockito.Mockito.*
 
 internal class BitmapUtilsTest {
     @Test
+    fun `printText should skip shadow when shadow color is null`() {
+        val style = TextStyle(555, 45f)
+        val background = mock(Bitmap::class.java)
+        val location = mockPointF(99f, 74f)
+        val canvas = mock(Canvas::class.java)
+        val paint = mock(Paint::class.java)
+        val factory = mock(AndroidFactory::class.java)
+        `when`(factory.makeCanvas(background)).thenReturn(canvas)
+        `when`(factory.makePaint()).thenReturn(paint)
+
+        BitmapUtils.printText(background, "shadowColor = null", location, style, factory)
+
+        assertNoTextShadow(paint)
+    }
+
+    @Test
+    fun `printText should set shadow when shadow color 888`() {
+        val style = TextStyle(555, 45f, shadowColor = 888)
+        val background = mock(Bitmap::class.java)
+        val location = mockPointF(99f, 74f)
+        val canvas = mock(Canvas::class.java)
+        val paint = mock(Paint::class.java)
+        val factory = mock(AndroidFactory::class.java)
+        `when`(factory.makeCanvas(background)).thenReturn(canvas)
+        `when`(factory.makePaint()).thenReturn(paint)
+
+        BitmapUtils.printText(background, "shadowColor = null", location, style, factory)
+
+        verify(paint, times(1)).setShadowLayer(0f, 0f, 0f, 888)
+    }
+
+    @Test
+    fun `printText should set shadow when all shadow values`() {
+        val style = TextStyle(555, 45f, shadowRadius = 1f, shadowOffsetX = 2f, shadowOffsetY = 3f, shadowColor = 123)
+        val background = mock(Bitmap::class.java)
+        val location = mockPointF(99f, 74f)
+        val canvas = mock(Canvas::class.java)
+        val paint = mock(Paint::class.java)
+        val factory = mock(AndroidFactory::class.java)
+        `when`(factory.makeCanvas(background)).thenReturn(canvas)
+        `when`(factory.makePaint()).thenReturn(paint)
+
+        BitmapUtils.printText(background, "shadowColor = null", location, style, factory)
+
+        verify(paint, times(1)).setShadowLayer(1f, 2f, 3f, 123)
+    }
+
+    private fun assertNoTextShadow(paint: Paint) {
+        verify(paint, never()).setShadowLayer(anyFloat(), anyFloat(), anyFloat(), anyInt())
+    }
+
+    @Test
     fun `printText should skip process when text is empty or blank`() {
         val style = TextStyle(555, 45f)
         val background = mock(Bitmap::class.java)

@@ -8,6 +8,7 @@ import com.guhungry.photomanipulator.model.CGRect
 import com.guhungry.photomanipulator.model.CGSize
 import com.guhungry.photomanipulator.model.FlipMode
 import com.guhungry.photomanipulator.model.RotationMode
+import com.guhungry.photomanipulator.model.TextStyle
 import com.guhungry.photomanipulator.test.R
 import org.hamcrest.MatcherAssert.assertThat
 import org.hamcrest.Matchers.*
@@ -136,6 +137,20 @@ internal class BitmapUtilsAndroidTest {
         BitmapUtils.printText(background!!, "My\nText\nPrint", PointF(200f, 5f), Color.YELLOW, 23f, Typeface.DEFAULT_BOLD, thickness = 1f, alignment = Paint.Align.CENTER)
 
         assertThat(background!!.getPixel(14, 0), equalTo(Color.GREEN))
+    }
+
+    @Test
+    fun printText_when_all_shadow_should_text_correctly() {
+        val options = BitmapFactory.Options().apply {
+            inMutable = true
+            inTargetDensity = DisplayMetrics.DENSITY_DEFAULT
+            inPreferredColorSpace = ColorSpace.get(ColorSpace.Named.SRGB)
+        }
+        val style = TextStyle(Color.GREEN, 23f, Typeface.DEFAULT_BOLD, shadowOffsetY = 5f, shadowOffsetX = 10f, shadowRadius = 3f, shadowColor = Color.YELLOW)
+        background = TestHelper.drawableBitmap(R.drawable.background, options)
+        BitmapUtils.printText(background!!, "My Text Print", PointF(12f, 5f), style)
+
+        assertThat(background!!.getPixel(13, 2), equalTo(Color.GREEN))
     }
 
     @Test
