@@ -30,6 +30,38 @@ internal class BitmapUtilsTest {
     }
 
     @Test
+    fun `printText should skip setTextBorder when text thickness equal 0`() {
+        val style = TextStyle(555, 45f, thickness = 0f)
+        val background = mock(Bitmap::class.java)
+        val location = PointF(99f, 74f)
+        val canvas = mock(Canvas::class.java)
+        val paint = mock(Paint::class.java)
+        val factory = mock(AndroidFactory::class.java)
+        `when`(factory.makeCanvas(background)).thenReturn(canvas)
+        `when`(factory.makePaint()).thenReturn(paint)
+
+        BitmapUtils.printText(background, "border = 0", location, style, factory)
+
+        assertNoTextBorder(paint)
+    }
+
+    @Test
+    fun `printText should skip setTextBorder when text thickness less than  0`() {
+        val style = TextStyle(555, 45f, thickness = -100f)
+        val background = mock(Bitmap::class.java)
+        val location = PointF(99f, 74f)
+        val canvas = mock(Canvas::class.java)
+        val paint = mock(Paint::class.java)
+        val factory = mock(AndroidFactory::class.java)
+        `when`(factory.makeCanvas(background)).thenReturn(canvas)
+        `when`(factory.makePaint()).thenReturn(paint)
+
+        BitmapUtils.printText(background, "border < 0", location, style, factory)
+
+        assertNoTextBorder(paint)
+    }
+
+    @Test
     fun `printText should draw correctly without alignment use default AlignLEFT`() {
         val background = mock(Bitmap::class.java)
         val location = PointF().apply {

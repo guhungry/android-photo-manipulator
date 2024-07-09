@@ -189,10 +189,7 @@ object BitmapUtils {
                 typeface = it
             }
 
-            if (textStyle.thickness > 0) {
-                style = Paint.Style.STROKE
-                strokeWidth = textStyle.thickness
-            }
+            setTextBorder(textStyle)
         }
 
         var offset = position.y + (textStyle.size / 2)
@@ -205,6 +202,12 @@ object BitmapUtils {
             offset += paint.descent() - paint.ascent()
         }
         canvas.restore()
+    }
+
+    private fun Paint.setTextBorder(textStyle: TextStyle) {
+        if (textStyle.thickness <= 0) return
+        style = Paint.Style.STROKE
+        strokeWidth = textStyle.thickness
     }
 
     /**
