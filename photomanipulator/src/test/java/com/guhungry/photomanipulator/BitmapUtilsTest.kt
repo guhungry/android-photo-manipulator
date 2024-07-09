@@ -30,7 +30,32 @@ internal class BitmapUtilsTest {
     }
 
     @Test
-    fun `printText should draw correctly without alignment and thickness`() {
+    fun `printText should draw correctly without alignment use default AlignLEFT`() {
+        val background = mock(Bitmap::class.java)
+        val location = PointF().apply {
+            x = 99f
+            y = 74f
+        }
+        val canvas = mock(Canvas::class.java)
+        val paint = mock(Paint::class.java)
+        val factory = mock(AndroidFactory::class.java)
+        `when`(factory.makeCanvas(background)).thenReturn(canvas)
+        `when`(factory.makePaint()).thenReturn(paint)
+
+        BitmapUtils.printText(
+            background,
+            "Text no alignment",
+            location,
+            555,
+            45f,
+            factory = factory
+        )
+
+        verify(paint, times(1)).textAlign = Paint.Align.LEFT
+    }
+
+    @Test
+    fun `printText should draw correctly without thickness use default thickness 0`() {
         val background = mock(Bitmap::class.java)
         val location = PointF().apply {
             x = 99f
@@ -51,12 +76,40 @@ internal class BitmapUtilsTest {
             factory = factory
         )
 
-        verify(paint, times(1)).color = 555
-        verify(paint, times(1)).textSize = 45f
-        verify(paint, times(1)).textAlign = Paint.Align.LEFT
-        verify(canvas, times(1)).drawText("Text no Thickness", 99f, 96.5f, paint)
+        assertNoTextBorder(paint)
+    }
+
+    @Test
+    fun `printText should draw correctly without font use default font`() {
+        val background = mock(Bitmap::class.java)
+        val location = PointF().apply {
+            x = 99f
+            y = 74f
+        }
+        val canvas = mock(Canvas::class.java)
+        val paint = mock(Paint::class.java)
+        val factory = mock(AndroidFactory::class.java)
+        `when`(factory.makeCanvas(background)).thenReturn(canvas)
+        `when`(factory.makePaint()).thenReturn(paint)
+
+        BitmapUtils.printText(
+            background,
+            "Text no Thickness",
+            location,
+            555,
+            45f,
+            factory = factory
+        )
+
+        assertNoFont(paint)
+    }
+
+    private fun assertNoFont(paint: Paint) {
+        verify(paint, never()).typeface = any()
+    }
+
+    private fun assertNoTextBorder(paint: Paint) {
         verify(paint, never()).strokeWidth = anyFloat()
-        verify(paint, never()).setTypeface(any())
         verify(paint, never()).style = any()
     }
 
@@ -80,7 +133,7 @@ internal class BitmapUtilsTest {
         verify(paint, times(1)).textSize = 74f
         verify(paint, times(1)).textAlign = Paint.Align.CENTER
         verify(paint, times(1)).style = Paint.Style.STROKE
-        verify(paint, times(1)).setTypeface(font)
+        verify(paint, times(1)).typeface = font
         verify(paint, times(1)).strokeWidth = 4f
         verify(canvas, times(1)).drawText("Text all Values", 23f, 51f, paint)
         verify(canvas, times(1)).rotate(-45f, 23f, 51f)
@@ -102,10 +155,10 @@ internal class BitmapUtilsTest {
 
         BitmapUtils.printText(background, "rotation null", location, 772, 84f, font, Paint.Align.RIGHT, 0f, null, factory)
 
-        verify(paint, times(1)).setColor(772)
+        verify(paint, times(1)).color = 772
         verify(paint, times(1)).textSize = 84f
         verify(paint, times(1)).textAlign = Paint.Align.RIGHT
-        verify(paint, times(1)).setTypeface(font)
+        verify(paint, times(1)).typeface = font
         verify(canvas, times(1)).drawText("rotation null", 69f, 97f, paint)
         verify(canvas, times(1)).rotate(-0f, 69f, 97f)
     }
@@ -126,7 +179,7 @@ internal class BitmapUtilsTest {
 
         BitmapUtils.overlay(background, overlay, location, factory)
 
-        verify(paint, times(1)).setXfermode(any<PorterDuffXfermode>())
+        verify(paint, times(1)).xfermode = any<PorterDuffXfermode>()
         verify(canvas, times(1)).drawBitmap(overlay, 75f, 95f, paint)
     }
 
