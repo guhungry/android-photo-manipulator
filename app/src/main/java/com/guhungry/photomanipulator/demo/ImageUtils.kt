@@ -5,8 +5,8 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.net.Uri
 import com.guhungry.photomanipulator.BitmapUtils
-import com.guhungry.photomanipulator.CGRect
-import com.guhungry.photomanipulator.CGSize
+import com.guhungry.photomanipulator.model.CGRect
+import com.guhungry.photomanipulator.model.CGSize
 import com.guhungry.photomanipulator.FileUtils
 import java.io.InputStream
 import java.util.Locale

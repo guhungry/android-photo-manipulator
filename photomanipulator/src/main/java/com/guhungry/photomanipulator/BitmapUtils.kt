@@ -5,6 +5,10 @@ import android.os.Build
 import androidx.exifinterface.media.ExifInterface
 import com.guhungry.photomanipulator.factory.AndroidFactory
 import com.guhungry.photomanipulator.factory.AndroidConcreteFactory
+import com.guhungry.photomanipulator.model.CGRect
+import com.guhungry.photomanipulator.model.CGSize
+import com.guhungry.photomanipulator.model.FlipMode
+import com.guhungry.photomanipulator.model.RotationMode
 import java.io.IOException
 import java.io.InputStream
 import kotlin.math.floor

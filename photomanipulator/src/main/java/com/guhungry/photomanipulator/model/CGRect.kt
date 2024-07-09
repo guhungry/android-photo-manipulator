@@ -1,4 +1,4 @@
-package com.guhungry.photomanipulator
+package com.guhungry.photomanipulator.model
 
 import android.graphics.Point
 import android.graphics.Rect

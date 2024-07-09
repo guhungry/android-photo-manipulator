@@ -4,6 +4,10 @@ import android.graphics.*
 import android.util.DisplayMetrics
 import androidx.annotation.DrawableRes
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import com.guhungry.photomanipulator.model.CGRect
+import com.guhungry.photomanipulator.model.CGSize
+import com.guhungry.photomanipulator.model.FlipMode
+import com.guhungry.photomanipulator.model.RotationMode
 import com.guhungry.photomanipulator.test.R
 import org.hamcrest.MatcherAssert.assertThat
 import org.hamcrest.Matchers.*

@@ -1,4 +1,4 @@
-package com.guhungry.photomanipulator
+package com.guhungry.photomanipulator.model
 
 enum class FlipMode(val scaleX: Float, val scaleY: Float) {
     Both(-1f, -1f),

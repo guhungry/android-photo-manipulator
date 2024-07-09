@@ -3,6 +3,10 @@ package com.guhungry.photomanipulator
 import android.graphics.*
 import com.guhungry.photomanipulator.factory.AndroidFactory
 import com.guhungry.photomanipulator.factory.MockAndroidFactory
+import com.guhungry.photomanipulator.model.CGRect
+import com.guhungry.photomanipulator.model.CGSize
+import com.guhungry.photomanipulator.model.FlipMode
+import com.guhungry.photomanipulator.model.RotationMode
 import org.hamcrest.CoreMatchers.equalTo
 import org.hamcrest.CoreMatchers.sameInstance
 import org.hamcrest.MatcherAssert.assertThat
