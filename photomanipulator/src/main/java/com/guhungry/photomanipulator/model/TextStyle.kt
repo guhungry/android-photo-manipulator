@@ -12,7 +12,7 @@ import android.graphics.Typeface
  * @property alignment Optional text alignment. Defaults to[Paint.Align.LEFT].
  * @property thickness Optional border thickness. Defaults to 0f (no border).
  * @property rotation Optional rotation of the text in degrees. Defaults to null (no rotation).
- * @property shadowRadius Optional shadow radius. Defaults to 0f (no shadow radius).
+ * @property shadowRadius Optional shadow radius. Defaults to 0f (no shadow).
  * @property shadowOffsetX Optional shadow offset X. Defaults to 0f (no shadow offset x axis).
  * @property shadowOffsetY Optional shadow offset Y. Defaults to 0f (no shadow offset y axis).
  * @property shadowColor Optional shadow color. Defaults to null (no shadow color).

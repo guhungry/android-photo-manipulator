@@ -18,7 +18,39 @@ import org.mockito.Mockito.*
 internal class BitmapUtilsTest {
     @Test
     fun `printText should skip shadow when shadow color is null`() {
-        val style = TextStyle(555, 45f)
+        val style = TextStyle(555, 45f, shadowRadius = 1f)
+        val background = mock(Bitmap::class.java)
+        val location = mockPointF(99f, 74f)
+        val canvas = mock(Canvas::class.java)
+        val paint = mock(Paint::class.java)
+        val factory = mock(AndroidFactory::class.java)
+        `when`(factory.makeCanvas(background)).thenReturn(canvas)
+        `when`(factory.makePaint()).thenReturn(paint)
+
+        BitmapUtils.printText(background, "shadowColor = null", location, style, factory)
+
+        assertNoTextShadow(paint)
+    }
+
+    @Test
+    fun `printText should skip shadow when shadow radius equal 0`() {
+        val style = TextStyle(555, 45f, shadowColor = 888, shadowRadius = 0f)
+        val background = mock(Bitmap::class.java)
+        val location = mockPointF(99f, 74f)
+        val canvas = mock(Canvas::class.java)
+        val paint = mock(Paint::class.java)
+        val factory = mock(AndroidFactory::class.java)
+        `when`(factory.makeCanvas(background)).thenReturn(canvas)
+        `when`(factory.makePaint()).thenReturn(paint)
+
+        BitmapUtils.printText(background, "shadowColor = null", location, style, factory)
+
+        assertNoTextShadow(paint)
+    }
+
+    @Test
+    fun `printText should skip shadow when shadow radius less than 0`() {
+        val style = TextStyle(555, 45f, shadowColor = 888, shadowRadius = -1f)
         val background = mock(Bitmap::class.java)
         val location = mockPointF(99f, 74f)
         val canvas = mock(Canvas::class.java)
@@ -34,7 +66,7 @@ internal class BitmapUtilsTest {
 
     @Test
     fun `printText should set shadow when shadow color 888`() {
-        val style = TextStyle(555, 45f, shadowColor = 888)
+        val style = TextStyle(555, 45f, shadowColor = 888, shadowRadius = 4f)
         val background = mock(Bitmap::class.java)
         val location = mockPointF(99f, 74f)
         val canvas = mock(Canvas::class.java)
@@ -45,7 +77,7 @@ internal class BitmapUtilsTest {
 
         BitmapUtils.printText(background, "shadowColor = null", location, style, factory)
 
-        verify(paint, times(1)).setShadowLayer(0f, 0f, 0f, 888)
+        verify(paint, times(1)).setShadowLayer(4f, 0f, 0f, 888)
     }
 
     @Test

@@ -212,7 +212,7 @@ object BitmapUtils {
     }
 
     private fun Paint.setTextShadow(textStyle: TextStyle) {
-        if (textStyle.shadowColor == null) return
+        if (textStyle.shadowColor == null || textStyle.shadowRadius <= 0f) return
         setShadowLayer(
             textStyle.shadowRadius,
             textStyle.shadowOffsetX,
