@@ -7,6 +7,7 @@ import com.guhungry.photomanipulator.model.CGRect
 import com.guhungry.photomanipulator.model.CGSize
 import com.guhungry.photomanipulator.model.FlipMode
 import com.guhungry.photomanipulator.model.RotationMode
+import com.guhungry.photomanipulator.model.TextStyle
 import org.hamcrest.CoreMatchers.equalTo
 import org.hamcrest.CoreMatchers.sameInstance
 import org.hamcrest.MatcherAssert.assertThat
@@ -14,6 +15,20 @@ import org.junit.Test
 import org.mockito.Mockito.*
 
 internal class BitmapUtilsTest {
+    @Test
+    fun `printText should skip process when text is empty or blank`() {
+        val style = TextStyle(555, 45f)
+        val background = mock(Bitmap::class.java)
+        val location = PointF(99f, 74f)
+        val factory = mock(AndroidFactory::class.java)
+
+        BitmapUtils.printText(background, "", location, style, factory)
+        BitmapUtils.printText(background, "     ", location, style, factory)
+
+        verify(factory, never()).makeCanvas(background)
+        verify(factory, never()).makePaint()
+    }
+
     @Test
     fun `printText should draw correctly without alignment and thickness`() {
         val background = mock(Bitmap::class.java)
@@ -27,7 +42,14 @@ internal class BitmapUtilsTest {
         `when`(factory.makeCanvas(background)).thenReturn(canvas)
         `when`(factory.makePaint()).thenReturn(paint)
 
-        BitmapUtils.printText(background, "Text no Thickness", location, 555, 45f, factory = factory)
+        BitmapUtils.printText(
+            background,
+            "Text no Thickness",
+            location,
+            555,
+            45f,
+            factory = factory
+        )
 
         verify(paint, times(1)).color = 555
         verify(paint, times(1)).textSize = 45f

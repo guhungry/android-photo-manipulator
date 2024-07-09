@@ -176,8 +176,9 @@ object BitmapUtils {
     @JvmStatic
     @JvmOverloads
     fun printText(image: Bitmap, text: String, position: PointF, textStyle: TextStyle, factory: AndroidFactory = AndroidConcreteFactory()) {
-        val canvas = factory.makeCanvas(image)
+        if (text.isBlank()) return
 
+        val canvas = factory.makeCanvas(image)
         val paint = factory.makePaint().apply {
             color = textStyle.color
             textSize = textStyle.size
