@@ -3,6 +3,7 @@ package com.guhungry.photomanipulator
 import android.graphics.*
 import com.guhungry.photomanipulator.factory.AndroidFactory
 import com.guhungry.photomanipulator.factory.MockAndroidFactory
+import com.guhungry.photomanipulator.factory.TestHelpers.mockPointF
 import com.guhungry.photomanipulator.model.CGRect
 import com.guhungry.photomanipulator.model.CGSize
 import com.guhungry.photomanipulator.model.FlipMode
@@ -19,7 +20,7 @@ internal class BitmapUtilsTest {
     fun `printText should skip process when text is empty or blank`() {
         val style = TextStyle(555, 45f)
         val background = mock(Bitmap::class.java)
-        val location = PointF(99f, 74f)
+        val location = mockPointF(99f, 74f)
         val factory = mock(AndroidFactory::class.java)
 
         BitmapUtils.printText(background, "", location, style, factory)
@@ -33,7 +34,7 @@ internal class BitmapUtilsTest {
     fun `printText should skip setTextBorder when text thickness equal 0`() {
         val style = TextStyle(555, 45f, thickness = 0f)
         val background = mock(Bitmap::class.java)
-        val location = PointF(99f, 74f)
+        val location = mockPointF(99f, 74f)
         val canvas = mock(Canvas::class.java)
         val paint = mock(Paint::class.java)
         val factory = mock(AndroidFactory::class.java)
@@ -49,7 +50,7 @@ internal class BitmapUtilsTest {
     fun `printText should skip setTextBorder when text thickness less than  0`() {
         val style = TextStyle(555, 45f, thickness = -100f)
         val background = mock(Bitmap::class.java)
-        val location = PointF(99f, 74f)
+        val location = mockPointF(99f, 74f)
         val canvas = mock(Canvas::class.java)
         val paint = mock(Paint::class.java)
         val factory = mock(AndroidFactory::class.java)
@@ -64,10 +65,7 @@ internal class BitmapUtilsTest {
     @Test
     fun `printText should draw correctly without alignment use default AlignLEFT`() {
         val background = mock(Bitmap::class.java)
-        val location = PointF().apply {
-            x = 99f
-            y = 74f
-        }
+        val location = mockPointF(99f, 74f)
         val canvas = mock(Canvas::class.java)
         val paint = mock(Paint::class.java)
         val factory = mock(AndroidFactory::class.java)
@@ -89,10 +87,7 @@ internal class BitmapUtilsTest {
     @Test
     fun `printText should draw correctly without thickness use default thickness 0`() {
         val background = mock(Bitmap::class.java)
-        val location = PointF().apply {
-            x = 99f
-            y = 74f
-        }
+        val location = mockPointF(99f, 74f)
         val canvas = mock(Canvas::class.java)
         val paint = mock(Paint::class.java)
         val factory = mock(AndroidFactory::class.java)
@@ -114,10 +109,7 @@ internal class BitmapUtilsTest {
     @Test
     fun `printText should draw correctly without font use default font`() {
         val background = mock(Bitmap::class.java)
-        val location = PointF().apply {
-            x = 99f
-            y = 74f
-        }
+        val location = mockPointF(99f, 74f)
         val canvas = mock(Canvas::class.java)
         val paint = mock(Paint::class.java)
         val factory = mock(AndroidFactory::class.java)
@@ -148,10 +140,7 @@ internal class BitmapUtilsTest {
     @Test
     fun `printText should draw correctly with all values`() {
         val background = mock(Bitmap::class.java)
-        val location = PointF().apply {
-            x = 23f
-            y = 14f
-        }
+        val location = mockPointF(23f, 14f)
         val canvas = mock(Canvas::class.java)
         val paint = mock(Paint::class.java)
         val factory = mock(AndroidFactory::class.java)
@@ -174,10 +163,7 @@ internal class BitmapUtilsTest {
     @Test
     fun `printText when rotation null should rotate with 0`() {
         val background = mock(Bitmap::class.java)
-        val location = PointF().apply {
-            x = 69f
-            y = 55f
-        }
+        val location = mockPointF(69f, 55f)
         val canvas = mock(Canvas::class.java)
         val paint = mock(Paint::class.java)
         val factory = mock(AndroidFactory::class.java)
@@ -199,10 +185,7 @@ internal class BitmapUtilsTest {
     fun `overlay should draw image correctly`() {
         val background = mock(Bitmap::class.java)
         val overlay = mock(Bitmap::class.java)
-        val location = PointF().apply {
-            x = 75f
-            y = 95f
-        }
+        val location = mockPointF(75f, 95f)
         val canvas = mock(Canvas::class.java)
         val paint = mock(Paint::class.java)
         val factory = mock(AndroidFactory::class.java)
