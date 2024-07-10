@@ -107,7 +107,8 @@ internal class BitmapUtilsAndroidTest {
             inPreferredColorSpace = ColorSpace.get(ColorSpace.Named.SRGB)
         }
         background = TestHelper.drawableBitmap(R.drawable.background, options)
-        BitmapUtils.printText(background!!, "My Text Print", PointF(12f, 5f), Color.GREEN, 23f)
+        val style = TextStyle(Color.GREEN, 23f)
+        BitmapUtils.printText(background!!, "My Text Print", PointF(12f, 5f), style)
 
         assertThat(background!!.getPixel(14, 5), equalTo(Color.GREEN))
     }
@@ -120,7 +121,8 @@ internal class BitmapUtilsAndroidTest {
             inPreferredColorSpace = ColorSpace.get(ColorSpace.Named.SRGB)
         }
         background = TestHelper.drawableBitmap(R.drawable.background, options)
-        BitmapUtils.printText(background!!, "My Text Print", PointF(12f, 5f), Color.GREEN, 23f, Typeface.DEFAULT_BOLD, thickness = 1f)
+        val style = TextStyle(Color.GREEN, 23f, Typeface.DEFAULT_BOLD, thickness = 1f)
+        BitmapUtils.printText(background!!, "My Text Print", PointF(12f, 5f), style)
 
         assertThat(background!!.getPixel(13, 2), equalTo(Color.GREEN))
     }
@@ -133,8 +135,10 @@ internal class BitmapUtilsAndroidTest {
             inPreferredColorSpace = ColorSpace.get(ColorSpace.Named.SRGB)
         }
         background = TestHelper.drawableBitmap(R.drawable.background, options)
-        BitmapUtils.printText(background!!, "My Text\nPrint", PointF(12f, 5f), Color.GREEN, 23f, Typeface.DEFAULT_BOLD, thickness = 5f)
-        BitmapUtils.printText(background!!, "My\nText\nPrint", PointF(200f, 5f), Color.YELLOW, 23f, Typeface.DEFAULT_BOLD, thickness = 1f, alignment = Paint.Align.CENTER)
+        val style1 = TextStyle(Color.GREEN, 23f, Typeface.DEFAULT_BOLD, thickness = 5f)
+        BitmapUtils.printText(background!!, "My Text\nPrint", PointF(12f, 5f), style1)
+        val style2 = TextStyle(Color.YELLOW, 23f, Typeface.DEFAULT_BOLD, thickness = 1f, alignment = Paint.Align.CENTER)
+        BitmapUtils.printText(background!!, "My\nText\nPrint", PointF(200f, 5f), style2)
 
         assertThat(background!!.getPixel(14, 0), equalTo(Color.GREEN))
     }

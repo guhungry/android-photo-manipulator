@@ -156,14 +156,8 @@ internal class BitmapUtilsTest {
         `when`(factory.makeCanvas(background)).thenReturn(canvas)
         `when`(factory.makePaint()).thenReturn(paint)
 
-        BitmapUtils.printText(
-            background,
-            "Text no alignment",
-            location,
-            555,
-            45f,
-            factory = factory
-        )
+        val style = TextStyle(555, 45f)
+        BitmapUtils.printText(background, "Text no alignment", location, style, factory)
 
         verify(paint, times(1)).textAlign = Paint.Align.LEFT
     }
@@ -178,14 +172,8 @@ internal class BitmapUtilsTest {
         `when`(factory.makeCanvas(background)).thenReturn(canvas)
         `when`(factory.makePaint()).thenReturn(paint)
 
-        BitmapUtils.printText(
-            background,
-            "Text no Thickness",
-            location,
-            555,
-            45f,
-            factory = factory
-        )
+        val style = TextStyle(555, 45f)
+        BitmapUtils.printText(background, "Text no Thickness", location, style, factory)
 
         assertNoTextBorder(paint)
     }
@@ -200,14 +188,8 @@ internal class BitmapUtilsTest {
         `when`(factory.makeCanvas(background)).thenReturn(canvas)
         `when`(factory.makePaint()).thenReturn(paint)
 
-        BitmapUtils.printText(
-            background,
-            "Text no Thickness",
-            location,
-            555,
-            45f,
-            factory = factory
-        )
+        val style = TextStyle(555, 45f)
+        BitmapUtils.printText(background, "Text no Thickness", location, style, factory)
 
         assertNoFont(paint)
     }
@@ -232,7 +214,8 @@ internal class BitmapUtilsTest {
         `when`(factory.makeCanvas(background)).thenReturn(canvas)
         `when`(factory.makePaint()).thenReturn(paint)
 
-        BitmapUtils.printText(background, "Text all Values", location, 432, 74f, font, Paint.Align.CENTER, 4f, 45f, factory)
+        val style = TextStyle(432, 74f, font, Paint.Align.CENTER, 4f, 45f)
+        BitmapUtils.printText(background, "Text all Values", location, style, factory)
 
         verify(paint, times(1)).color = 432
         verify(paint, times(1)).textSize = 74f
@@ -255,7 +238,8 @@ internal class BitmapUtilsTest {
         `when`(factory.makeCanvas(background)).thenReturn(canvas)
         `when`(factory.makePaint()).thenReturn(paint)
 
-        BitmapUtils.printText(background, "rotation null", location, 772, 84f, font, Paint.Align.RIGHT, 0f, null, factory)
+        val style = TextStyle(772, 84f, font, Paint.Align.RIGHT, 0f, null)
+        BitmapUtils.printText(background, "rotation null", location, style, factory)
 
         verify(paint, times(1)).color = 772
         verify(paint, times(1)).textSize = 84f
