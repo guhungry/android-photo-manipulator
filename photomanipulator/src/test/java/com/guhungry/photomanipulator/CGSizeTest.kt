@@ -1,5 +1,6 @@
 package com.guhungry.photomanipulator
 
+import com.guhungry.photomanipulator.model.CGSize
 import org.hamcrest.CoreMatchers.equalTo
 import org.hamcrest.MatcherAssert.assertThat
 import org.junit.After

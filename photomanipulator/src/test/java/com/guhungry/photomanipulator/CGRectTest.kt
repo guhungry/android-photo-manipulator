@@ -4,6 +4,8 @@ import android.graphics.Point
 import android.graphics.Rect
 import com.guhungry.photomanipulator.factory.AndroidFactory
 import com.guhungry.photomanipulator.factory.MockAndroidFactory
+import com.guhungry.photomanipulator.model.CGRect
+import com.guhungry.photomanipulator.model.CGSize
 import org.hamcrest.CoreMatchers.*
 import org.hamcrest.MatcherAssert.assertThat
 import org.junit.After

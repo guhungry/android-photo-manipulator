@@ -5,6 +5,11 @@ import android.os.Build
 import androidx.exifinterface.media.ExifInterface
 import com.guhungry.photomanipulator.factory.AndroidFactory
 import com.guhungry.photomanipulator.factory.AndroidConcreteFactory
+import com.guhungry.photomanipulator.model.CGRect
+import com.guhungry.photomanipulator.model.CGSize
+import com.guhungry.photomanipulator.model.FlipMode
+import com.guhungry.photomanipulator.model.RotationMode
+import com.guhungry.photomanipulator.model.TextStyle
 import java.io.IOException
 import java.io.InputStream
 import kotlin.math.floor
@@ -153,34 +158,67 @@ object BitmapUtils {
      */
     @JvmStatic
     @JvmOverloads
+    @Deprecated("Use printText(Bitmap, String, PointF, TextStyle, AndroidFactory) instead")
     fun printText(image: Bitmap, text: String, position: PointF, color: Int, size: Float, font: Typeface? = null, alignment: Paint.Align = Paint.Align.LEFT, thickness: Float = 0f, rotation: Float? = null, factory: AndroidFactory = AndroidConcreteFactory()) {
+        val style = TextStyle(color, size, font, alignment, thickness, rotation)
+        return printText(image, text, position, style, factory)
+    }
+
+    /**
+     * Print text in to image
+     *
+     * @param image Source image
+     * @param text Text to be printed
+     * @param position Position of text in image
+     * @param textStyle Text style
+     * @param factory (Optional) Factory for creating Android Objects for Testing
+     */
+    @JvmStatic
+    @JvmOverloads
+    fun printText(image: Bitmap, text: String, position: PointF, textStyle: TextStyle, factory: AndroidFactory = AndroidConcreteFactory()) {
+        if (text.isBlank()) return
+
         val canvas = factory.makeCanvas(image)
-
         val paint = factory.makePaint().apply {
-            this.color = color
-            textSize = size
-            textAlign = alignment
+            color = textStyle.color
+            textSize = textStyle.size
+            textAlign = textStyle.alignment
+            isAntiAlias = true
 
-            if (font != null) {
-                typeface = font
+            textStyle.font?.let {
+                typeface = it
             }
 
-            if (thickness > 0) {
-                style = Paint.Style.STROKE
-                strokeWidth = thickness
-            }
+            setTextBorder(textStyle)
+            setTextShadow(textStyle)
         }
 
-        var offset = position.y + (size / 2)
+        var offset = position.y + (textStyle.size / 2)
         // Rotate
         canvas.save()
-        canvas.rotate(-(rotation ?: 0f), position.x, offset)
+        canvas.rotate(-(textStyle.rotation ?: 0f), position.x, offset)
         // Draw Text
         text.split("\n").forEach {
             canvas.drawText(it, position.x, offset, paint)
             offset += paint.descent() - paint.ascent()
         }
         canvas.restore()
+    }
+
+    private fun Paint.setTextBorder(textStyle: TextStyle) {
+        if (textStyle.thickness <= 0) return
+        style = Paint.Style.STROKE
+        strokeWidth = textStyle.thickness
+    }
+
+    private fun Paint.setTextShadow(textStyle: TextStyle) {
+        if (textStyle.shadowColor == null || textStyle.shadowRadius <= 0f) return
+        setShadowLayer(
+            textStyle.shadowRadius,
+            textStyle.shadowOffsetX,
+            textStyle.shadowOffsetY,
+            textStyle.shadowColor
+        )
     }
 
     /**
