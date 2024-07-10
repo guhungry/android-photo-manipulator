@@ -146,11 +146,11 @@ internal class BitmapUtilsAndroidTest {
             inTargetDensity = DisplayMetrics.DENSITY_DEFAULT
             inPreferredColorSpace = ColorSpace.get(ColorSpace.Named.SRGB)
         }
-        val style = TextStyle(Color.GREEN, 23f, Typeface.DEFAULT_BOLD, shadowOffsetY = 5f, shadowOffsetX = 10f, shadowRadius = .01f, shadowColor = Color.YELLOW)
+        val style = TextStyle(Color.GREEN, 30f, Typeface.DEFAULT_BOLD, shadowOffsetY = 5f, shadowOffsetX = 10f, shadowRadius = .01f, shadowColor = Color.YELLOW)
         background = TestHelper.drawableBitmap(R.drawable.background, options)
         BitmapUtils.printText(background!!, "My Text Print", PointF(12f, 5f), style)
 
-        assertThat(background!!.getPixel(47, 18), equalTo(Color.YELLOW))
+        assertThat(background!!.getPixel(26, 5), equalTo(Color.YELLOW))
     }
 
     @Test
