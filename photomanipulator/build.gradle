@@ -2,7 +2,11 @@ apply plugin: 'com.android.library'
 apply plugin: 'org.jetbrains.kotlin.android'
 
 android {
-    namespace 'com.guhungry.photomanipulator'
+    def agpVersion = com.android.Version.ANDROID_GRADLE_PLUGIN_VERSION
+    // Check AGP version for backward compatibility reasons
+    if (agpVersion.tokenize('.')[0].toInteger() >= 7) {
+        namespace 'com.guhungry.photomanipulator'
+    }
     compileSdk 34
 
     defaultConfig {
