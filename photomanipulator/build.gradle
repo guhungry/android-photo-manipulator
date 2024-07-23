@@ -12,7 +12,7 @@ android {
     defaultConfig {
         minSdk 16
         versionCode 2
-        versionName "1.2.3"
+        versionName "1.2.4"
         targetSdk 34
         multiDexEnabled true
 
@@ -40,6 +40,7 @@ android {
     }
     kotlinOptions {
         jvmTarget = '1.8'
+        languageVersion = "1.5"
     }
     packagingOptions {
         resources {
