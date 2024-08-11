@@ -1,6 +1,6 @@
 package com.guhungry.photomanipulator
 
-import android.graphics.Bitmap
+import android.graphics.Bitmap.CompressFormat
 import org.hamcrest.MatcherAssert.assertThat
 import org.hamcrest.Matchers.equalTo
 import org.junit.Test
@@ -23,8 +23,10 @@ internal class MimeUtilsTest {
 
     @Test
     fun `toCompressFormat should return correct CompressFormat`() {
-        assertThat(MimeUtils.toCompressFormat(MimeUtils.JPEG), equalTo(Bitmap.CompressFormat.JPEG))
-        assertThat(MimeUtils.toCompressFormat(MimeUtils.PNG), equalTo(Bitmap.CompressFormat.PNG))
-        assertThat(MimeUtils.toCompressFormat(MimeUtils.WEBP), equalTo(Bitmap.CompressFormat.WEBP))
+        assertThat(MimeUtils.toCompressFormat(MimeUtils.JPEG), equalTo(CompressFormat.JPEG))
+        assertThat(MimeUtils.toCompressFormat(MimeUtils.PNG), equalTo(CompressFormat.PNG))
+        // Should be removed if min sdk >= 30
+        @Suppress("DEPRECATION") assertThat(MimeUtils.toCompressFormat(MimeUtils.WEBP), equalTo(
+            CompressFormat.WEBP))
     }
 }
