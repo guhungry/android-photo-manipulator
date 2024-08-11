@@ -66,7 +66,7 @@ object BitmapUtils {
             BitmapRegionDecoder.newInstance(input)!!
         } else {
             // Should be removed if min sdk >= 31
-            BitmapRegionDecoder.newInstance(input, false)!!
+            @Suppress("DEPRECATION") BitmapRegionDecoder.newInstance(input, false)!!
         }
 
     /**

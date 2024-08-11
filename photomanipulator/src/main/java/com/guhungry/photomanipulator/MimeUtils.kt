@@ -1,6 +1,7 @@
 package com.guhungry.photomanipulator
 
-import android.graphics.Bitmap
+import android.graphics.Bitmap.CompressFormat
+import android.os.Build
 
 object MimeUtils {
     const val PNG: String = "image/png"
@@ -15,9 +16,18 @@ object MimeUtils {
     }
 
     @JvmStatic
-    fun toCompressFormat(type: String): Bitmap.CompressFormat = when (type) {
-        PNG -> Bitmap.CompressFormat.PNG
-        WEBP -> Bitmap.CompressFormat.WEBP
-        else -> Bitmap.CompressFormat.JPEG
+    fun toCompressFormat(type: String): CompressFormat {
+        val formatWEBP =
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+                CompressFormat.WEBP_LOSSY
+            } else {
+                // Should be removed if min sdk >= 30
+                @Suppress("DEPRECATION") CompressFormat.WEBP
+            }
+        return when (type) {
+            PNG -> CompressFormat.PNG
+            WEBP -> formatWEBP
+            else -> CompressFormat.JPEG
+        }
     }
 }
