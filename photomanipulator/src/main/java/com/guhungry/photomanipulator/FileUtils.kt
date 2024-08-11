@@ -1,5 +1,6 @@
 package com.guhungry.photomanipulator
 
+import android.content.ContentResolver
 import android.content.Context
 import android.graphics.Bitmap
 import com.guhungry.photomanipulator.factory.AndroidFactory
@@ -12,7 +13,7 @@ import java.io.InputStream
 import java.net.URL
 
 object FileUtils {
-    private val LOCAL_URI_PREFIXES = arrayOf("file://", "content://", "android.resource://")
+    private val LOCAL_URI_PREFIXES = arrayOf(ContentResolver.SCHEME_FILE, ContentResolver.SCHEME_CONTENT, ContentResolver.SCHEME_ANDROID_RESOURCE)
 
     /**
      * Check if uri is local or web
