@@ -46,4 +46,13 @@ class FileUtilsAndroidTest {
             assertThat(it, instanceOf(InputStream::class.java))
         }
     }
+
+    @Test
+    fun openBitmapInputStream_WhenBase64_ShouldReadDrawable() {
+        val uri = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAAAXNSR0IArs4c6QAAAA1JREFUGFdj+L+U4T8ABu8CpCYJ1DQAAAAASUVORK5CYII="
+
+        FileUtils.openBitmapInputStream(TestHelper.context(), uri).use {
+            assertThat(it, instanceOf(InputStream::class.java))
+        }
+    }
 }

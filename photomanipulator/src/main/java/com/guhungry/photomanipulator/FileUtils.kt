@@ -3,10 +3,12 @@ package com.guhungry.photomanipulator
 import android.content.ContentResolver
 import android.content.Context
 import android.graphics.Bitmap
+import android.util.Base64
 import com.guhungry.photomanipulator.factory.AndroidFactory
 import com.guhungry.photomanipulator.factory.AndroidConcreteFactory
 import com.guhungry.photomanipulator.helper.AndroidFile
 import com.guhungry.photomanipulator.helper.AndroidConcreteFile
+import java.io.ByteArrayInputStream
 import java.io.File
 import java.io.IOException
 import java.io.InputStream
@@ -14,6 +16,7 @@ import java.net.URL
 
 object FileUtils {
     private val LOCAL_URI_PREFIXES = arrayOf(ContentResolver.SCHEME_FILE, ContentResolver.SCHEME_CONTENT, ContentResolver.SCHEME_ANDROID_RESOURCE)
+    private const val BASE64_URI_PREFIX = "data:"
 
     /**
      * Check if uri is local or web
@@ -68,11 +71,16 @@ object FileUtils {
 
     @JvmStatic
     fun openBitmapInputStream(context: Context, uri: String, factory: AndroidFactory = AndroidConcreteFactory()): InputStream {
-        return (if (isLocalUri(uri)) {
-            context.contentResolver.openInputStream(factory.makeUri(uri))
-        } else {
-            val connection = URL(uri).openConnection()
-            connection.getInputStream()
-        }) ?: throw IOException("Cannot open bitmap: $uri")
+        if (isBase64Data(uri)) {
+            val data = uri.substring(uri.indexOf(",") + 1)
+            return ByteArrayInputStream(Base64.decode(data, Base64.DEFAULT))
+        }
+        if (isLocalUri(uri)) {
+            return context.contentResolver.openInputStream(factory.makeUri(uri))
+                ?: throw IOException("Cannot open bitmap: $uri")
+        }
+        return URL(uri).openConnection().getInputStream()
     }
+
+    private fun isBase64Data(uri: String): Boolean = uri.startsWith(BASE64_URI_PREFIX)
 }
