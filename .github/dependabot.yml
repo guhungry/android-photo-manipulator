@@ -13,8 +13,13 @@ updates:
     groups:
       production-dependencies:
         dependency-type: "production"
+        exclude-patterns:
+        - "org.jetbrains.kotlin*"
       development-dependencies:
         dependency-type: "development"
+      kotlin:
+        patterns:
+        - "org.jetbrains.kotlin*"
 
   # Maintain dependencies for GitHub Actions
   - package-ecosystem: "github-actions"
