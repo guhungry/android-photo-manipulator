@@ -3,7 +3,7 @@ apply plugin: 'io.github.gradle-nexus.publish-plugin'
 
 buildscript {
     ext.kotlin_version = '1.9.24'
-    ext.mockito_version = '5.12.0'
+    ext.mockito_version = '5.13.0'
     ext.androidJunit5Version = '1.4.2.1'
     ext.junitJupiterVersion = "5.4.2"
     ext.junitVintageVersion = "5.4.2"
@@ -14,7 +14,7 @@ buildscript {
         maven { url 'https://plugins.gradle.org/m2/' }
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:8.5.2'
+        classpath 'com.android.tools.build:gradle:8.6.0'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
         classpath 'io.github.gradle-nexus:publish-plugin:2.0.0'
         classpath 'org.sonarsource.scanner.gradle:sonarqube-gradle-plugin:5.1.0.4882'
