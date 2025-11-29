@@ -1,7 +1,7 @@
 apply plugin: 'jacoco'
 
 jacoco {
-    toolVersion = "0.8.8"
+    toolVersion = "0.8.14"
 }
 
 task jacocoTestReport(type: JacocoReport, dependsOn: ['testDebugUnitTest', 'createDebugCoverageReport']) {
@@ -11,13 +11,13 @@ task jacocoTestReport(type: JacocoReport, dependsOn: ['testDebugUnitTest', 'crea
     }
 
     def fileFilter = ['**/R.class', '**.R$.class', '**/BuildConfig.*', '**/Manifest*.*', '**/Test*.*', 'android/**/*.*']
-    def debugTree = fileTree(dir: "${buildDir}/intermediates/classes/debug", excludes: fileFilter)
-    def kotlinDebugTree = fileTree(dir: "${buildDir}/tmp/kotlin-classes/debug", excludes: fileFilter)
+    def debugTree = fileTree(dir: "${layout.buildDirectory}/intermediates/classes/debug", excludes: fileFilter)
+    def kotlinDebugTree = fileTree(dir: "${layout.buildDirectory}/tmp/kotlin-classes/debug", excludes: fileFilter)
     def mainSrc = "${project.projectDir}/src/main/java"
 
     sourceDirectories.from = files([mainSrc])
     classDirectories.from = files([debugTree, kotlinDebugTree])
-    executionData.from = fileTree(dir: "$buildDir", includes: [
+    executionData.from = fileTree(dir: "${layout.buildDirectory}", includes: [
             "jacoco/*.exec",
             "outputs/*_coverage/**/*.exec",
             "outputs/*_coverage/**/*coverage.ec"
