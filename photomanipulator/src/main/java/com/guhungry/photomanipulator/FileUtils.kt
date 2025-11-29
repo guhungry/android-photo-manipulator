@@ -12,7 +12,6 @@ import java.io.ByteArrayInputStream
 import java.io.File
 import java.io.IOException
 import java.io.InputStream
-import java.net.URL
 
 object FileUtils {
     private val LOCAL_URI_PREFIXES = arrayOf(ContentResolver.SCHEME_FILE, ContentResolver.SCHEME_CONTENT, ContentResolver.SCHEME_ANDROID_RESOURCE)
@@ -79,7 +78,7 @@ object FileUtils {
             return context.contentResolver.openInputStream(factory.makeUri(uri))
                 ?: throw IOException("Cannot open bitmap: $uri")
         }
-        return URL(uri).openConnection().getInputStream()
+        return factory.fetchUrl(uri)
     }
 
     private fun isBase64Data(uri: String): Boolean = uri.startsWith(BASE64_URI_PREFIX)

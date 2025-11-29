@@ -3,6 +3,8 @@ package com.guhungry.photomanipulator.factory
 import android.graphics.*
 import android.net.Uri
 import org.mockito.Mockito.mock
+import java.io.ByteArrayInputStream
+import java.io.InputStream
 
 class MockAndroidFactory: AndroidFactory {
     override fun makePoint(x: Int, y: Int): Point = mock(Point::class.java).apply {
@@ -26,4 +28,6 @@ class MockAndroidFactory: AndroidFactory {
     override fun makePaint(): Paint {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
+
+    override fun fetchUrl(uri: String): InputStream = ByteArrayInputStream(ByteArray(0))
 }

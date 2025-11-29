@@ -133,11 +133,13 @@ internal class FileUtilsTest {
         val contentResolver = mock(ContentResolver::class.java)
         `when`(contentResolver.openInputStream(any())).thenReturn(mock(InputStream::class.java))
         `when`(context!!.contentResolver).thenReturn(contentResolver)
-        val factory = MockAndroidFactory()
+        val factory = spy(MockAndroidFactory())
 
-        FileUtils.openBitmapInputStream(context!!, "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a7/React-icon.svg/1000px-React-icon.svg.png", factory)
+        val uri = "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a7/React-icon.svg/1000px-React-icon.svg.png"
+        FileUtils.openBitmapInputStream(context!!, uri, factory)
 
         verify(contentResolver, times(0)).openInputStream(any())
+        verify(factory, times(1)).fetchUrl(uri)
     }
 
     @Test
