@@ -4,22 +4,29 @@ jacoco {
     toolVersion = "0.8.14"
 }
 
-task jacocoTestReport(type: JacocoReport, dependsOn: ['testDebugUnitTest', 'createDebugCoverageReport']) {
-    reports {
-        xml.required = true
-        csv.required = true
+project.afterEvaluate {
+    tasks.register('jacocoTestReport', JacocoReport) {
+        dependsOn 'testDebugUnitTest', 'createDebugCoverageReport'
+
+        reports {
+            xml.required = true
+            xml.outputLocation = layout.buildDirectory.file('reports/jacoco/jacocoTestReport/jacocoTestReport.xml')
+            csv.required = true
+            html.required = true
+        }
+
+        def fileFilter = ['**/R.class', '**/R$*.class', '**/BuildConfig.*', '**/Manifest*.*', '**/*Test*.*', 'android/**/*.*']
+        def buildDir = layout.buildDirectory.get().asFile
+        def debugTree = fileTree(dir: "${buildDir}/intermediates/javac/debug", excludes: fileFilter)
+        def kotlinDebugTree = fileTree(dir: "${buildDir}/tmp/kotlin-classes/debug", excludes: fileFilter)
+        def mainSrc = "${project.projectDir}/src/main/java"
+
+        sourceDirectories.setFrom(files([mainSrc]))
+        classDirectories.setFrom(files([debugTree, kotlinDebugTree]))
+        executionData.setFrom(fileTree(dir: buildDir, includes: [
+                "jacoco/*.exec",
+                "outputs/unit_test_code_coverage/**/*.exec",
+                "outputs/code_coverage/**/*.ec"
+        ]))
     }
-
-    def fileFilter = ['**/R.class', '**.R$.class', '**/BuildConfig.*', '**/Manifest*.*', '**/Test*.*', 'android/**/*.*']
-    def debugTree = fileTree(dir: "${layout.buildDirectory}/intermediates/classes/debug", excludes: fileFilter)
-    def kotlinDebugTree = fileTree(dir: "${layout.buildDirectory}/tmp/kotlin-classes/debug", excludes: fileFilter)
-    def mainSrc = "${project.projectDir}/src/main/java"
-
-    sourceDirectories.from = files([mainSrc])
-    classDirectories.from = files([debugTree, kotlinDebugTree])
-    executionData.from = fileTree(dir: "${layout.buildDirectory}", includes: [
-            "jacoco/*.exec",
-            "outputs/*_coverage/**/*.exec",
-            "outputs/*_coverage/**/*coverage.ec"
-    ])
 }
