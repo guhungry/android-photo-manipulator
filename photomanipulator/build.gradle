@@ -57,10 +57,8 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
-    packagingOptions {
-        resources {
-            excludes += ['META-INF/LICENSE.md', 'META-INF/LICENSE-notice.md']
-        }
+    packaging {
+        resources.excludes.addAll(['META-INF/LICENSE.md', 'META-INF/LICENSE-notice.md'])
     }
     publishing {
         singleVariant("release") {
@@ -108,9 +106,6 @@ dependencies {
     // Mockito
     testImplementation "org.mockito:mockito-core:$mockito_version"
     androidTestImplementation "org.mockito:mockito-android:$mockito_version"
-}
-repositories {
-    mavenCentral()
 }
 
 ext {
