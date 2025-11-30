@@ -14,24 +14,22 @@ static def supportsNamespace() {
 
 android {
     if (supportsNamespace()) {
-        namespace 'com.guhungry.photomanipulator'
+        namespace = 'com.guhungry.photomanipulator'
 
         sourceSets {
             main {
-                manifest.srcFile "src/main/AndroidManifestNew.xml"
+                manifest.srcFile("src/main/AndroidManifestNew.xml")
             }
         }
     }
-    compileSdk 34
+    compileSdk = 36
 
     defaultConfig {
-        minSdk 16
-        versionCode 2
-        versionName "1.3.0"
-        targetSdk 34
-        multiDexEnabled true
+        minSdk= 16
+        targetSdk = 36
+        multiDexEnabled = true
 
-        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles "consumer-rules.pro"
 
         aarMetadata {
@@ -41,12 +39,13 @@ android {
 
     buildTypes {
         debug {
-            testCoverageEnabled true
-            defaultConfig.minSdk 21
+            enableUnitTestCoverage = true
+            enableAndroidTestCoverage = true
+            defaultConfig.minSdk = 21
         }
         release {
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            minifyEnabled = false
+            proguardFiles android.getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
     compileOptions {
@@ -55,7 +54,7 @@ android {
     }
     kotlinOptions {
         jvmTarget = '1.8'
-        languageVersion = "1.5"
+        languageVersion = "1.9"
     }
     packagingOptions {
         resources {
@@ -69,7 +68,7 @@ android {
         }
     }
     testOptions {
-        animationsDisabled true
+        animationsDisabled = true
 
         unitTests {
             includeAndroidResources = true
@@ -82,19 +81,20 @@ android {
 }
 
 dependencies {
+    implementation 'androidx.core:core-ktx:1.17.0'
     implementation "androidx.multidex:multidex:2.0.1"
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
 
-    implementation "androidx.exifinterface:exifinterface:1.3.7"
+    implementation "androidx.exifinterface:exifinterface:1.4.1"
 
     testImplementation 'org.hamcrest:hamcrest:3.0'
     testImplementation 'org.hamcrest:hamcrest-library:3.0'
 
     testImplementation 'junit:junit:4.13.2'
-    androidTestImplementation 'androidx.test:runner:1.6.1'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.6.1'
-    androidTestImplementation 'androidx.test:core:1.6.1'
-    androidTestImplementation 'androidx.test.ext:junit:1.2.1'
+    androidTestImplementation 'androidx.test:runner:1.7.0'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.7.0'
+    androidTestImplementation 'androidx.test:core:1.7.0'
+    androidTestImplementation 'androidx.test.ext:junit:1.3.0'
 
     testImplementation "org.jetbrains.kotlin:kotlin-reflect:$kotlin_version"
     // Mockito
@@ -117,7 +117,7 @@ ext {
     siteUrl = 'https://github.com/guhungry/android-photo-manipulator'
     gitUrl = 'https://github.com/guhungry/android-photo-manipulator.git'
 
-    libraryVersion = android.defaultConfig.versionName
+    libraryVersion = '1.3.0'
 
     developerId = 'guhungry'
     developerName = 'Woraphot Chokratanasombat'

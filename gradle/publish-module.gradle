@@ -37,13 +37,13 @@ afterEvaluate {
         publications {
             release(MavenPublication) {
                 tasks.named("generateMetadataFileForReleasePublication").configure { dependsOn("androidSourcesJar") }
-                groupId publishedGroupId
-                artifactId artifact
-                version libraryVersion
+                groupId = publishedGroupId
+                artifactId = artifact
+                version = libraryVersion
                 if (project.plugins.findPlugin("com.android.library")) {
                     from components.release
                 } else {
-                    artifact("$buildDir/libs/${project.getName()}-${version}.jar")
+                    artifact("${layout.buildDirectory}/libs/${project.getName()}-${version}.jar")
                 }
 
                 pom {
