@@ -14,22 +14,22 @@ static def supportsNamespace() {
 
 android {
     if (supportsNamespace()) {
-        namespace 'com.guhungry.photomanipulator'
+        namespace = 'com.guhungry.photomanipulator'
 
         sourceSets {
             main {
-                manifest.srcFile "src/main/AndroidManifestNew.xml"
+                manifest.srcFile("src/main/AndroidManifestNew.xml")
             }
         }
     }
-    compileSdk 36
+    compileSdk = 36
 
     defaultConfig {
-        minSdk 16
-        targetSdk 36
-        multiDexEnabled true
+        minSdk= 16
+        targetSdk = 36
+        multiDexEnabled = true
 
-        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles "consumer-rules.pro"
 
         aarMetadata {
@@ -39,13 +39,13 @@ android {
 
     buildTypes {
         debug {
-            enableUnitTestCoverage true
-            enableAndroidTestCoverage true
-            defaultConfig.minSdk 21
+            enableUnitTestCoverage = true
+            enableAndroidTestCoverage = true
+            defaultConfig.minSdk = 21
         }
         release {
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            minifyEnabled = false
+            proguardFiles android.getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
     compileOptions {
@@ -54,7 +54,7 @@ android {
     }
     kotlinOptions {
         jvmTarget = '1.8'
-        languageVersion = "1.5"
+        languageVersion = "1.9"
     }
     packagingOptions {
         resources {
@@ -68,7 +68,7 @@ android {
         }
     }
     testOptions {
-        animationsDisabled true
+        animationsDisabled = true
 
         unitTests {
             includeAndroidResources = true

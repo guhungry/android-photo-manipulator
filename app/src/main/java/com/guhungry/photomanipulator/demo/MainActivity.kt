@@ -46,7 +46,7 @@ class MainActivity : ComponentActivity() {
         val style = TextStyle(Color.BLACK, 40f, rotation = -45f)
         BitmapUtils.printText(bee, "BEE\nhaha", PointF(50f, 50f), style)
         println(bee)
-        var len = bee.height
+        println(bee.height)
     }
 }
 
