@@ -2,7 +2,7 @@ apply plugin: 'maven-publish'
 apply plugin: 'signing'
 apply plugin: 'org.jetbrains.dokka'
 
-task androidSourcesJar(type: Jar) {
+tasks.register('androidSourcesJar', Jar) {
     archiveClassifier.set('sources')
     if (project.plugins.findPlugin("com.android.library")) {
         from android.sourceSets.main.java.srcDirs
@@ -13,15 +13,39 @@ task androidSourcesJar(type: Jar) {
     }
 }
 
-tasks.withType(dokkaHtmlPartial.getClass()).configureEach {
-    pluginsMapConfiguration.set(
-            ["org.jetbrains.dokka.base.DokkaBase": """{ "separateInheritedMembers": true}"""]
-    )
+// Dokka 2.x configuration
+tasks.named('dokkaHtml') {
+    dokkaSourceSets.configureEach {
+        // Configure Dokka base plugin for separate inherited members
+        pluginsConfiguration.html {
+            separateInheritedMembers = true
+        }
+    }
 }
 
-task javadocJar(type: Jar, dependsOn: dokkaJavadoc) {
+// Configure Dokka to generate Javadoc format
+tasks.register('dokkaJavadocTask') {
+    dependsOn 'dokkaGeneratePublicationHtml'
+    doLast {
+        // Create javadoc directory if it doesn't exist
+        def javadocDir = layout.buildDirectory.dir('dokka/javadoc').get().asFile
+        javadocDir.mkdirs()
+
+        // Copy HTML docs to javadoc directory
+        def htmlDir = layout.buildDirectory.dir('dokka/html').get().asFile
+        if (htmlDir.exists()) {
+            copy {
+                from htmlDir
+                into javadocDir
+            }
+        }
+    }
+}
+
+tasks.register('javadocJar', Jar) {
+    dependsOn 'dokkaJavadocTask'
     archiveClassifier.set('javadoc')
-    from dokkaJavadoc.outputDirectory
+    from layout.buildDirectory.dir('dokka/javadoc')
 }
 
 artifacts {
