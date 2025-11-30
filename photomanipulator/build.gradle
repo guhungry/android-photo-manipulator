@@ -1,7 +1,12 @@
 import com.android.Version
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+import org.jetbrains.kotlin.gradle.dsl.KotlinVersion
 
-apply plugin: 'com.android.library'
-apply plugin: 'org.jetbrains.kotlin.android'
+plugins {
+    id 'com.android.library'
+    id 'org.jetbrains.kotlin.android'
+    id 'org.sonarqube'
+}
 
 static def supportsNamespace() {
     def parsed = Version.ANDROID_GRADLE_PLUGIN_VERSION.tokenize('.')
@@ -52,14 +57,8 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
-    kotlinOptions {
-        jvmTarget = '1.8'
-        languageVersion = "1.9"
-    }
-    packagingOptions {
-        resources {
-            excludes += ['META-INF/LICENSE.md', 'META-INF/LICENSE-notice.md']
-        }
+    packaging {
+        resources.excludes.addAll(['META-INF/LICENSE.md', 'META-INF/LICENSE-notice.md'])
     }
     publishing {
         singleVariant("release") {
@@ -77,6 +76,13 @@ android {
     }
     testFixtures {
         enable = true
+    }
+}
+
+kotlin {
+    compilerOptions {
+        jvmTarget = JvmTarget.JVM_1_8
+        languageVersion = KotlinVersion.KOTLIN_2_2
     }
 }
 
@@ -100,9 +106,6 @@ dependencies {
     // Mockito
     testImplementation "org.mockito:mockito-core:$mockito_version"
     androidTestImplementation "org.mockito:mockito-android:$mockito_version"
-}
-repositories {
-    mavenCentral()
 }
 
 ext {
@@ -130,4 +133,3 @@ ext {
 
 apply from: "${rootDir}/gradle/jacoco.gradle"
 apply from: "${rootDir}/gradle/publish-module.gradle"
-apply plugin: 'org.sonarqube'
