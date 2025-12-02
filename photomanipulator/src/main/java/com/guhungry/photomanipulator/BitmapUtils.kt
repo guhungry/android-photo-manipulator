@@ -89,15 +89,22 @@ object BitmapUtils {
         val bitmap: Bitmap = BitmapFactory.decodeStream(input, null, outOptions) ?: throw IOException("Cannot decode bitmap: uri")
         // This can use significantly less memory than decoding the full-resolution bitmap
 
-        val rotated = if (matrix != null) Bitmap.createBitmap(bitmap, 0, 0, bitmap.width,
-            bitmap.height, matrix, true).also { bitmap.recycle()  } else bitmap
+        val rotated = transformBitmap(bitmap, matrix)
 
         // This uses scaling mode COVER
         // Where would the crop rect end up within the scaled bitmap?
         val crop = findCropPosition(cropSize, targetSize, outOptions.inSampleSize)
         val scaleMatrix = findCropScale(crop, targetSize)
 
-        return Bitmap.createBitmap(rotated, crop.origin.x, crop.origin.y, crop.size.width, crop.size.height, scaleMatrix, true)
+        return Bitmap.createBitmap(rotated, crop.origin.x, crop.origin.y, crop.size.width, crop.size.height, scaleMatrix, true).also {
+            if (it != rotated) rotated.recycle()
+        }
+    }
+
+    private fun transformBitmap(bitmap: Bitmap, matrix: Matrix?): Bitmap {
+        return if (matrix == null) bitmap else Bitmap.createBitmap(bitmap, 0, 0, bitmap.width, bitmap.height, matrix, true).also {
+            if (it != bitmap) bitmap.recycle()
+        } // No transformation, use original bitmap
     }
 
     /**
