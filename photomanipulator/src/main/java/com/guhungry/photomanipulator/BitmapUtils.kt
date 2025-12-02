@@ -45,19 +45,20 @@ object BitmapUtils {
 
     /**
      * Reads and crops the bitmap.
+     *
+     * Note: This method does not close the input stream. The caller is responsible for closing it.
+     *
      * @param outOptions Bitmap options, useful to determine `outMimeType`.
      */
     @JvmStatic
     fun crop(input: InputStream, region: CGRect, outOptions: BitmapFactory.Options): Bitmap {
-        input.use {
-            // Efficiently crops image without loading full resolution into memory
-            // https://developer.android.com/reference/android/graphics/BitmapRegionDecoder.html
-            val decoder = getBitmapRegionDecoder(input)
-            try {
-                return decoder.decodeRegion(region.toRect(), outOptions)
-            } finally {
-                decoder.recycle()
-            }
+        // Efficiently crops image without loading full resolution into memory
+        // https://developer.android.com/reference/android/graphics/BitmapRegionDecoder.html
+        val decoder = getBitmapRegionDecoder(input)
+        try {
+            return decoder.decodeRegion(region.toRect(), outOptions)
+        } finally {
+            decoder.recycle()
         }
     }
 
@@ -72,6 +73,9 @@ object BitmapUtils {
     /**
      * Crop the rectangle given by {@code mX, mY, mWidth, mHeight} within the source bitmap
      * and scale the result to {@code targetWidth, targetHeight}.
+     *
+     * Note: This method does not close the input stream. The caller is responsible for closing it.
+     *
      * @param outOptions Bitmap options, useful to determine {@code outMimeType}.
      * @param matrix Transformation for correct orientation from {@code #}
      */
