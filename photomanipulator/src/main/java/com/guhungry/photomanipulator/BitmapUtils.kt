@@ -169,7 +169,14 @@ object BitmapUtils {
      */
     @JvmStatic
     @JvmOverloads
-    @Deprecated("Use printText(Bitmap, String, PointF, TextStyle, AndroidFactory) instead")
+    @Deprecated(
+        message = "Use printText(Bitmap, String, PointF, TextStyle, AndroidFactory) instead",
+        replaceWith = ReplaceWith(
+            expression = "printText(image, text, position, TextStyle(color, size, font, alignment, thickness, rotation), factory)",
+            imports = ["com.guhungry.photomanipulator.model.TextStyle"]
+        ),
+        level = DeprecationLevel.WARNING
+    )
     fun printText(image: Bitmap, text: String, position: PointF, color: Int, size: Float, font: Typeface? = null, alignment: Paint.Align = Paint.Align.LEFT, thickness: Float = 0f, rotation: Float? = null, factory: AndroidFactory = AndroidConcreteFactory()) {
         val style = TextStyle(color, size, font, alignment, thickness, rotation)
         return printText(image, text, position, style, factory)
