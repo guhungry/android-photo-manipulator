@@ -13,6 +13,7 @@ import com.guhungry.photomanipulator.model.TextStyle
 import java.io.IOException
 import java.io.InputStream
 import kotlin.math.floor
+import androidx.core.graphics.withRotation
 
 object BitmapUtils {
     @JvmStatic
@@ -213,14 +214,13 @@ object BitmapUtils {
 
         var offset = position.y + (textStyle.size / 2)
         // Rotate
-        canvas.save()
-        canvas.rotate(-(textStyle.rotation ?: 0f), position.x, offset)
-        // Draw Text
-        text.split("\n").forEach {
-            canvas.drawText(it, position.x, offset, paint)
-            offset += paint.descent() - paint.ascent()
+        canvas.withRotation(-(textStyle.rotation ?: 0f), position.x, offset) {
+            // Draw Text
+            text.split("\n").forEach {
+                drawText(it, position.x, offset, paint)
+                offset += paint.descent() - paint.ascent()
+            }
         }
-        canvas.restore()
     }
 
     private fun Paint.setTextBorder(textStyle: TextStyle) {
