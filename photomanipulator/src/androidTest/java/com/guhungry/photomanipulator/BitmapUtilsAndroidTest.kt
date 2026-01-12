@@ -7,6 +7,7 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.guhungry.photomanipulator.model.CGRect
 import com.guhungry.photomanipulator.model.CGSize
 import com.guhungry.photomanipulator.model.FlipMode
+import com.guhungry.photomanipulator.model.ResizeMode
 import com.guhungry.photomanipulator.model.RotationMode
 import com.guhungry.photomanipulator.model.TextStyle
 import com.guhungry.photomanipulator.test.R
@@ -82,6 +83,128 @@ internal class BitmapUtilsAndroidTest {
         assertThat(actual, equalTo(original))
         assertThat(actual, not(equalTo(bad)))
     }
+
+    // ============================================================================
+    // Resize Mode Tests
+    // ============================================================================
+
+    @Test
+    fun cropAndResize_when_mode_cover_portrait_should_crop_and_fill() {
+        // Portrait source (32x96) to portrait target (19x48) - should match target exactly
+        FileUtils.openBitmapInputStream(TestHelper.context(), TestHelper.drawableUri(R.drawable.background)).use {
+            output = BitmapUtils.cropAndResize(it, CGRect(79, 45, 32, 96), CGSize(19, 48), BitmapFactory.Options(), mode = ResizeMode.Cover)
+
+            assertThat(output!!.width, equalTo(19))
+            assertThat(output!!.height, equalTo(48))
+        }
+    }
+
+    @Test
+    fun cropAndResize_when_mode_contain_portrait_should_fit_within() {
+        // Portrait source (32x96) to portrait target (50x150)
+        // Source ratio: 32/96 = 0.333
+        // Target ratio: 50/150 = 0.333
+        // Should match target size when ratios are same
+        FileUtils.openBitmapInputStream(TestHelper.context(), TestHelper.drawableUri(R.drawable.background)).use {
+            output = BitmapUtils.cropAndResize(it, CGRect(79, 45, 32, 96), CGSize(50, 150), BitmapFactory.Options(), mode = ResizeMode.Contain)
+
+            assertThat(output!!.width, equalTo(50))
+            assertThat(output!!.height, equalTo(150))
+        }
+    }
+
+    @Test
+    fun cropAndResize_when_mode_contain_wider_target_should_fit_height() {
+        // Portrait source (32x96) to wider target (100x150)
+        // Source ratio: 32/96 = 0.333
+        // Target ratio: 100/150 = 0.666
+        // Should fit by height: scale = 150/96 = 1.5625, result = 32*1.5625 = 50 x 150
+        FileUtils.openBitmapInputStream(TestHelper.context(), TestHelper.drawableUri(R.drawable.background)).use {
+            output = BitmapUtils.cropAndResize(it, CGRect(79, 45, 32, 96), CGSize(100, 150), BitmapFactory.Options(), mode = ResizeMode.Contain)
+
+            assertThat(output!!.width, equalTo(50))
+            assertThat(output!!.height, equalTo(150))
+        }
+    }
+
+    @Test
+    fun cropAndResize_when_mode_contain_taller_target_should_fit_width() {
+        // Portrait source (32x96) to taller target (50, 300)
+        // Source ratio: 32/96 = 0.333
+        // Target ratio: 50/300 = 0.166
+        // Should fit by width: scale = 50/32 = 1.5625, result = 50 x 150
+        FileUtils.openBitmapInputStream(TestHelper.context(), TestHelper.drawableUri(R.drawable.background)).use {
+            output = BitmapUtils.cropAndResize(it, CGRect(79, 45, 32, 96), CGSize(50, 300), BitmapFactory.Options(), mode = ResizeMode.Contain)
+
+            assertThat(output!!.width, equalTo(50))
+            assertThat(output!!.height, equalTo(150))
+        }
+    }
+
+    @Test
+    fun cropAndResize_when_mode_stretch_should_match_exact_size() {
+        // Landscape source (96x32) to portrait target (19x48) - should stretch to exact size
+        FileUtils.openBitmapInputStream(TestHelper.context(), TestHelper.drawableUri(R.drawable.background)).use {
+            output = BitmapUtils.cropAndResize(it, CGRect(79, 45, 96, 32), CGSize(19, 48), BitmapFactory.Options(), mode = ResizeMode.Stretch)
+
+            assertThat(output!!.width, equalTo(19))
+            assertThat(output!!.height, equalTo(48))
+        }
+    }
+
+    @Test
+    fun cropAndResize_when_mode_stretch_landscape_should_match_exact_size() {
+        // Portrait source (32x96) to landscape target (100x50) - should stretch ignoring aspect ratio
+        FileUtils.openBitmapInputStream(TestHelper.context(), TestHelper.drawableUri(R.drawable.background)).use {
+            output = BitmapUtils.cropAndResize(it, CGRect(79, 45, 32, 96), CGSize(100, 50), BitmapFactory.Options(), mode = ResizeMode.Stretch)
+
+            assertThat(output!!.width, equalTo(100))
+            assertThat(output!!.height, equalTo(50))
+        }
+    }
+
+    @Test
+    fun cropAndResize_when_mode_cover_with_matrix_should_work_correctly() {
+        val rotationMatrix = Matrix().apply { postRotate(90f) }
+        
+        FileUtils.openBitmapInputStream(TestHelper.context(), TestHelper.drawableUri(R.drawable.background)).use {
+            output = BitmapUtils.cropAndResize(it, CGRect(100, 100, 200, 200), CGSize(100, 100), BitmapFactory.Options(), rotationMatrix, ResizeMode.Cover)
+
+            assertThat(output, notNullValue())
+            assertThat(output!!.isRecycled, equalTo(false))
+            assertThat(output!!.width, equalTo(100))
+            assertThat(output!!.height, equalTo(100))
+        }
+    }
+
+    @Test
+    fun cropAndResize_when_mode_contain_with_matrix_should_work_correctly() {
+        val rotationMatrix = Matrix().apply { postRotate(180f) }
+        
+        FileUtils.openBitmapInputStream(TestHelper.context(), TestHelper.drawableUri(R.drawable.background)).use {
+            output = BitmapUtils.cropAndResize(it, CGRect(100, 100, 200, 200), CGSize(300, 300), BitmapFactory.Options(), rotationMatrix, ResizeMode.Contain)
+
+            assertThat(output, notNullValue())
+            assertThat(output!!.isRecycled, equalTo(false))
+            assertThat(output!!.width, equalTo(300))
+            assertThat(output!!.height, equalTo(300))
+        }
+    }
+
+    @Test
+    fun cropAndResize_when_mode_stretch_with_matrix_should_work_correctly() {
+        val rotationMatrix = Matrix().apply { postRotate(270f) }
+        
+        FileUtils.openBitmapInputStream(TestHelper.context(), TestHelper.drawableUri(R.drawable.background)).use {
+            output = BitmapUtils.cropAndResize(it, CGRect(100, 100, 200, 200), CGSize(150, 250), BitmapFactory.Options(), rotationMatrix, ResizeMode.Stretch)
+
+            assertThat(output, notNullValue())
+            assertThat(output!!.isRecycled, equalTo(false))
+            assertThat(output!!.width, equalTo(150))
+            assertThat(output!!.height, equalTo(250))
+        }
+    }
+
 
     @Test
     fun overlay_should_overlay_image_at_correct_location() {

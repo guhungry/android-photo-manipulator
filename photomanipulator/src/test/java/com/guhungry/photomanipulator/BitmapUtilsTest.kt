@@ -292,17 +292,18 @@ internal class BitmapUtilsTest {
      * https://github.com/guhungry/react-native-photo-manipulator/issues/837
      */
     @Test
-    fun `findCropPosition when issue 837 should return correctly`() {
+    fun `findCropPositionCover when issue 837 should return correctly`() {
         val factory = MockAndroidFactory()
         val expected = CGRect(0, 0, 3060, 4025, factory)
         val cropRegion = CGRect(0, 0, 3060, 4025, factory)
         val targetSize = CGSize(3060, 4025)
         val sampleSize = 1
 
-        val actual = BitmapUtils.findCropPosition(cropRegion, targetSize, sampleSize, factory)
+        val actual = BitmapUtils.findCropPositionCover(cropRegion, targetSize, sampleSize, factory)
 
         assertThat(actual.size, equalTo(expected.size))
         assertThat(actual.origin.x, equalTo(expected.origin.x))
         assertThat(actual.origin.y, equalTo(expected.origin.y))
     }
+
 }
