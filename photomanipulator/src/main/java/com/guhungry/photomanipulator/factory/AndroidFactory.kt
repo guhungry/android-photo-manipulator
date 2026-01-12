@@ -12,6 +12,15 @@ interface AndroidFactory {
     fun makeUri(uri: String): Uri
     fun makeCanvas(image: Bitmap): Canvas
     fun makePaint(): Paint
+    
+    /**
+     * Fetch input stream from URL.
+     *
+     * Warning: This performs synchronous network I/O. Should not be called on the main thread.
+     *
+     * @param uri URL to fetch
+     * @return InputStream of the fetched content
+     */
     fun fetchUrl(uri: String): InputStream
 }
 
