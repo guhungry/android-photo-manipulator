@@ -96,7 +96,7 @@ object BitmapUtils {
      */
     @JvmStatic
     @JvmOverloads
-    fun cropAndResize(input: InputStream, cropSize: CGRect, targetSize: CGSize, outOptions: BitmapFactory.Options, matrix: Matrix? = null, mode: ResizeMode = ResizeMode.Cover): Bitmap {
+    fun cropAndResize(input: InputStream, cropSize: CGRect, targetSize: CGSize, outOptions: BitmapFactory.Options, matrix: Matrix? = null, mode: ResizeMode = ResizeMode.Cover, factory: AndroidFactory = AndroidConcreteFactory()): Bitmap {
         // Loading large bitmaps efficiently:
         // http://developer.android.com/training/displaying-bitmaps/load-bitmap.html
 
@@ -112,8 +112,8 @@ object BitmapUtils {
         val rotated = transformBitmap(bitmap, matrix)
 
         // Apply resize mode to determine crop position and scale
-        val crop = findCropPosition(cropSize, targetSize, outOptions.inSampleSize, mode)
-        val scaleMatrix = findCropScale(crop, targetSize, mode)
+        val crop = findCropPosition(cropSize, targetSize, outOptions.inSampleSize, mode, factory)
+        val scaleMatrix = findCropScale(crop, targetSize, mode, factory)
 
         return Bitmap.createBitmap(rotated, crop.origin.x, crop.origin.y, crop.size.width, crop.size.height, scaleMatrix, true).also {
             if (it != rotated) rotated.recycle()
@@ -145,11 +145,11 @@ object BitmapUtils {
     /**
      * Find Crop Scale - dispatches to mode-specific implementation
      */
-    private fun findCropScale(rect: CGRect, targetSize: CGSize, mode: ResizeMode): Matrix {
+    private fun findCropScale(rect: CGRect, targetSize: CGSize, mode: ResizeMode, factory: AndroidFactory): Matrix {
         return when (mode) {
-            ResizeMode.Cover -> findCropScaleCover(rect, targetSize)
-            ResizeMode.Contain -> findCropScaleContain(rect, targetSize)
-            ResizeMode.Stretch -> findCropScaleStretch(rect, targetSize)
+            ResizeMode.Cover -> findCropScaleCover(rect, targetSize, factory)
+            ResizeMode.Contain -> findCropScaleContain(rect, targetSize, factory)
+            ResizeMode.Stretch -> findCropScaleStretch(rect, targetSize, factory)
         }
     }
 
@@ -187,7 +187,7 @@ object BitmapUtils {
     /**
      * Find Crop Position for Stretch or Contain mode - no cropping, use full rectangle
      */
-    private fun findCropPositionStretchOrContain(
+    internal fun findCropPositionStretchOrContain(
         rect: CGRect,
         sampleSize: Int,
         factory: AndroidFactory = AndroidConcreteFactory()
@@ -206,7 +206,7 @@ object BitmapUtils {
     /**
      * Find Crop Scale for Cover mode - scale to fill target size
      */
-    private fun findCropScaleCover(rect: CGRect, targetSize: CGSize): Matrix {
+    internal fun findCropScaleCover(rect: CGRect, targetSize: CGSize, factory: AndroidFactory): Matrix {
         val cropRectRatio = rect.size.ratio()
         val targetRatio = targetSize.ratio()
 
@@ -215,27 +215,27 @@ object BitmapUtils {
         } else { // e.g. source is landscape, target is portrait
             targetSize.width / rect.size.width.toFloat()
         }
-        return Matrix().apply { setScale(cropScale, cropScale) }
+        return factory.makeMatrix().apply { setScale(cropScale, cropScale) }
     }
 
     /**
      * Find Crop Scale for Contain mode - scale to fit within target size, maintaining aspect ratio
      */
-    private fun findCropScaleContain(rect: CGRect, targetSize: CGSize): Matrix {
+    internal fun findCropScaleContain(rect: CGRect, targetSize: CGSize, factory: AndroidFactory): Matrix {
         val scaleX = targetSize.width / rect.size.width.toFloat()
         val scaleY = targetSize.height / rect.size.height.toFloat()
         // Use the smaller scale to ensure image fits within target
         val scale = minOf(scaleX, scaleY)
-        return Matrix().apply { setScale(scale, scale) }
+        return factory.makeMatrix().apply { setScale(scale, scale) }
     }
 
     /**
      * Find Crop Scale for Stretch mode - scale to exact target size, ignoring aspect ratio
      */
-    private fun findCropScaleStretch(rect: CGRect, targetSize: CGSize): Matrix {
+    internal fun findCropScaleStretch(rect: CGRect, targetSize: CGSize, factory: AndroidFactory): Matrix {
         val scaleX = targetSize.width / rect.size.width.toFloat()
         val scaleY = targetSize.height / rect.size.height.toFloat()
-        return Matrix().apply { setScale(scaleX, scaleY) }
+        return factory.makeMatrix().apply { setScale(scaleX, scaleY) }
     }
 
     /**

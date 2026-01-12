@@ -12,6 +12,7 @@ interface AndroidFactory {
     fun makeUri(uri: String): Uri
     fun makeCanvas(image: Bitmap): Canvas
     fun makePaint(): Paint
+    fun makeMatrix(): Matrix
     
     /**
      * Fetch input stream from URL.
@@ -30,5 +31,6 @@ class AndroidConcreteFactory: AndroidFactory {
     override fun makeUri(uri: String): Uri = uri.toUri()
     override fun makeCanvas(image: Bitmap): Canvas = Canvas(image)
     override fun makePaint(): Paint = Paint()
+    override fun makeMatrix(): Matrix = Matrix()
     override fun fetchUrl(uri: String): InputStream = URL(uri).openConnection().getInputStream()
 }

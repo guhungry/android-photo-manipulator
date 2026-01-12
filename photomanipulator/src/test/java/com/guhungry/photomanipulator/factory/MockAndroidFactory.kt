@@ -24,6 +24,7 @@ class MockAndroidFactory: AndroidFactory {
     override fun makeCanvas(image: Bitmap): Canvas = mock(Canvas::class.java)
 
     override fun makePaint(): Paint = mock(Paint::class.java)
+    override fun makeMatrix(): Matrix = mock(Matrix::class.java)
 
     override fun fetchUrl(uri: String): InputStream = ByteArrayInputStream(ByteArray(0))
 }
