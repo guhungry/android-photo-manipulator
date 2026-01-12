@@ -21,13 +21,9 @@ class MockAndroidFactory: AndroidFactory {
         }
     }
     override fun makeUri(uri: String): Uri = mock(Uri::class.java)
-    override fun makeCanvas(image: Bitmap): Canvas {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
+    override fun makeCanvas(image: Bitmap): Canvas = mock(Canvas::class.java)
 
-    override fun makePaint(): Paint {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
+    override fun makePaint(): Paint = mock(Paint::class.java)
 
     override fun fetchUrl(uri: String): InputStream = ByteArrayInputStream(ByteArray(0))
 }

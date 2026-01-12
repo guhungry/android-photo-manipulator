@@ -52,7 +52,7 @@ object FileUtils {
     }
 
     /**
-     * Delete dll files in directory that starts with prefix
+     * Delete all files in directory that start with prefix
      */
     @JvmStatic
     fun cleanDirectory(directory: File, prefix: String) {
@@ -68,6 +68,22 @@ object FileUtils {
         }
     }
 
+    /**
+     * Open bitmap input stream from URI.
+     *
+     * Supports local URIs (file://, content://, android.res://), base64 data URIs,
+     * and remote URLs (http://, https://).
+     *
+     * Warning: Remote URL fetching performs synchronous network I/O and should not be
+     * called on the main/UI thread. Use background thread or coroutines for remote URLs
+     * to avoid ANR (Application Not Responding) errors.
+     *
+     * @param context Android context
+     * @param uri URI of the image
+     * @param factory (Optional) Factory for creating Android Objects for Testing
+     * @return InputStream of the bitmap
+     * @throws IOException if the bitmap cannot be opened
+     */
     @JvmStatic
     fun openBitmapInputStream(context: Context, uri: String, factory: AndroidFactory = AndroidConcreteFactory()): InputStream {
         if (isBase64Data(uri)) {

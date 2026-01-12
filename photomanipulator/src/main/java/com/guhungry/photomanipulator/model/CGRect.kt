@@ -6,6 +6,11 @@ import com.guhungry.photomanipulator.factory.AndroidFactory
 import com.guhungry.photomanipulator.factory.AndroidConcreteFactory
 
 data class CGSize(val width: Int, val height: Int) {
+    /**
+     * Calculate aspect ratio (width / height).
+     *
+     * @return Aspect ratio as float, or 0f if height is 0 (to avoid division by zero)
+     */
     fun ratio() = if (height != 0) width / height.toFloat() else 0f
 }
 

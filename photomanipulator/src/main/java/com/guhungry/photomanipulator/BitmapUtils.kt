@@ -16,6 +16,14 @@ import kotlin.math.floor
 import androidx.core.graphics.withRotation
 
 object BitmapUtils {
+    /**
+     * Read image dimensions without loading the full image into memory.
+     *
+     * Note: This method does not close the input stream. The caller is responsible for closing it.
+     *
+     * @param input Image input stream
+     * @return CGSize containing width and height of the image
+     */
     @JvmStatic
     fun readImageDimensions(input: InputStream): CGSize {
         val options = BitmapFactory.Options().apply { inJustDecodeBounds = true }
@@ -63,13 +71,17 @@ object BitmapUtils {
         }
     }
 
-    private fun getBitmapRegionDecoder(input: InputStream) =
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-            BitmapRegionDecoder.newInstance(input)!!
+    private fun getBitmapRegionDecoder(input: InputStream): BitmapRegionDecoder {
+        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            BitmapRegionDecoder.newInstance(input)
+                ?: throw IOException("Failed to create BitmapRegionDecoder from input stream")
         } else {
             // Should be removed if min sdk >= 31
-            @Suppress("DEPRECATION") BitmapRegionDecoder.newInstance(input, false)!!
+            @Suppress("DEPRECATION")
+            BitmapRegionDecoder.newInstance(input, false)
+                ?: throw IOException("Failed to create BitmapRegionDecoder from input stream")
         }
+    }
 
     /**
      * Crop the rectangle given by {@code mX, mY, mWidth, mHeight} within the source bitmap
@@ -91,7 +103,8 @@ object BitmapUtils {
         outOptions.inSampleSize = decodeSampleSize(cropSize.size, targetSize)
         outOptions.inJustDecodeBounds = false
 
-        val bitmap: Bitmap = BitmapFactory.decodeStream(input, null, outOptions) ?: throw IOException("Cannot decode bitmap: uri")
+        val bitmap: Bitmap = BitmapFactory.decodeStream(input, null, outOptions) 
+            ?: throw IOException("Failed to decode bitmap from input stream")
         // This can use significantly less memory than decoding the full-resolution bitmap
 
         val rotated = transformBitmap(bitmap, matrix)
@@ -184,7 +197,10 @@ object BitmapUtils {
     }
 
     /**
-     * Print text in to image
+     * Print text in to image.
+     *
+     * Note: When using thickness > 0, the text will be rendered as an outline (stroke) only.
+     * Shadow effects can be applied independently via TextStyle.shadowColor and shadowRadius.
      *
      * @param image Source image
      * @param text Text to be printed
@@ -254,9 +270,14 @@ object BitmapUtils {
     }
 
     /**
-     * Flip image horizontal or vertical
+     * Flip image horizontal or vertical.
+     *
+     * Note: This method creates a new Bitmap. The caller is responsible for recycling
+     * the original bitmap if it is no longer needed to avoid memory leaks.
+     *
      * @param image Image to be flipped
      * @param mode Flip Mode
+     * @return New flipped Bitmap (or same instance if mode is FlipMode.None)
      */
     @JvmStatic
     fun flip(image: Bitmap, mode: FlipMode): Bitmap {
@@ -267,9 +288,14 @@ object BitmapUtils {
     }
 
     /**
-     * Rotate image 90, 180, 270 degrees
+     * Rotate image 90, 180, 270 degrees.
+     *
+     * Note: This method creates a new Bitmap. The caller is responsible for recycling
+     * the original bitmap if it is no longer needed to avoid memory leaks.
+     *
      * @param image Image to be rotated
      * @param mode Rotation Mode
+     * @return New rotated Bitmap (or same instance if mode is RotationMode.None)
      */
     @JvmStatic
     fun rotate(image: Bitmap, mode: RotationMode): Bitmap {
@@ -279,6 +305,15 @@ object BitmapUtils {
         return Bitmap.createBitmap(image, 0, 0, image.getWidth(), image.getHeight(), matrix, true)
     }
 
+    /**
+     * Get corrected transform matrix for orientation data in EXIF.
+     *
+     * Note: This method does not close the input stream. The caller is responsible for closing it.
+     *
+     * @param input Image input stream
+     * @return Matrix with rotation/flip transformations, or null if no correction needed
+     */
+    @JvmStatic
     fun getCorrectOrientationMatrix(input: InputStream): Matrix? {
         val exif = ExifInterface(input)
         val isFlippedHorizontal = exif.isFlipped
